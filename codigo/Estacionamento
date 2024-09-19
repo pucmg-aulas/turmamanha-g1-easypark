@@ -1,0 +1,62 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Estacionamento {
+    private String nome;
+    private String rua;
+    private String bairro;
+    private int numero;
+    private List<Vaga> vagas;
+
+    public Estacionamento(String nome, String rua, String bairro, int numero) {
+        this.nome = nome;
+        this.rua = rua;
+        this.bairro = bairro;
+        this.numero = numero;
+        this.vagas = new ArrayList<>();
+    }
+
+    public void adicionarVaga(Vaga vaga) {
+        this.vagas.add(vaga);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public List<Vaga> getVagas() {
+        return vagas;
+    }
+
+    public void setVagas(List<Vaga> vagas) {
+        this.vagas = vagas;
+    }
+}

@@ -1,13 +1,14 @@
-package codigo;
+package Models;
 
 public class Veiculo
 {
     private String placa;
     private Cliente cliente;
 
-    public Veiculo(String placa)
+    public Veiculo(String placa, Cliente cliente)
     {
         this.placa = placa;
+        this.cliente = cliente;
     }
 
     public void adicionarCliente(Cliente cliente)

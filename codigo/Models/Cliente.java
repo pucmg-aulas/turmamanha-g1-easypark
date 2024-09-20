@@ -1,15 +1,17 @@
-package codigo;
+package Models;
 
 public class Cliente {
-
 
     private String nome;
     private int id;
 
+	private static int nextId = 1;
 
-	public Cliente(String nome, int id) {
+
+	public Cliente(String nome) {
 		this.nome = nome;
-		this.id = id;
+		this.id = nextId;
+		nextId++;
 
         
 	}

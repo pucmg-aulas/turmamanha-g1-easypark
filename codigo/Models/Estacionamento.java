@@ -1,3 +1,4 @@
+package Models;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,43 +21,38 @@ public class Estacionamento {
         this.vagas.add(vaga);
     }
 
+    public Vaga getVagaPorId(int id) {
+        for (Vaga v : vagas) {
+            if (v.getId() == id) {
+                return v;
+            }
+        }
+
+        return null;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public String getRua() {
         return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
     }
 
     public String getBairro() {
         return bairro;
     }
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
 
     public int getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
+
 
     public List<Vaga> getVagas() {
         return vagas;
     }
 
-    public void setVagas(List<Vaga> vagas) {
-        this.vagas = vagas;
-    }
 }

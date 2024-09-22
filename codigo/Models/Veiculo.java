@@ -21,26 +21,9 @@ public class Veiculo
         return placa;
     }
 
-    public void setPlaca(String placa)
-    {
-        this.placa = placa;
-    }
-
     public Cliente getCliente()
     {
         return cliente;
     }
 
-    public void operation()
-    {
-        System.out.println("Operação realizada para o veículo de placa: " + placa);
-        if (cliente != null)
-        {
-            System.out.println("Cliente associado: " + cliente.getNome());
-        }
-        else
-        {
-            System.out.println("Nenhum cliente associado.");
-        }
-    }
 }

@@ -7,7 +7,6 @@ public class Cliente {
 
 	private static int nextId = 1;
 
-
 	public Cliente(String nome) {
 		this.nome = nome;
 		this.id = nextId;
@@ -28,6 +27,4 @@ public class Cliente {
 		return id;
 	}
 
-
-    
 }

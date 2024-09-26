@@ -28,28 +28,28 @@ public class EstacionamentoApp
             switch (opcao) 
             {
                 case 1:
-                    System.out.println("Informacoes sobre o Estacionamento...");
+                    System.out.println("Informacoes sobre o Estacionamento:");
                     break;
                 case 2:
-                    System.out.println("Cadastrar novo cliente...");
+                    System.out.println("Cadastrar novo cliente:");
                     break;
                 case 3:
-                    System.out.println("Cadastrar novo veiculo...");
+                    System.out.println("Cadastrar novo veiculo:");
                     break;
                 case 4:
-                    System.out.println("Cadastrar nova vaga...");
+                    System.out.println("Cadastrar nova vaga:");
                     break;
                 case 5:
-                    System.out.println("Reservar uma vaga...");
+                    System.out.println("Reservar uma vaga:");
                     break;
                 case 6:
-                    System.out.println("Liberar uma vaga...");
+                    System.out.println("Liberar uma vaga:");
                     break;
                 case 7:
-                    System.out.println("Realizar cobranca...");
+                    System.out.println("Realizar cobranca:");
                     break;
                 case 8:
-                    System.out.println("Saindo do sistema...");
+                    System.out.println("Saindo do sistema:");
                     break;
                 default:
                     System.out.println("Opcao invalida! Tente novamente.");

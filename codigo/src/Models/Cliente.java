@@ -31,7 +31,7 @@ public class Cliente {
 
 	// Método para gravar os dados do cliente em um arquivo de texto
 	public void gravarEmArquivo() {
-		File clientes = new File("Clientes.txt");
+		File clientes = new File("../../Archives/Clientes.txt");
 
 		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(clientes))) {
 			escritor.write("Cliente ID: " + this.id + "\n");

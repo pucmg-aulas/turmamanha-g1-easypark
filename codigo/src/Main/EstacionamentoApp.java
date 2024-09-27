@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class EstacionamentoApp {
 }
+
 public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     int opcao;
@@ -16,36 +17,76 @@ public static void main(String[] args) {
     Estacionamento estacionamento;
     estacionamento = new Estacionamento("a", "a", "a", 123);
 
-
     while (true) {
-        System.out.println("\n=== Sistema de Estacionamento ===");
-        System.out.println("(1) Exibir Detalhes do Estacionamento");
-        System.out.println("(2) Cadastrar Cliente");
+        System.out.println("\n=== Sistema de Estacionamentos ===");
+        System.out.println("(1) Cadastrar Estacionamento");
+        System.out.println("(2) Selecionar Estacionamento");
         System.out.println("(3) Cadastrar Veículo");
-        System.out.println("(4) Cadastrar Vaga");
-        System.out.println("(5) Reservar Vaga");
-        System.out.println("(6) Liberar Vaga");
-        System.out.println("(7) Gerar Cobrança");
-        System.out.println("(8) Sair");
-        System.out.print("Selecione uma opção: ");
 
         opcao = scanner.nextInt();
         scanner.nextLine(); // Consumir a nova linha pendente após a entrada numérica
 
-        if (opcao == 8) {
+        switch (opcao) {
+            case 1:
+                // Cadastro de Estacionamento
+                System.out.print("Digite o nome do estacionamento: ");
+                String nome = scanner.nextLine();
+
+                System.out.print("Digite a rua do estacionamento: ");
+                String rua = scanner.nextLine();
+
+                System.out.print("Digite o bairro do estacionamento: ");
+                String bairro = scanner.nextLine();
+
+                System.out.print("Digite o número do estacionamento: ");
+                int numero = scanner.nextInt();
+                scanner.nextLine();
+
+                estacionamento = new Estacionamento(nome, rua, bairro, numero);
+                System.out.println("Estacionamento cadastrado com sucesso!");
+
+                break;
+
+            case 2:
+                // Selecionar Estacionamento
+                System.out.print("Digite o ID do estacionamento que deseja selecionar: ");
+
+                int idEstacionamento = scanner.nextInt();
+                scanner.nextLine();
+
+                estacionamentoAtual = null;
+
+                for (Estacionamento est : estacionamentos) {
+                    if (est.getId() == idEstacionamento) {
+                        estacionamentoAtual = est;
+                        System.out.println("Estacionamento " + est.getNome() + " selecionado.");
+                        break;
+                    }
+                }
+
+                if (estacionamentoAtual == null) {
+                    System.out.println("Estacionamento com ID " + idEstacionamento + " não encontrado.");
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        System.out.println("(4) Cadastrar Vaga");
+        System.out.println("(5) Reservar Vaga");
+        System.out.println("(6) Liberar Vaga");
+        System.out.println("(7) Gerar Cobrança");
+        System.out.println("(8) Exibir Detalhes do Estacionamento");
+        System.out.println("(9) Sair");
+        System.out.print("Selecione uma opção: ");
+
+        if (opcao == 9) {
             System.out.println("Encerrando o sistema...");
             break;
         }
 
         switch (opcao) {
-            case 1:
-                // Exibir detalhes do estacionamento
-                System.out.println("=== Informações do Estacionamento ===");
-                System.out.println("Nome: " + estacionamento.getNome());
-                System.out.println("Endereço: " + estacionamento.getRua() + ", " + estacionamento.getNumero() + " - " + estacionamento.getBairro());
-                System.out.println("Vagas Disponíveis: " + estacionamento.getVagas().size());
-                estacionamento.gravarEmArquivo();
-                break;
 
             case 2:
                 // Cadastrar cliente
@@ -129,8 +170,19 @@ public static void main(String[] args) {
                 }
                 break;
 
+            case 8:
+                // Exibir detalhes do estacionamento
+                System.out.println("=== Informações do Estacionamento ===");
+                System.out.println("Nome: " + estacionamento.getNome());
+                System.out.println("Endereço: " + estacionamento.getRua() + ", " + estacionamento.getNumero() + " - "
+                        + estacionamento.getBairro());
+                System.out.println("Vagas Disponíveis: " + estacionamento.getVagas().size());
+                estacionamento.gravarEmArquivo();
+                break;
+
             default:
                 System.out.println("Opção inválida! Por favor, escolha uma opção válida.");
+
         }
     }
     scanner.close();

@@ -8,18 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estacionamento {
+    private int id;
     private String nome;
     private String rua;
     private String bairro;
     private int numero;
     private List<Vaga> vagas;
 
-    public Estacionamento(String nome, String rua, String bairro, int numero) {
+    private static int nextId = 1;
+
+    public Estacionamento(int id, String nome, String rua, String bairro, int numero) {
         this.nome = nome;
         this.rua = rua;
         this.bairro = bairro;
         this.numero = numero;
         this.vagas = new ArrayList<>();
+        this.id = nextId;
+        nextId++;
     }
 
     public void adicionarVaga(Vaga vaga) {
@@ -55,10 +60,9 @@ public class Estacionamento {
         return vagas;
     }
 
+    File arquivo = new File(".codigo/src/Models/Archives/Estacionamento.txt");
     // Método para gravar os dados do estacionamento em um arquivo de texto
-    public void gravarEmArquivo() {
-        File arquivo = new File("estacionamento.txt");
-
+    public boolean gravarEmArquivo() {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             escritor.write("Estacionamento: " + this.nome + "\n");
             escritor.write("Endereço: " + this.rua + ", " + this.numero + " - " + this.bairro + "\n");
@@ -68,9 +72,53 @@ public class Estacionamento {
                 escritor.write("  - Vaga ID: " + vaga.getId() + "\n");
             }
 
-            System.out.println("Dados do estacionamento gravados em " + arquivo.getName());
+            escritor.write("--------------------------------");
+
+
+           return true;
         } catch (IOException e) {
-            System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
+            return false;
         }
     }
+	//metodo para ler arquivos
+	public boolean lerVagaPorId(int idVaga) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            boolean vagaEncontrado = false;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.contains("ID vaga: " + idVaga)) {
+                    vagaEncontrado = true;
+                    System.out.println(linha); 
+                    System.out.println(leitor.readLine()); 
+                    System.out.println(leitor.readLine()); 
+                    break;
+                }
+            }
+            if (!vagaEncontrado) {
+                System.out.println("Vaga com ID " + idVaga + " não encontrada.");
+            }
+			return true;
+        } catch (IOException e) {
+			return false;
+        }
+    }
+
+    public boolean lerEstacionamentos() {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+        
+            while ((linha = leitor.readLine()) != null) {
+                    System.out.println(linha); 
+                    System.out.println(leitor.readLine()); 
+                    System.out.println(leitor.readLine()); 
+                    System.out.println(leitor.readLine()); 
+                    System.out.println(leitor.readLine()); 
+                
+            }
+			return true;
+        } catch (IOException e) {
+			return false;
+        }
+    }
+
 }

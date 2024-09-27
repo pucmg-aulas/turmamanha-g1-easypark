@@ -1,20 +1,20 @@
 package src.Models;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Cliente {
 
 	private String nome;
-	private int id;
-	private static int nextId = 1;
+	private String cpf;
 
-	public Cliente(String nome) {
+	public Cliente(String nome, String cpf) {
 		this.nome = nome;
-		this.id = nextId;
-		nextId++;
+		this.cpf = cpf;
 	}
 
 	public String getNome() {
@@ -29,16 +29,40 @@ public class Cliente {
 		return id;
 	}
 
+	File clientes = new File("codigo/src/Models/Archives/Clientes.txt");
 	// Método para gravar os dados do cliente em um arquivo de texto
-	public void gravarEmArquivo() {
-		File clientes = new File("../../Archives/Clientes.txt");
-
+	public boolean gravarEmArquivo() {
+		
 		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(clientes))) {
 			escritor.write("Cliente ID: " + this.id + "\n");
 			escritor.write("Nome: " + this.nome + "\n");
-			System.out.println("Dados do cliente gravados em " + clientes.getName());
+			escritor.write("----------------------------------------");
+			return true;
 		} catch (IOException e) {
-			System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
+			return false;
 		}
 	}
+	
+	//metodo para ler arquivos
+	public boolean lerClientePorId(int clienteId) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(clientes))) {
+            String linha;
+            boolean clienteEncontrado = false;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.contains("Cliente ID: " + clienteId)) {
+                    clienteEncontrado = true;
+                    System.out.println(linha); 
+                    System.out.println(leitor.readLine()); 
+                    System.out.println(leitor.readLine()); 
+                    break;
+                }
+            }
+            if (!clienteEncontrado) {
+                System.out.println("Cliente com ID " + clienteId + " não encontrado.");
+            }
+			return true;
+        } catch (IOException e) {
+			return false;
+        }
+    }
 }

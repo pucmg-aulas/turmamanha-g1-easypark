@@ -96,8 +96,8 @@ public class Cobranca {
     }
 
     // Método para gravar os dados da cobrança em um arquivo de texto
-    public void gravarEmArquivo() {
-        File cobrancas = new File("cobrancas.txt");
+    public boolean gravarEmArquivo() {
+        File cobrancas = new File("codigo/src/Models/Archives/Cobrancas.txt");
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(cobrancas))) {
             escritor.write("Vaga: " + this.vaga.getId() + "\n");
@@ -106,9 +106,10 @@ public class Cobranca {
             escritor.write("Hora de Saída: " + this.horaSaida.toString() + "\n");
             escritor.write("Tempo Total: " + this.getTempoTotal() + " minutos\n");
             escritor.write("Valor Total: R$" + this.getValorTotal() + "\n");
-            System.out.println("Dados gravados em " + cobrancas.getName());
+            escritor.write("------------------------------------------");
+            return true;
         } catch (IOException e) {
-            System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
+            return false;
         }
     }
 }

@@ -49,16 +49,18 @@ public class Vaga {
         return status;
     }
 
+    File estacionamento = new File("codigo/src/Models/Archives/arquivo.txt");
     // Método para gravar os dados da vaga em um arquivo de texto
-    public void gravarEmArquivo() {
-        File vaga = new File("vaga.txt");
+    public boolean gravarEmArquivo() {
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vaga))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(estacionamento))) {
             escritor.write("Vaga ID: " + this.id + "\n");
             escritor.write("Status: " + (this.status ? "Desocupada" : "Ocupada") + "\n");
-            System.out.println("Dados da vaga gravados em " + vaga.getName());
+            escritor.write("-----------------------------------------------");
+            return true;
+
         } catch (IOException e) {
-            System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
+            return false;
         }
     }
 }

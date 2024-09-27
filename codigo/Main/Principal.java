@@ -3,8 +3,6 @@ package Main;
 import Models.*;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Principal {
     public static void main(String[] args) {
@@ -16,7 +14,7 @@ public class Principal {
 
         Cliente Felipe = new Cliente("Felipe");
 
-        Veiculo veiculo1 = new Veiculo("ABC1234", Felipe); // Supondo que exista a classe Veiculo
+        Veiculo veiculo1 = new Veiculo("ABC1234"); // Supondo que exista a classe Veiculo
 
         // Criando a cobrança passando o ID da vaga e o estacionamento
         Cobranca cobranca = new Cobranca(vaga1.getId(), estacionamento, veiculo1);

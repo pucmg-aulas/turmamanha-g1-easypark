@@ -9,7 +9,7 @@ public class Veiculo {
     private String placa;
     private Cliente cliente;
 
-    public Veiculo(String placa, Cliente cliente) {
+    public Veiculo(String placa) {
         this.placa = placa;
         this.cliente = cliente;
     }

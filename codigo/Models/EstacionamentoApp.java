@@ -1,7 +1,5 @@
 package Models;
 
-import Models.*;
-
 import java.util.Scanner;
 
 public class EstacionamentoApp {
@@ -48,7 +46,7 @@ public class EstacionamentoApp {
                     System.out.print("Digite o nome do cliente proprietário: ");
                     String nomeProprietario = scanner.nextLine();
                     Cliente clienteVeiculo = new Cliente(nomeProprietario);
-                    Veiculo veiculo = new Veiculo(placaVeiculo, clienteVeiculo);
+                    Veiculo veiculo = new Veiculo(placaVeiculo);
                     veiculo.gravarEmArquivo(); // Grava informações do veículo no arquivo
                     break;
                 case 4:
@@ -88,7 +86,7 @@ public class EstacionamentoApp {
                         System.out.print("Digite a placa do veículo: ");
                         scanner.nextLine(); // Consumir o newline
                         String placaCobranca = scanner.nextLine();
-                        Veiculo veiculoCobranca = new Veiculo(placaCobranca, null);
+                        Veiculo veiculoCobranca = new Veiculo(placaCobranca);
                         Cobranca cobranca = new Cobranca(idVagaCobranca, estacionamento, veiculoCobranca);
                         cobranca.setHoraSaida(java.time.LocalTime.now()); // Exemplo de saída automática
                         cobranca.calcularTempoFinal();

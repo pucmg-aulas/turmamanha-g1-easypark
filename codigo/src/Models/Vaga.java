@@ -1,9 +1,12 @@
-package Models;
+package src.Models;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Vaga {
 
     private int id;
-
+    private List<Cobranca> cobrancas;
     //Status True: Desocupado
     //Status False: Ocupado
     private boolean status;
@@ -15,6 +18,7 @@ public class Vaga {
         this.id = nextId;
         nextId++;
         this.status = true;
+        cobrancas = new ArrayList<>();
     }
 
     public boolean ocuparVaga() {

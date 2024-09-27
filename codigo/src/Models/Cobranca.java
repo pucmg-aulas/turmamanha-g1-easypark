@@ -1,13 +1,9 @@
-package Models;
-
-
-import org.jetbrains.annotations.NotNull;
+package src.Models;
 
 import java.time.LocalTime;
 import java.time.Duration;
 
 public class Cobranca {
-    private Vaga vaga;
     private Veiculo veiculo;
     private LocalTime horaEntrada;
     private LocalTime horaSaida;

@@ -1,14 +1,16 @@
+package src.Main;
+
 import java.util.Scanner;
 
-public class EstacionamentoApp 
+public class Principal
 {
 
-    public static void main(String[] args) 
-  {
+    public static void main(String[] args)
+    {
         Scanner scanner = new Scanner(System.in);
         int opcao;
 
-        do 
+        do
         {
             System.out.println("=== | Sistema de Estacionamento | ===");
             System.out.println("Seja bem-vindo ao nosso sistema de Auto-Atendimento!");
@@ -22,10 +24,10 @@ public class EstacionamentoApp
             System.out.println("(7) Realizar Cobranca");
             System.out.println("(8) Sair");
             System.out.print("Escolha uma opcao: ");
-            
+
             opcao = scanner.nextInt();
 
-            switch (opcao) 
+            switch (opcao)
             {
                 case 1:
                     System.out.println("Informacoes sobre o Estacionamento:");
@@ -58,7 +60,7 @@ public class EstacionamentoApp
             System.out.println();
 
         }
-          while (opcao != 8);
+        while (opcao != 8);
 
         scanner.close();
     }

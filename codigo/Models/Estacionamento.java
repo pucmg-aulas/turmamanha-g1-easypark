@@ -57,7 +57,7 @@ public class Estacionamento {
 
     // Método para gravar os dados do estacionamento em um arquivo de texto
     public void gravarEmArquivo() {
-        File arquivo = new File("entrada.txt");
+        File arquivo = new File("estacionamento.txt");
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             escritor.write("Estacionamento: " + this.nome + "\n");

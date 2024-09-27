@@ -51,12 +51,12 @@ public class Vaga {
 
     // Método para gravar os dados da vaga em um arquivo de texto
     public void gravarEmArquivo() {
-        File arquivo = new File("entrada.txt");
+        File vaga = new File("vaga.txt");
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vaga))) {
             escritor.write("Vaga ID: " + this.id + "\n");
             escritor.write("Status: " + (this.status ? "Desocupada" : "Ocupada") + "\n");
-            System.out.println("Dados da vaga gravados em " + arquivo.getName());
+            System.out.println("Dados da vaga gravados em " + vaga.getName());
         } catch (IOException e) {
             System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
         }

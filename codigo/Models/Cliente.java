@@ -31,12 +31,12 @@ public class Cliente {
 
 	// Método para gravar os dados do cliente em um arquivo de texto
 	public void gravarEmArquivo() {
-		File arquivo = new File("entrada.txt");
+		File clientes = new File("Clientes.txt");
 
-		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(clientes))) {
 			escritor.write("Cliente ID: " + this.id + "\n");
 			escritor.write("Nome: " + this.nome + "\n");
-			System.out.println("Dados do cliente gravados em " + arquivo.getName());
+			System.out.println("Dados do cliente gravados em " + clientes.getName());
 		} catch (IOException e) {
 			System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
 		}

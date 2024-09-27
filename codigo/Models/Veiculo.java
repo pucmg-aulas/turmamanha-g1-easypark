@@ -28,13 +28,13 @@ public class Veiculo {
 
     // Método para gravar os dados do veículo em um arquivo de texto
     public void gravarEmArquivo() {
-        File arquivo = new File("entrada.txt");
+        File veiculo = new File("veiculo.txt");
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(veiculo))) {
             escritor.write("Veículo Placa: " + this.placa + "\n");
             escritor.write("Cliente ID: " + this.cliente.getId() + "\n");
             escritor.write("Cliente Nome: " + this.cliente.getNome() + "\n");
-            System.out.println("Dados do veículo gravados em " + arquivo.getName());
+            System.out.println("Dados do veículo gravados em " + veiculo.getName());
         } catch (IOException e) {
             System.out.println("Erro ao gravar no arquivo: " + e.getMessage());
         }

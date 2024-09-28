@@ -57,9 +57,6 @@ public class Estacionamento {
         return numero;
     }
 
-    public int getId() {
-        return this.id;
-    }
 
 
     public List<Vaga> getVagas() {
@@ -69,9 +66,9 @@ public class Estacionamento {
 
     // Método para gravar os dados de vários estacionamentos
     public static boolean gravarVariosEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
-        File arquivoVarios = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
+        File arquivo = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivoVarios))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             for (Estacionamento estacionamento : estacionamentos) {
                 escritor.write("Estacionamento: " + estacionamento.getNome() + "\n");
                 escritor.write("ID: " + estacionamento.getId() + "\n");
@@ -131,5 +128,42 @@ public class Estacionamento {
 			return false;
         }
     }
+
+
+    // Método para ler e registrar os estacionamentos e suas informações do arquivo
+    public static List<Estacionamento> lerEstacionamentosDeArquivo() {
+        File arquivoVarios = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
+        List<Estacionamento> estacionamentos = new ArrayList<>();
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoVarios))) {
+            String linha;
+            Estacionamento estacionamentoAtual = null;
+
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.startsWith("Estacionamento: ")) {
+                    if (estacionamentoAtual != null) {
+                        estacionamentos.add(estacionamentoAtual); // Adiciona o estacionamento anterior à lista
+                    }
+                    String nome = linha.substring(15); // Extrai o nome do estacionamento
+                    String enderecoLinha = leitor.readLine(); // Lê a linha com o endereço
+                    String rua = enderecoLinha.split(",")[0].split(":")[1].trim();
+                    int numero = Integer.parseInt(enderecoLinha.split(",")[1].split("-")[0].trim());
+                    String bairro = enderecoLinha.split("-")[1].trim();
+
+                    estacionamentoAtual = new Estacionamento(nome, rua, bairro, numero); // Cria um novo estacionamento
+                } else if (linha.startsWith("  - Vaga ID: ")) {
+                    int idVaga = Integer.parseInt(linha.split(":")[1].trim());
+                    Vaga vaga = new Vaga(idVaga); // Supondo que você tenha uma classe Vaga com o construtor por ID
+                    estacionamentoAtual.adicionarVaga(vaga);
+                }
+            }
+
+            if (estacionamentoAtual != null) {
+                estacionamentos.add(estacionamentoAtual); // Adiciona o último estacionamento lido à lista
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 }

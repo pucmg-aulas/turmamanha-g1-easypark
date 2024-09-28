@@ -40,6 +40,10 @@ public class Estacionamento {
         return null;
     }
 
+    public String getId(){
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -60,26 +64,31 @@ public class Estacionamento {
         return vagas;
     }
 
-    File arquivo = new File(".codigo/src/Models/Archives/Estacionamento.txt");
-    // Método para gravar os dados do estacionamento em um arquivo de texto
-    public boolean gravarEmArquivo() {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
-            escritor.write("Estacionamento: " + this.nome + "\n");
-            escritor.write("Endereço: " + this.rua + ", " + this.numero + " - " + this.bairro + "\n");
-            escritor.write("Vagas Disponíveis:\n");
 
-            for (Vaga vaga : vagas) {
-                escritor.write("  - Vaga ID: " + vaga.getId() + "\n");
+    // Método para gravar os dados de vários estacionamentos
+    public static boolean gravarVariosEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
+        File arquivoVarios = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivoVarios))) {
+            for (Estacionamento estacionamento : estacionamentos) {
+                escritor.write("Estacionamento: " + estacionamento.getNome() + "\n");
+                escritor.write("ID: " + estacionamento.getId() + "\n");
+                escritor.write("Endereço: " + estacionamento.getRua() + ", " + estacionamento.getNumero() + " - " + estacionamento.getBairro() + "\n");
+                escritor.write("Vagas Disponíveis:\n");
+
+                for (Vaga vaga : estacionamento.getVagas()) {
+                    escritor.write("  - Vaga ID: " + vaga.getId() + "\n");
+                }
+
+                escritor.write("--------------------------------\n");
             }
-
-            escritor.write("--------------------------------");
-
-
-           return true;
+            return true;
         } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
+
 	//metodo para ler arquivos
 	public boolean lerVagaPorId(int idVaga) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {

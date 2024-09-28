@@ -12,13 +12,14 @@ public class Vaga {
     // Status True: Desocupado
     // Status False: Ocupado
     private boolean status;
-
+    private TipoVaga tipoVaga;
     private static int nextId = 1;
 
-    public Vaga() {
+    public Vaga(TipoVaga tipoVaga) {
         this.id = nextId;
         nextId++;
         this.status = true;
+        this.tipoVaga = tipoVaga;
     }
 
     public boolean ocuparVaga() {
@@ -41,6 +42,14 @@ public class Vaga {
         }
     }
 
+    // Enum para representar os diferentes tipos de vaga
+    public enum TipoVaga {
+        REGULAR, 
+        IDOSO, 
+        PCD, 
+        VIP
+    }
+
     public int getId() {
         return id;
     }
@@ -49,16 +58,19 @@ public class Vaga {
         return status;
     }
 
-    File estacionamento = new File("codigo/src/Models/Archives/arquivo.txt");
-    // Método para gravar os dados da vaga em um arquivo de texto
-    public boolean gravarEmArquivo() {
+    public TipoVaga getTipoVaga() {
+        return tipoVaga;
+    }
 
+    File estacionamento = new File("codigo/src/Models/Archives/arquivo.txt");
+
+    public boolean gravarEmArquivo() {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(estacionamento))) {
             escritor.write("Vaga ID: " + this.id + "\n");
             escritor.write("Status: " + (this.status ? "Desocupada" : "Ocupada") + "\n");
+            escritor.write("Tipo de Vaga: " + this.tipoVaga + "\n");
             escritor.write("-----------------------------------------------");
             return true;
-
         } catch (IOException e) {
             return false;
         }

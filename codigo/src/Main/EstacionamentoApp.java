@@ -58,6 +58,13 @@ public static void main(String[] args) {
                 Estacionamento estacionamentoAtual = null;
 
                 List<Estacionamento> estacionamentos = Estacionamento.lerEstacionamentosDeArquivo();
+                for (Estacionamento est : estacionamentos) {
+                    if (est.getId() == idEstacionamento) {
+                        estacionamentoSelecionado = est;
+                        System.out.println("Estacionamento " + est.getNome() + " selecionado.");
+                        break;
+                    }
+                }
 
                 if (estacionamentoAtual == null) {
                     System.out.println("Estacionamento com ID " + idEstacionamento + " não encontrado.");

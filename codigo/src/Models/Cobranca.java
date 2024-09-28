@@ -45,17 +45,30 @@ public class Cobranca {
         this.tempoTotal += duracao.toMinutes() + 1;
     }
 
-    private boolean verificarValorLimite(){
-        return this.valorTotal < LIMITEPRECO;
+    public void calcularValorTotal() {
+        // Calcula o valor base sem aplicar os descontos ou acréscimos
+        double valorBase = (this.tempoTotal / FRACAOTEMPO) * VALORTEMPO;
+    
+        // Aplicando as regras de desconto/aumento com base no tipo de vaga
+        switch (vaga.getTipoVaga()) {
+            case IDOSO:
+                valorBase *= 0.85; // 15% de desconto
+                break;
+            case PCD:
+                valorBase *= 0.87; // 13% de desconto
+                break;
+            case VIP:
+                valorBase *= 1.20; // 20% mais caro
+                break;
+            default:
+                // Vaga regular não sofre alterações
+                break;
+        }
+    
+        // Respeitar o limite de preço
+        this.valorTotal = valorBase > LIMITEPRECO ? LIMITEPRECO : valorBase;
     }
 
-    public void calcularValorTotal(){
-        if(verificarValorLimite()){
-            this.valorTotal = (this.tempoTotal / FRACAOTEMPO) * VALORTEMPO;
-        }else{
-            this.valorTotal = LIMITEPRECO;
-        }
-    }
 
     public boolean pagar(){
         return this.vaga != null && this.vaga.liberarVaga();

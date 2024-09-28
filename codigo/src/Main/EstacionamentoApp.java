@@ -54,7 +54,7 @@ public static void main(String[] args) {
                 int idEstacionamento = scanner.nextInt();
                 scanner.nextLine();
 
-                estacionamentoAtual = null;
+                Estacionamento estacionamentoAtual = null;
 
                 for (Estacionamento est : estacionamentos) {
                     if (est.getId() == idEstacionamento) {
@@ -92,7 +92,7 @@ public static void main(String[] args) {
                 // Cadastrar cliente
                 System.out.print("Digite o nome do cliente: ");
                 String nomeCliente = scanner.nextLine();
-                Cliente novoCliente = new Cliente(nomeCliente);
+                Cliente novoCliente = new Cliente(nomeCliente, "115325425");
                 novoCliente.gravarEmArquivo();
                 System.out.println("Cliente cadastrado com sucesso! ID: " + novoCliente.getId());
                 break;

@@ -1,9 +1,6 @@
 package src.Models;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +14,7 @@ public class Estacionamento {
 
     private static int nextId = 1;
 
-    public Estacionamento(int id, String nome, String rua, String bairro, int numero) {
+    public Estacionamento(String nome, String rua, String bairro, int numero) {
         this.nome = nome;
         this.rua = rua;
         this.bairro = bairro;
@@ -59,6 +56,11 @@ public class Estacionamento {
     public int getNumero() {
         return numero;
     }
+
+    public int getId() {
+        return this.id;
+    }
+
 
     public List<Vaga> getVagas() {
         return vagas;

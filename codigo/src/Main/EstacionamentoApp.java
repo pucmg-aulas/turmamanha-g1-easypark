@@ -5,6 +5,7 @@ import src.Models.Estacionamento;
 import src.Models.Vaga;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Scanner;
 
 public class EstacionamentoApp {
@@ -56,13 +57,7 @@ public static void main(String[] args) {
 
                 Estacionamento estacionamentoAtual = null;
 
-                for (Estacionamento est : estacionamentos) {
-                    if (est.getId() == idEstacionamento) {
-                        estacionamentoAtual = est;
-                        System.out.println("Estacionamento " + est.getNome() + " selecionado.");
-                        break;
-                    }
-                }
+                List<Estacionamento> estacionamentos = Estacionamento.lerEstacionamentosDeArquivo();
 
                 if (estacionamentoAtual == null) {
                     System.out.println("Estacionamento com ID " + idEstacionamento + " não encontrado.");
@@ -177,7 +172,6 @@ public static void main(String[] args) {
                 System.out.println("Endereço: " + estacionamento.getRua() + ", " + estacionamento.getNumero() + " - "
                         + estacionamento.getBairro());
                 System.out.println("Vagas Disponíveis: " + estacionamento.getVagas().size());
-                estacionamento.gravarEmArquivo();
                 break;
 
             default:

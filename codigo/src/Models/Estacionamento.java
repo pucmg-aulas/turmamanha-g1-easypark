@@ -11,6 +11,7 @@ public class Estacionamento {
     private String bairro;
     private int numero;
     private List<Vaga> vagas;
+    private static String arquivo = ".codigo/src/Models/Archives/Estacionamentos.txt";
 
     private static int nextId = 1;
 
@@ -37,7 +38,7 @@ public class Estacionamento {
         return null;
     }
 
-    public String getId(){
+    public int getId(){
         return id;
     }
 
@@ -153,7 +154,7 @@ public class Estacionamento {
                     estacionamentoAtual = new Estacionamento(nome, rua, bairro, numero); // Cria um novo estacionamento
                 } else if (linha.startsWith("  - Vaga ID: ")) {
                     int idVaga = Integer.parseInt(linha.split(":")[1].trim());
-                    Vaga vaga = new Vaga(idVaga); // Supondo que você tenha uma classe Vaga com o construtor por ID
+                    Vaga vaga = new Vaga(); // Supondo que você tenha uma classe Vaga com o construtor por ID
                     estacionamentoAtual.adicionarVaga(vaga);
                 }
             }

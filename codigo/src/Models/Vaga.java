@@ -62,10 +62,10 @@ public class Vaga {
         return tipoVaga;
     }
 
-    File estacionamento = new File("codigo/src/Models/Archives/arquivo.txt");
+    File vaga = new File("codigo/src/Models/Archives/Vaga.txt");
 
     public boolean gravarEmArquivo() {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(estacionamento))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vaga))) {
             escritor.write("Vaga ID: " + this.id + "\n");
             escritor.write("Status: " + (this.status ? "Desocupada" : "Ocupada") + "\n");
             escritor.write("Tipo de Vaga: " + this.tipoVaga + "\n");

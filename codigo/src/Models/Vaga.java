@@ -75,4 +75,29 @@ public class Vaga {
             return false;
         }
     }
+
+    // Método para ler os dados da vaga de um arquivo de texto pelo ID da vaga
+    public boolean lerVagaPorId(int idVaga) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(vaga))) {
+            String linha;
+            boolean vagaEncontrada = false;
+    
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.contains("Vaga ID: " + idVaga)) {
+                    vagaEncontrada = true;
+                    System.out.println(linha); // Exibe "Vaga ID"
+                    System.out.println(leitor.readLine()); // Exibe "Status"
+                    System.out.println(leitor.readLine()); // Exibe "Tipo de Vaga"
+                    break;
+                }
+            }
+    
+            if (!vagaEncontrada) {
+                System.out.println("Vaga com ID " + idVaga + " não encontrada.");
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 }

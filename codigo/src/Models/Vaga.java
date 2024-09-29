@@ -76,7 +76,7 @@ public class Vaga {
         }
     }
 
-    // Método para ler os dados da vaga de um arquivo de texto pelo ID da vaga
+    // Método para ler os dados da vaga 
     public boolean lerVagaPorId(int idVaga) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(vaga))) {
             String linha;

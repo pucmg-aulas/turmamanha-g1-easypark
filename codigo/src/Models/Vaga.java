@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 import java.io.*;
 
@@ -9,14 +9,12 @@ public class Vaga {
     // Status True: Desocupado
     // Status False: Ocupado
     private boolean status;
-    private TipoVaga tipoVaga;
     private static int nextId = 1;
 
-    public Vaga(TipoVaga tipoVaga) {
+    public Vaga() {
         this.id = nextId;
         nextId++;
         this.status = true;
-        this.tipoVaga = tipoVaga;
     }
 
     public boolean ocuparVaga() {
@@ -39,13 +37,6 @@ public class Vaga {
         }
     }
 
-    // Enum para representar os diferentes tipos de vaga
-    public enum TipoVaga {
-        REGULAR, 
-        IDOSO, 
-        PCD, 
-        VIP
-    }
 
     public int getId() {
         return id;
@@ -55,9 +46,6 @@ public class Vaga {
         return status;
     }
 
-    public TipoVaga getTipoVaga() {
-        return tipoVaga;
-    }
 
     File vaga = new File("codigo/src/Models/Archives/Vaga.txt");
     // Método para gravar os dados da vaga em um arquivo de texto

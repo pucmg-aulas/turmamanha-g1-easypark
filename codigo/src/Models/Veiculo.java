@@ -1,6 +1,7 @@
-package src.Models;
+package Models;
 
 import java.io.*;
+import Models.Cliente;
 
 public class Veiculo {
     private String placa;
@@ -39,7 +40,7 @@ public class Veiculo {
     }
 
     //metodo para ler arquivos
-	public boolean lerveiculoPorPlaca(int placaCarro) {
+	public boolean lerveiculoPorPlaca(String placaCarro) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(veiculo))) {
             String linha;
             boolean veiculoEncontrado = false;

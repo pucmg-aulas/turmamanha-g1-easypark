@@ -49,22 +49,7 @@ public class Cobranca {
         // Calcula o valor base sem aplicar os descontos ou acréscimos
         double valorBase = (this.tempoTotal / FRACAOTEMPO) * VALORTEMPO;
     
-        // Aplicando as regras de desconto/aumento com base no tipo de vaga
-        switch (vaga.getTipoVaga()) {
-            case IDOSO:
-                valorBase *= 0.85; // 15% de desconto
-                break;
-            case PCD:
-                valorBase *= 0.87; // 13% de desconto
-                break;
-            case VIP:
-                valorBase *= 1.20; // 20% mais caro
-                break;
-            default:
-                // Vaga regular não sofre alterações
-                break;
-        }
-    
+
         // Respeitar o limite de preço
         this.valorTotal = valorBase > LIMITEPRECO ? LIMITEPRECO : valorBase;
     }
@@ -110,7 +95,7 @@ public class Cobranca {
 
     // Método para gravar os dados da cobrança em um arquivo de texto
     public boolean gravarEmArquivo() {
-        File cobrancas = new File("codigo/src/Models/Archives/Cobrancas.txt");
+        File cobrancas = new File("./src/Models/Archives/Cobrancas.txt");
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(cobrancas))) {
             escritor.write("Vaga: " + this.vaga.getId() + "\n");

@@ -12,7 +12,7 @@ public class Estacionamento {
     private String bairro;
     private int numero;
     private List<Vaga> vagas;
-    private static String arquivo = ".codigo/src/Models/Archives/Estacionamentos.txt";
+    private static String arquivo = "./src/Models/Archives/Estacionamentos.txt";
 
     private static int nextId = 1;
 
@@ -67,7 +67,7 @@ public class Estacionamento {
 
     // Método para gravar os dados de vários estacionamentos
     public static boolean gravarEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
-        File arquivo = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
+        File arquivo = new File("./src/Models/Archives/Estacionamentos.txt");
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             for (Estacionamento estacionamento : estacionamentos) {
@@ -115,7 +115,7 @@ public class Estacionamento {
 
     // Método para ler e registrar os estacionamentos e suas informações do arquivo
     public static List<Estacionamento> lerEstacionamentosDeArquivo() {
-        File arquivoVarios = new File("codigo/src/Models/Archives/Estacionamentos.txt");
+        File arquivoVarios = new File("./src/Models/Archives/Estacionamentos.txt");
         List<Estacionamento> estacionamentos = new ArrayList<>();
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoVarios))) {
@@ -151,7 +151,7 @@ public class Estacionamento {
                     Vaga.TipoVaga tipoVaga = Vaga.TipoVaga.valueOf(tipoVagaLinha.split(":")[1].trim().toUpperCase());
 
                     // Criando uma nova vaga com base no ID e tipo
-                    Vaga vaga = new Vaga(tipoVaga);
+                    Vaga vaga = new Vaga(TipoVaga);
 
                     // Adicionando a vaga ao estacionamento atual
                     estacionamentoAtual.adicionarVaga(vaga);

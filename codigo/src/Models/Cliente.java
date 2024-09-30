@@ -33,10 +33,11 @@ public class Cliente {
 		return this.cpf;
 	}
 
-	File clientes = new File("codigo/src/Models/Archives/Clientes.txt");
+	File clientes = new File("./src/Models/Archives/Clientes.txt");
+
 	// Método para gravar os dados do cliente em um arquivo de texto
 	public boolean gravarEmArquivo() {
-		
+
 		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(clientes))) {
 			escritor.write("Cliente ID: " + this.cpf + "\n");
 			escritor.write("Nome: " + this.nome + "\n");
@@ -46,27 +47,25 @@ public class Cliente {
 			return false;
 		}
 	}
-	
+
 	//metodo para ler arquivos
 	public boolean lerClientePorId(int clienteId) {
-        try (BufferedReader leitor = new BufferedReader(new FileReader(clientes))) {
-            String linha;
-            boolean clienteEncontrado = false;
-            while ((linha = leitor.readLine()) != null) {
-                if (linha.contains("Cliente ID: " + clienteId)) {
-                    clienteEncontrado = true;
-                    System.out.println(linha); 
-                    System.out.println(leitor.readLine()); 
-                    System.out.println(leitor.readLine()); 
-                    break;
-                }
-            }
-            if (!clienteEncontrado) {
-                System.out.println("Cliente com ID " + clienteId + " não encontrado.");
-            }
-			return true;
-        } catch (IOException e) {
+		try (BufferedReader leitor = new BufferedReader(new FileReader(clientes))) {
+			String linha;
+			boolean clienteEncontrado = false;
+			while ((linha = leitor.readLine()) != null) {
+				if (linha.contains("Cliente ID: " + clienteId)) {
+					clienteEncontrado = true;
+					System.out.println(linha);
+					System.out.println(leitor.readLine());
+					System.out.println(leitor.readLine());
+					return true;
+				}
+			}
+
+		} catch (IOException e) {
 			return false;
-        }
-    }
+		}
+		return false;
+	}
 }

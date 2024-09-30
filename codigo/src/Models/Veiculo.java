@@ -24,7 +24,7 @@ public class Veiculo {
         return cliente;
     }
 
-    File veiculo = new File("codigo/src/Models/Archives/Veiculo.txt");
+    File veiculo = new File("./src/Models/Archives/Veiculo.txt");
 
     // Método para gravar os dados do veículo em um arquivo de texto
     public boolean gravarEmArquivo() {

@@ -38,7 +38,7 @@ public class Estacionamento {
         return null;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -57,7 +57,6 @@ public class Estacionamento {
     public int getNumero() {
         return numero;
     }
-
 
 
     public List<Vaga> getVagas() {
@@ -89,51 +88,51 @@ public class Estacionamento {
         }
     }
 
-	//metodo para ler arquivos
-	public boolean lerVagaPorId(int idVaga) {
+    //metodo para ler arquivos
+    public boolean lerVagaPorId(int idVaga) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             boolean vagaEncontrado = false;
             while ((linha = leitor.readLine()) != null) {
                 if (linha.contains("ID vaga: " + idVaga)) {
                     vagaEncontrado = true;
-                    System.out.println(linha); 
-                    System.out.println(leitor.readLine()); 
-                    System.out.println(leitor.readLine()); 
+                    System.out.println(linha);
+                    System.out.println(leitor.readLine());
+                    System.out.println(leitor.readLine());
                     break;
                 }
             }
             if (!vagaEncontrado) {
                 System.out.println("Vaga com ID " + idVaga + " não encontrada.");
             }
-			return true;
+            return true;
         } catch (IOException e) {
-			return false;
+            return false;
         }
     }
 
     public boolean lerEstacionamentos() {
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
-        
+
             while ((linha = leitor.readLine()) != null) {
-                    System.out.println(linha); 
-                    System.out.println(leitor.readLine()); 
-                    System.out.println(leitor.readLine()); 
-                    System.out.println(leitor.readLine()); 
-                    System.out.println(leitor.readLine()); 
-                
+                System.out.println(linha);
+                System.out.println(leitor.readLine());
+                System.out.println(leitor.readLine());
+                System.out.println(leitor.readLine());
+                System.out.println(leitor.readLine());
+
             }
-			return true;
+            return true;
         } catch (IOException e) {
-			return false;
+            return false;
         }
     }
 
 
     // Método para ler e registrar os estacionamentos e suas informações do arquivo
     public static List<Estacionamento> lerEstacionamentosDeArquivo() {
-        File arquivoVarios = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
+        File arquivoVarios = new File("codigo/src/Models/Archives/Estacionamentos.txt");
         List<Estacionamento> estacionamentos = new ArrayList<>();
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoVarios))) {
@@ -141,30 +140,51 @@ public class Estacionamento {
             Estacionamento estacionamentoAtual = null;
 
             while ((linha = leitor.readLine()) != null) {
+                // Quando encontrar um novo estacionamento, cria um novo objeto
                 if (linha.startsWith("Estacionamento: ")) {
+                    // Adiciona o estacionamento anterior à lista, se não for o primeiro
                     if (estacionamentoAtual != null) {
-                        estacionamentos.add(estacionamentoAtual); // Adiciona o estacionamento anterior à lista
+                        estacionamentos.add(estacionamentoAtual);
                     }
-                    String nome = linha.substring(15); // Extrai o nome do estacionamento
-                    String enderecoLinha = leitor.readLine(); // Lê a linha com o endereço
-                    String rua = enderecoLinha.split(",")[0].split(":")[1].trim();
-                    int numero = Integer.parseInt(enderecoLinha.split(",")[1].split("-")[0].trim());
-                    String bairro = enderecoLinha.split("-")[1].trim();
+                    // Extraindo o nome do estacionamento
+                    String nome = linha.substring(15).trim();
 
-                    estacionamentoAtual = new Estacionamento(nome, rua, bairro, numero); // Cria um novo estacionamento
+                    // Lendo a linha com o endereço e dividindo as informações
+                    String enderecoLinha = leitor.readLine();
+                    String[] partesEndereco = enderecoLinha.split(",");
+                    String rua = partesEndereco[0].split(":")[1].trim();
+                    int numero = Integer.parseInt(partesEndereco[1].split("-")[0].trim());
+                    String bairro = partesEndereco[1].split("-")[1].trim();
+
+                    // Criando um novo estacionamento
+                    estacionamentoAtual = new Estacionamento(nome, rua, bairro, numero);
+
+                    // Quando encontrar uma vaga, adiciona ao estacionamento atual
                 } else if (linha.startsWith("  - Vaga ID: ")) {
                     int idVaga = Integer.parseInt(linha.split(":")[1].trim());
-                    Vaga vaga = new Vaga(); // Supondo que você tenha uma classe Vaga com o construtor por ID
+
+                    // Lendo o próximo campo de tipo de vaga
+                    String tipoVagaLinha = leitor.readLine();
+                    Vaga.TipoVaga tipoVaga = Vaga.TipoVaga.valueOf(tipoVagaLinha.split(":")[1].trim().toUpperCase());
+
+                    // Criando uma nova vaga com base no ID e tipo
+                    Vaga vaga = new Vaga(tipoVaga);
+
+                    // Adicionando a vaga ao estacionamento atual
                     estacionamentoAtual.adicionarVaga(vaga);
                 }
             }
 
+            // Adiciona o último estacionamento lido à lista
             if (estacionamentoAtual != null) {
-                estacionamentos.add(estacionamentoAtual); // Adiciona o último estacionamento lido à lista
+                estacionamentos.add(estacionamentoAtual);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        return estacionamentos;
     }
+
+}

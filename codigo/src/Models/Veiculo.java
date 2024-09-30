@@ -1,9 +1,6 @@
 package src.Models;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Veiculo {
     private String placa;
@@ -32,7 +29,7 @@ public class Veiculo {
     public boolean gravarEmArquivo() {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(veiculo))) {
             escritor.write("Veículo Placa: " + this.placa + "\n");
-            escritor.write("Cliente ID: " + this.cliente.getId() + "\n");
+            escritor.write("Cliente CPF: " + this.cliente.getCpf() + "\n");
             escritor.write("Cliente Nome: " + this.cliente.getNome() + "\n");
             escritor.write("----------------------------------------------");
             return true;
@@ -49,8 +46,8 @@ public class Veiculo {
             while ((linha = leitor.readLine()) != null) {
                 if (linha.contains("Placa: " + placacarro)) {
                     veiculoEncontrado = true;
-                    System.out.println(linha); 
-                    System.out.println(leitor.readLine()); 
+                    System.out.println(linha);
+                    System.out.println(leitor.readLine());
                     break;
                 }
             }

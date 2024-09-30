@@ -23,6 +23,7 @@ public static void main(String[] args) {
         System.out.println("(1) Cadastrar Estacionamento");
         System.out.println("(2) Selecionar Estacionamento");
         System.out.println("(3) Cadastrar Veículo");
+        System.out.print(">");
 
         opcao = scanner.nextInt();
         scanner.nextLine(); // Consumir a nova linha pendente após a entrada numérica
@@ -60,7 +61,7 @@ public static void main(String[] args) {
                 List<Estacionamento> estacionamentos = Estacionamento.lerEstacionamentosDeArquivo();
                 for (Estacionamento est : estacionamentos) {
                     if (est.getId() == idEstacionamento) {
-                        estacionamentoSelecionado = est;
+                       Estacionamento estacionamentoSelecionado = est;
                         System.out.println("Estacionamento " + est.getNome() + " selecionado.");
                         break;
                     }
@@ -94,9 +95,11 @@ public static void main(String[] args) {
                 // Cadastrar cliente
                 System.out.print("Digite o nome do cliente: ");
                 String nomeCliente = scanner.nextLine();
-                Cliente novoCliente = new Cliente(nomeCliente, "115325425");
+                System.out.print("Digite o cpf do cliente: ");
+                String cpfCliente = scanner.nextLine();
+                Cliente novoCliente = new Cliente(nomeCliente, cpfCliente);
                 novoCliente.gravarEmArquivo();
-                System.out.println("Cliente cadastrado com sucesso! ID: " + novoCliente.getId());
+                System.out.println("Cliente cadastrado com sucesso! Cpf: " + novoCliente.getCpf());
                 break;
 
             case 3:
@@ -110,7 +113,35 @@ public static void main(String[] args) {
 
             case 4:
                 // Cadastrar vaga
-                Vaga novaVaga = new Vaga();
+                System.out.println("Escolha o tipo de vaga:");
+                System.out.println("1 - REGULAR");
+                System.out.println("2 - IDOSO");
+                System.out.println("3 - PCD");
+                System.out.println("4 - VIP");
+
+                int escolha = scanner.nextInt();
+
+                Vaga.TipoVaga tipoDeVaga = null;
+
+                switch (escolha) {
+                    case 1:
+                        tipoDeVaga = Vaga.TipoVaga.REGULAR;
+                        break;
+                    case 2:
+                        tipoDeVaga = Vaga.TipoVaga.IDOSO;
+                        break;
+                    case 3:
+                        tipoDeVaga = Vaga.TipoVaga.PCD;
+                        break;
+                    case 4:
+                        tipoDeVaga = Vaga.TipoVaga.VIP;
+                        break;
+                    default:
+                        System.out.println("Escolha inválida! O tipo padrão será REGULAR.");
+                        tipoDeVaga = Vaga.TipoVaga.REGULAR;
+                        break;
+                }
+                Vaga novaVaga = new Vaga(tipoDeVaga);
                 estacionamento.adicionarVaga(novaVaga);
                 novaVaga.gravarEmArquivo();
                 System.out.println("Nova vaga cadastrada. ID: " + novaVaga.getId());

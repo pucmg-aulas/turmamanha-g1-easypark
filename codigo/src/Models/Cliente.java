@@ -25,8 +25,8 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	public int getId() {
-		return id;
+	public String getCpf() {
+		return this.cpf;
 	}
 
 	File clientes = new File("codigo/src/Models/Archives/Clientes.txt");
@@ -34,7 +34,7 @@ public class Cliente {
 	public boolean gravarEmArquivo() {
 		
 		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(clientes))) {
-			escritor.write("Cliente ID: " + this.id + "\n");
+			escritor.write("Cliente ID: " + this.cpf + "\n");
 			escritor.write("Nome: " + this.nome + "\n");
 			escritor.write("----------------------------------------");
 			return true;

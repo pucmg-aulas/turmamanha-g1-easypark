@@ -65,7 +65,7 @@ public class Estacionamento {
 
 
     // Método para gravar os dados de vários estacionamentos
-    public static boolean gravarVariosEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
+    public static boolean gravarEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
         File arquivo = new File(".codigo/src/Models/Archives/Estacionamentos.txt");
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
@@ -88,7 +88,7 @@ public class Estacionamento {
         }
     }
 
-    //metodo para ler arquivos
+    //metodo para ler vaga por id
     public boolean lerVagaPorId(int idVaga) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
@@ -104,24 +104,6 @@ public class Estacionamento {
             }
             if (!vagaEncontrado) {
                 System.out.println("Vaga com ID " + idVaga + " não encontrada.");
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public boolean lerEstacionamentos() {
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
-            String linha;
-
-            while ((linha = leitor.readLine()) != null) {
-                System.out.println(linha);
-                System.out.println(leitor.readLine());
-                System.out.println(leitor.readLine());
-                System.out.println(leitor.readLine());
-                System.out.println(leitor.readLine());
-
             }
             return true;
         } catch (IOException e) {

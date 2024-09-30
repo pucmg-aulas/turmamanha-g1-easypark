@@ -39,12 +39,12 @@ public class Veiculo {
     }
 
     //metodo para ler arquivos
-	public boolean lerveiculoPorplaca(int placacarro) {
+	public boolean lerveiculoPorPlaca(int placaCarro) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(veiculo))) {
             String linha;
             boolean veiculoEncontrado = false;
             while ((linha = leitor.readLine()) != null) {
-                if (linha.contains("Placa: " + placacarro)) {
+                if (linha.contains("Placa: " + placaCarro)) {
                     veiculoEncontrado = true;
                     System.out.println(linha);
                     System.out.println(leitor.readLine());
@@ -52,7 +52,7 @@ public class Veiculo {
                 }
             }
             if (!veiculoEncontrado) {
-                System.out.println("placa " + placacarro + " não encontrado.");
+                System.out.println("placa " + placaCarro + " não encontrado.");
             }
 			return true;
         } catch (IOException e) {

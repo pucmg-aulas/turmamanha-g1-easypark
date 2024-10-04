@@ -148,10 +148,10 @@ public class Estacionamento {
 
                     // Lendo o próximo campo de tipo de vaga
                     String tipoVagaLinha = leitor.readLine();
-                    Vaga.TipoVaga tipoVaga = Vaga.TipoVaga.valueOf(tipoVagaLinha.split(":")[1].trim().toUpperCase());
+
 
                     // Criando uma nova vaga com base no ID e tipo
-                    Vaga vaga = new Vaga(TipoVaga);
+                    Vaga vaga = new Vaga();
 
                     // Adicionando a vaga ao estacionamento atual
                     estacionamentoAtual.adicionarVaga(vaga);

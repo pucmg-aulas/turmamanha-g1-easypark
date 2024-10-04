@@ -20,6 +20,9 @@ public class Cliente {
 		this.id = nextId;
 		nextId++;
 	}
+	public int getId(){
+		return id;
+	}
 
 	public String getNome() {
 		return nome;

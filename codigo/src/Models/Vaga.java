@@ -5,6 +5,7 @@ import java.io.*;
 public class Vaga {
 
     private int id;
+    protected double tarifaBase;
 
     // Status True: Desocupado
     // Status False: Ocupado
@@ -15,6 +16,7 @@ public class Vaga {
         this.id = nextId;
         nextId++;
         this.status = true;
+        this.tarifaBase = 10.0;
     }
 
     public boolean ocuparVaga() {
@@ -50,6 +52,9 @@ public class Vaga {
         return status;
     }
 
+    public double calcularValor(double tarifaBase) {
+        return tarifaBase;
+    }
 
     File vaga = new File("./src/Models/Archives/Vaga.txt");
     // Método para gravar os dados da vaga em um arquivo de texto
@@ -88,4 +93,6 @@ public class Vaga {
             return false;
         }
     }
+
+
 }

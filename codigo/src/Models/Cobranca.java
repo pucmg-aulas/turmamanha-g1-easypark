@@ -110,4 +110,18 @@ public class Cobranca {
             return false;
         }
     }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public LocalTime getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public LocalTime getHoraSaida() {
+        return horaSaida;
+    }
+
+
 }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/junit5-jupiter-starter-maven.iml" filepath="$PROJECT_DIR$/junit5-jupiter-starter-maven.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/turmamanha-g1-easypark.iml" filepath="$PROJECT_DIR$/.idea/turmamanha-g1-easypark.iml" />
     </modules>
   </component>
 </project>

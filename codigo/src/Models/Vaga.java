@@ -28,6 +28,10 @@ public class Vaga {
         }
     }
 
+    public boolean isDesocupada(){
+        return status;
+    }
+
     public boolean liberarVaga() {
         if (!status) { // Se a vaga estiver ocupada
             this.status = true; // Liberar a vaga
@@ -53,7 +57,6 @@ public class Vaga {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vaga))) {
             escritor.write("Vaga ID: " + this.id + "\n");
             escritor.write("Status: " + (this.status ? "Desocupada" : "Ocupada") + "\n");
-            escritor.write("Tipo de Vaga: " + this.tipoVaga + "\n");
             escritor.write("-----------------------------------------------");
             return true;
         } catch (IOException e) {

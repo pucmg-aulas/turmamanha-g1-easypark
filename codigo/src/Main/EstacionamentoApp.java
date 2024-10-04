@@ -110,42 +110,7 @@ public static void main(String[] args) {
                 veiculo.gravarEmArquivo();
                 System.out.println("Veículo cadastrado com sucesso!");
                 break;
-
-            case 4:
-                // Cadastrar vaga
-                System.out.println("Escolha o tipo de vaga:");
-                System.out.println("1 - REGULAR");
-                System.out.println("2 - IDOSO");
-                System.out.println("3 - PCD");
-                System.out.println("4 - VIP");
-
-                int escolha = scanner.nextInt();
-
-                Vaga.TipoVaga tipoDeVaga = null;
-
-                switch (escolha) {
-                    case 1:
-                        tipoDeVaga = Vaga.TipoVaga.REGULAR;
-                        break;
-                    case 2:
-                        tipoDeVaga = Vaga.TipoVaga.IDOSO;
-                        break;
-                    case 3:
-                        tipoDeVaga = Vaga.TipoVaga.PCD;
-                        break;
-                    case 4:
-                        tipoDeVaga = Vaga.TipoVaga.VIP;
-                        break;
-                    default:
-                        System.out.println("Escolha inválida! O tipo padrão será REGULAR.");
-                        tipoDeVaga = Vaga.TipoVaga.REGULAR;
-                        break;
-                }
-                Vaga novaVaga = new Vaga(tipoDeVaga);
-                estacionamento.adicionarVaga(novaVaga);
-                novaVaga.gravarEmArquivo();
-                System.out.println("Nova vaga cadastrada. ID: " + novaVaga.getId());
-                break;
+                
 
             case 5:
                 // Reservar vaga

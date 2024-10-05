@@ -1,3 +1,5 @@
+package Main;
+
 import Models.Cobranca;
 import Models.Cliente;
 import Models.Veiculo;
@@ -39,7 +41,6 @@ public class EstacionamentoApp {
             switch (opcao) {
                 case 1:
                     // Cadastro de Estacionamento
-                    Scanner scanner = new Scanner(System.in);
                     System.out.print("Digite o nome do estacionamento: ");
                     String nome = scanner.nextLine();
 
@@ -53,12 +54,13 @@ public class EstacionamentoApp {
                     int numero = scanner.nextInt();
                     scanner.nextLine();
 
-                    Estacionameto estacionamento = new Estacionamento(nome, rua, bairro, numero);
-                    System.out.println("---------------------------------------");
-                    System.out.println("Estacionamento cadastrado com sucesso!");
-                    System.out.println("ID do Estacionamento: " + estacionamento.getId()); // Mostra o ID do estacionamento
-                    System.out.println("---------------------------------------");
-                    //Estacionamento.gravarVariosEstacionamentosEmArquivo();  -> Estacionamento cadastrado deve ser registrado no arquivo
+                    Estacionamento estacionamento1 = new Estacionamento(nome, rua, bairro, numero);
+                    if(estacionamento1.gravarEstacionamentosEmArquivo()){
+                        System.out.println("---------------------------------------");
+                        System.out.println("Estacionamento cadastrado com sucesso!");
+                        System.out.println("ID do Estacionamento: " + estacionamento.getId()); // Mostra o ID do estacionamento
+                        System.out.println("---------------------------------------");
+                    }
                     break;
 
                 case 2:
@@ -230,7 +232,7 @@ public class EstacionamentoApp {
                                             System.out.println("Vaga liberada após pagamento.");
                                         }
 
-                                    case 9:
+                                    case 6:
                                         // Exibir detalhes do estacionamento
                                         System.out.println("=== Informações do Estacionamento ===");
                                         System.out.println("Nome: " + estacionamento.getNome());
@@ -254,7 +256,7 @@ public class EstacionamentoApp {
             }
 
         }
-    }
         scanner.close();
+    }
 }
 

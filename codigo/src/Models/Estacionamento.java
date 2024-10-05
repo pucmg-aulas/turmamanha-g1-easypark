@@ -12,7 +12,7 @@ public class Estacionamento {
     private String bairro;
     private int numero;
     private List<Vaga> vagas;
-    private static String arquivo = "./src/Models/Archives/Estacionamentos.txt";
+    private static String arquivoEstacionamento = "../Archives/Estacionamentos.txt";
 
     private static int nextId = 1;
 
@@ -66,22 +66,29 @@ public class Estacionamento {
 
 
     // Método para gravar os dados de vários estacionamentos
-    public static boolean gravarEstacionamentosEmArquivo(List<Estacionamento> estacionamentos) {
-        File arquivo = new File("./src/Models/Archives/Estacionamentos.txt");
+    public boolean gravarEstacionamentosEmArquivo() {
+        File arquivo = new File("../Archives/Estacionamentos.txt");
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
-            for (Estacionamento estacionamento : estacionamentos) {
-                escritor.write("Estacionamento: " + estacionamento.getNome() + "\n");
-                escritor.write("ID: " + estacionamento.getId() + "\n");
-                escritor.write("Endereço: " + estacionamento.getRua() + ", " + estacionamento.getNumero() + " - " + estacionamento.getBairro() + "\n");
-                escritor.write("Vagas Disponíveis:\n");
+        try {
 
-                for (Vaga vaga : estacionamento.getVagas()) {
-                    escritor.write("  - Vaga ID: " + vaga.getId() + "\n");
-                }
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();  // Cria o diretório se ele não existir
+            }
 
+            // Cria o arquivo se ele não existir
+            if (!arquivo.exists()) {
+                arquivo.createNewFile(); // Cria o arquivo
+            }
+
+            // Escreve no arquivo
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+                escritor.write("Estacionamento: " + this.getNome() + "\n");
+                escritor.write("ID: " + this.getId() + "\n");
+                escritor.write("Endereço: " + this.getRua() + ", " + this.getNumero() + " - " + this.getBairro() + "\n");
                 escritor.write("--------------------------------\n");
             }
+
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,9 +96,9 @@ public class Estacionamento {
         }
     }
 
-    //metodo para ler vaga por id
+        //metodo para ler vaga por id
     public boolean lerVagaPorId(int idVaga) {
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoEstacionamento))) {
             String linha;
             boolean vagaEncontrado = false;
             while ((linha = leitor.readLine()) != null) {

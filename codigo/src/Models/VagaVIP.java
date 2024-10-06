@@ -4,8 +4,8 @@ public class VagaVIP extends Vaga{
 
     private static final double AUMENTO_VIP = 0.20;
 
-    public VagaVIP() {
-        super();
+    public VagaVIP(int idEstacionamento) {
+        super(idEstacionamento);
     }
 
     @Override

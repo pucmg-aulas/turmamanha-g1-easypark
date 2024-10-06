@@ -17,8 +17,8 @@ public class CobrancaTest {
     public void setup() {
         // Configuração de um estacionamento de teste
         estacionamento = new Estacionamento("Estacionamento Teste", "Rua Teste", "Bairro Teste", 100);
-        Vaga vaga1 = new Vaga();
-        Vaga vaga2 = new Vaga();
+        Vaga vaga1 = new Vaga(1);
+        Vaga vaga2 = new Vaga(1);
         estacionamento.adicionarVaga(vaga1);
         estacionamento.adicionarVaga(vaga2);
 

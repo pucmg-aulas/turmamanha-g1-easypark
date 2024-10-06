@@ -1,8 +1,10 @@
 ID: 1
 Status: Desocupada
 Tipo: Vaga
+Estacionamento: 1
 --------------------------------
 ID: 2
 Status: Desocupada
-Tipo: VagaIdoso
+Tipo: VagaPCD
+Estacionamento: 1
 --------------------------------

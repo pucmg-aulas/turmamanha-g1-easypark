@@ -218,12 +218,14 @@ public class Estacionamento implements EncontrarMaior{
         return maiorId;
     }
 
+
     private void salvarVagaEmArquivo(Vaga vaga) {
         String nomeArquivo = "./codigo/src/Archives/Vagas" + this.id + ".txt";
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nomeArquivo, true))) {
             escritor.write("ID: " + vaga.getId() + "\n");
             escritor.write("Status: Desocupada\n");
             escritor.write("Tipo: " + vaga.getClass().getSimpleName() + "\n");
+            escritor.write("Estacionamento: " + this.id + "\n");
             escritor.write("--------------------------------\n");
             System.out.println("Vaga registrada com sucesso no arquivo: " + nomeArquivo);
         } catch (IOException e) {

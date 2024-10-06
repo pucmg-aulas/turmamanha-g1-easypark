@@ -21,11 +21,11 @@ public class Cobranca {
         this.vaga = estacionamento.getVagaPorId(idVaga);
         this.veiculo = veiculo;
         this.horaEntrada = LocalTime.now();
-//        if (this.vaga != null){
-//        //    this.vaga.reservarVagaPorId();
-//        }else{
-//            System.out.println("Vaga não encontrada!");
-//        }
+        if (this.vaga != null){
+            this.vaga.atualizarStatusNoArquivo("Ocupada");
+        }else{
+            System.out.println("Vaga não encontrada!");
+        }
     }
 
     public Vaga getVaga() {
@@ -40,23 +40,39 @@ public class Cobranca {
         this.horaSaida = LocalTime.of(horaSaida.getHour(), horaSaida.getMinute());
     }
 
-    public void calcularTempoFinal(){
-        Duration duracao = Duration.between(horaEntrada, horaSaida);
-        this.tempoTotal += duracao.toMinutes() + 1;
+    public void calcularTempoFinal() {
+        if (horaEntrada != null && horaSaida != null) {
+            // Calcula a duração entre a hora de entrada e a hora de saída
+            Duration duracao = Duration.between(horaEntrada, horaSaida);
+
+            // Obtém a duração total em minutos e armazena no atributo tempoTotal
+            this.tempoTotal = (int) duracao.toMinutes();
+
+            System.out.println("Tempo total calculado: " + tempoTotal + " minutos.");
+        } else {
+            System.out.println("Erro: Hora de entrada ou saída não definida.");
+        }
     }
 
     public void calcularValorTotal() {
         // Calcula o valor base sem aplicar os descontos ou acréscimos
         double valorBase = (this.tempoTotal / FRACAOTEMPO) * VALORTEMPO;
-    
+
 
         // Respeitar o limite de preço
         this.valorTotal = valorBase > LIMITEPRECO ? LIMITEPRECO : valorBase;
     }
 
 
-    public boolean pagar(){
-        return this.vaga != null && this.vaga.liberarVaga();
+    public boolean pagar() {
+        if (this.vaga != null) {
+            // Atualiza o status da vaga para "Desocupada" após o pagamento
+            if (this.vaga.liberarVaga()) {
+                this.vaga.atualizarStatusNoArquivo("Desocupada");
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getTempoTotal() {

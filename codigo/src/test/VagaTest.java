@@ -13,14 +13,14 @@ public class VagaTest {
 
     @Test
     public void testOcuparVaga() {
-        Vaga vaga = new Vaga();
+        Vaga vaga = new Vaga(1);
 //        assertTrue(vaga.ocuparVaga());
 //        assertFalse(vaga.ocuparVaga()); // já ocupada
     }
 
     @Test
     public void testLiberarVaga() {
-        Vaga vaga = new Vaga();
+        Vaga vaga = new Vaga(1);
 //        vaga.ocuparVaga();
     }
 }

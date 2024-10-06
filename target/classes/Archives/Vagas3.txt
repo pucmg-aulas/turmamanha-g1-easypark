@@ -1,8 +1,0 @@
-ID: 1
-Status: Desocupada
-Tipo: VagaPCD
---------------------------------
-ID: 1
-Status: Desocupada
-Tipo: VagaPCD
---------------------------------

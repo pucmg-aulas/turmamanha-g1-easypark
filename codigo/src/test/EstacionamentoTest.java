@@ -27,7 +27,7 @@ public class EstacionamentoTest
     public void testAdicionarVaga()
     {
         Estacionamento est = new Estacionamento("Estacionamento B", "Rua 2", "Bairro", 456);
-        Vaga vaga = new Vaga();
+        Vaga vaga = new Vaga(1);
         est.adicionarVaga(vaga);
         assertTrue(est.getVagas().contains(vaga));
     }

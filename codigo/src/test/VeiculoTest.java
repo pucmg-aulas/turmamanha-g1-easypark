@@ -1,9 +1,6 @@
 package test;
 
-import Models.Cobranca;
-import Models.Estacionamento;
-import Models.Vaga;
-import Models.Veiculo;
+import Models.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +10,7 @@ public class VeiculoTest {
 
     @Test
     public void testCadastroVeiculo() {
-        Veiculo veiculo = new Veiculo("ABC-1234");
+        Veiculo veiculo = new Veiculo("ABC-1234", new Cliente("guilherme", "111"), "Tracker");
         assertEquals("ABC-1234", veiculo.getPlaca());
 }
 }

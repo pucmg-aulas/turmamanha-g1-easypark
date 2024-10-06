@@ -71,7 +71,7 @@ public class Cobranca {
 
             // Leitura da placa do veículo
             String placa = leitor.readLine().trim();
-            Veiculo veiculo = new Veiculo(placa);
+            Veiculo veiculo = new Veiculo(placa, new Cliente("Guilherme", "111"), "Tracker");
 
             // Leitura da hora de entrada
             LocalTime horaEntrada = LocalTime.parse(leitor.readLine().trim(), DateTimeFormatter.ofPattern("HH:mm"));
@@ -110,6 +110,7 @@ public class Cobranca {
             return false;
         }
     }
+
 
     public Veiculo getVeiculo() {
         return veiculo;

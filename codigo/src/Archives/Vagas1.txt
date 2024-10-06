@@ -1,0 +1,8 @@
+ID: 1
+Status: Desocupada
+Tipo: Vaga
+--------------------------------
+ID: 2
+Status: Desocupada
+Tipo: VagaIdoso
+--------------------------------

@@ -1,0 +1,10 @@
+Placa: ABCD123
+Modelo: Tracker
+CPF: 14435380609
+Cliente: Guilherme
+----------------------------------------------
+Placa: BCD1234
+Modelo: Ferrari
+CPF: 14435380609
+Cliente: Guilherme
+----------------------------------------------

@@ -1,11 +1,8 @@
 package test;
 
+import Models.*;
 import org.junit.Before;
 import org.junit.Test;
-import Models.Cobranca;
-import Models.Estacionamento;
-import Models.Vaga;
-import Models.Veiculo;
 
 import java.time.LocalTime;
 
@@ -26,7 +23,7 @@ public class CobrancaTest {
         estacionamento.adicionarVaga(vaga2);
 
         // Veículo de teste
-        veiculo = new Veiculo("ABC-1234");
+        veiculo = new Veiculo("ABC-1234", new Cliente("guilherme", "111"), "Tracker");
     }
 
     @Test

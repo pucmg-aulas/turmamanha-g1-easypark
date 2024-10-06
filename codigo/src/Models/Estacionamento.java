@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Estacionamento {
+public class Estacionamento implements EncontrarMaior{
     private int id;
     private String nome;
     private String rua;
     private String bairro;
     private int numero;
     private List<Vaga> vagas;
-    private static String arquivoEstacionamento = "../Archives/Estacionamentos.txt";
-
-    private static int nextId = 1;
+    private static String arquivoEstacionamento = "./codigo/src/Archives/Estacionamentos.txt";
 
     public Estacionamento(String nome, String rua, String bairro, int numero) {
         this.nome = nome;
@@ -22,12 +20,12 @@ public class Estacionamento {
         this.bairro = bairro;
         this.numero = numero;
         this.vagas = new ArrayList<>();
-        this.id = nextId;
-        nextId++;
+        this.id = EncontrarMaiorId() + 1;
     }
 
     public void adicionarVaga(Vaga vaga) {
         this.vagas.add(vaga);
+        salvarVagaEmArquivo(vaga);
     }
 
     public Vaga getVagaPorId(int id) {
@@ -59,6 +57,10 @@ public class Estacionamento {
         return numero;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public List<Vaga> getVagas() {
         return vagas;
@@ -67,7 +69,7 @@ public class Estacionamento {
 
     // Método para gravar os dados de vários estacionamentos
     public boolean gravarEstacionamentosEmArquivo() {
-        File arquivo = new File("../Archives/Estacionamentos.txt");
+        File arquivo = new File("./codigo/src/Archives/Estacionamentos.txt");
 
         try {
 
@@ -82,7 +84,7 @@ public class Estacionamento {
             }
 
             // Escreve no arquivo
-            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
                 escritor.write("Estacionamento: " + this.getNome() + "\n");
                 escritor.write("ID: " + this.getId() + "\n");
                 escritor.write("Endereço: " + this.getRua() + ", " + this.getNumero() + " - " + this.getBairro() + "\n");
@@ -121,60 +123,65 @@ public class Estacionamento {
 
 
     // Método para ler e registrar os estacionamentos e suas informações do arquivo
-    public static List<Estacionamento> lerEstacionamentosDeArquivo() {
-        File arquivoVarios = new File("./src/Models/Archives/Estacionamentos.txt");
-        List<Estacionamento> estacionamentos = new ArrayList<>();
+    public static List<String> lerEstacionamentosDoArquivo() {
+        File arquivo = new File("./codigo/src/Archives/Estacionamentos.txt");
+        List<String> estacionamentos = new ArrayList<>();
 
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoVarios))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
-            Estacionamento estacionamentoAtual = null;
+            StringBuilder estacionamentoAtual = new StringBuilder();
 
+            // Lê cada linha do arquivo
             while ((linha = leitor.readLine()) != null) {
-                // Quando encontrar um novo estacionamento, cria um novo objeto
-                if (linha.startsWith("Estacionamento: ")) {
-                    // Adiciona o estacionamento anterior à lista, se não for o primeiro
-                    if (estacionamentoAtual != null) {
-                        estacionamentos.add(estacionamentoAtual);
-                    }
-                    // Extraindo o nome do estacionamento
-                    String nome = linha.substring(15).trim();
+                estacionamentoAtual.append(linha).append("\n");
 
-                    // Lendo a linha com o endereço e dividindo as informações
-                    String enderecoLinha = leitor.readLine();
-                    String[] partesEndereco = enderecoLinha.split(",");
-                    String rua = partesEndereco[0].split(":")[1].trim();
-                    int numero = Integer.parseInt(partesEndereco[1].split("-")[0].trim());
-                    String bairro = partesEndereco[1].split("-")[1].trim();
-
-                    // Criando um novo estacionamento
-                    estacionamentoAtual = new Estacionamento(nome, rua, bairro, numero);
-
-                    // Quando encontrar uma vaga, adiciona ao estacionamento atual
-                } else if (linha.startsWith("  - Vaga ID: ")) {
-                    int idVaga = Integer.parseInt(linha.split(":")[1].trim());
-
-                    // Lendo o próximo campo de tipo de vaga
-                    String tipoVagaLinha = leitor.readLine();
-
-
-                    // Criando uma nova vaga com base no ID e tipo
-                    Vaga vaga = new Vaga();
-
-                    // Adicionando a vaga ao estacionamento atual
-                    estacionamentoAtual.adicionarVaga(vaga);
+                // Verifica se o final do estacionamento foi encontrado
+                if (linha.equals("--------------------------------")) {
+                    estacionamentos.add(estacionamentoAtual.toString());
+                    estacionamentoAtual.setLength(0); // Limpa o builder para o próximo estacionamento
                 }
             }
 
-            // Adiciona o último estacionamento lido à lista
-            if (estacionamentoAtual != null) {
-                estacionamentos.add(estacionamentoAtual);
-            }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao ler o arquivo: " + e.getMessage());
         }
 
         return estacionamentos;
     }
 
+
+    @Override
+    public int EncontrarMaiorId() {
+        File arquivo = new File(arquivoEstacionamento);
+        int maiorId = 0;
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.startsWith("ID: ")) {
+                    int idAtual = Integer.parseInt(linha.replace("ID: ", "").trim());
+                    if (idAtual > maiorId) {
+                        maiorId = idAtual;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
+        }
+
+        return maiorId;
+    }
+
+    private void salvarVagaEmArquivo(Vaga vaga) {
+        String nomeArquivo = "./codigo/src/Archives/Vagas" + this.id + ".txt";
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nomeArquivo, true))) {
+            escritor.write("ID: " + vaga.getId() + "\n");
+            escritor.write("Status: Desocupada\n");
+            escritor.write("Tipo: " + vaga.getClass().getSimpleName() + "\n");
+            escritor.write("--------------------------------\n");
+            System.out.println("Vaga registrada com sucesso no arquivo: " + nomeArquivo);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar a vaga no arquivo: " + e.getMessage());
+        }
+    }
 }

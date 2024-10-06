@@ -57,6 +57,7 @@ public class Vaga {
     }
 
     File vaga = new File("./src/Models/Archives/Vaga.txt");
+
     // Método para gravar os dados da vaga em um arquivo de texto
     public boolean gravarEmArquivo() {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vaga))) {

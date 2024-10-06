@@ -66,6 +66,34 @@ public class Estacionamento implements EncontrarMaior{
         return vagas;
     }
 
+    public List<Vaga> getVagasDisponiveis() {
+        List<Vaga> vagasDisponiveis = new ArrayList<>();
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoEstacionamento))) {
+            String linha;
+            Vaga vagaAtual = null;
+
+            while ((linha = leitor.readLine()) != null) {
+
+                if (linha.startsWith("ID: ")) {
+                    int idVaga = Integer.parseInt(linha.substring(4));
+                    vagaAtual = new Vaga(idVaga);
+                }
+
+                if (linha.startsWith("Status: ")) {
+                    String statusVaga = linha.substring(8);
+                    if ("Desocupada".equalsIgnoreCase(statusVaga)) {
+                        vagasDisponiveis.add(vagaAtual);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de vagas: " + e.getMessage());
+        }
+
+        return vagasDisponiveis;
+    }
+
     public boolean reservarVagaPorId(int idVaga) {
         File vagaFile = new File("./codigo/src/Archives/Vagas" + this.id + ".txt");
         List<String> linhas = new ArrayList<>();

@@ -69,7 +69,7 @@ public class EstacionamentoApp {
                     System.out.println("Digite o cpf do cliente: ");
                     String cpfCliente = scanner.nextLine();
                     Cliente novoCliente = new Cliente(nomeCliente, cpfCliente);
-                    if(novoCliente.gravarEmArquivo()){
+                    if (novoCliente.gravarEmArquivo()) {
                         System.out.println("---------------------------------------");
                         System.out.println("Cliente cadastrado com sucesso!");
                         System.out.println("Cliente: " + novoCliente.getNome()); //
@@ -86,7 +86,7 @@ public class EstacionamentoApp {
 
                     Cliente clienteAtual = null;
 
-                    for(String c : clientes) {
+                    for (String c : clientes) {
                         if (c.contains("CPF: " + cpfAtual)) {
                             String[] linhas = c.split("\n");
                             String cpfClienteAtual = linhas[0].replace("CPF: ", "").trim();  // CPF na primeira linha
@@ -98,82 +98,82 @@ public class EstacionamentoApp {
                             break;
                         }
                     }
-                        if(clienteAtual == null){
-                            System.out.println("Cliente com CPF " + cpfAtual + " não encontrado!");
+                    if (clienteAtual == null) {
+                        System.out.println("Cliente com CPF " + cpfAtual + " não encontrado!");
+                        break;
+                    } else {
+                        System.out.println("\n=== CPF: " + clienteAtual.getCpf() + "===");
+                        System.out.println("(1) Exibir Detalhes do Cliente");
+                        System.out.println("(2) Cadastrar Veículo do Cliente");
+                        System.out.println("(3) Exibir veículos do Cliente");
+                        System.out.println("(0) Voltar");
+                        System.out.print(">");
+
+                        int opcaoCliente = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (opcaoCliente == 0) {
+                            System.out.println("Voltando...");
                             break;
-                        }else{
-                            System.out.println("\n=== CPF: " + clienteAtual.getCpf() + "===");
-                            System.out.println("(1) Exibir Detalhes do Cliente");
-                            System.out.println("(2) Cadastrar Veículo do Cliente");
-                            System.out.println("(3) Exibir veículos do Cliente");
-                            System.out.println("(0) Voltar");
-                            System.out.print(">");
-
-                            int opcaoCliente = scanner.nextInt();
-                            scanner.nextLine();
-
-                            if (opcaoCliente == 0) {
-                                System.out.println("Voltando...");
-                                break;
-                            }
-                            switch (opcaoCliente) {
-                                case 1:
-                                    // Exibir detalhes do cliente
-                                    System.out.println("\n=== Detalhes do Cliente ===");
-                                    System.out.println("Nome: " + clienteAtual.getNome());
-                                    System.out.println("CPF: " + clienteAtual.getCpf());
-                                    break;
-                                case 2:
-                                    System.out.println("\nDigite os dados do veículo para adicionar:");
-                                    System.out.print("Placa: ");
-                                    String placa = scanner.nextLine();
-                                    System.out.print("Modelo: ");
-                                    String modelo = scanner.nextLine();
-
-                                    // Cria o veículo e associa ao cliente
-                                    Veiculo novoVeiculo = new Veiculo(placa, clienteAtual, modelo);
-
-                                    // Grava o veículo no arquivo
-                                    if (novoVeiculo.gravarEmArquivo()) {
-                                        System.out.println("Veículo adicionado com sucesso para o cliente " + clienteAtual.getNome());
-                                    } else {
-                                        System.out.println("Erro ao adicionar o veículo.");
-                                    }
-                                    break;
-                                case 3:
-                                    // Exibir veículos do cliente
-                                    System.out.println("\nVeículos cadastrados para o cliente " + clienteAtual.getNome() + ":");
-
-                                    List<String> todosVeiculos = Veiculo.lerVeiculosDoArquivo();
-                                    boolean veiculosEncontrados = false;
-
-                                    // Itera sobre todos os veículos para filtrar pelo CPF do cliente
-                                    for (String veiculoInfo : todosVeiculos) {
-                                        if (veiculoInfo.contains("CPF: " + cpfAtual)) {
-                                            String[] linhas = veiculoInfo.split("\n");
-                                            String placaVeiculo = linhas[0].replace("Placa: ", "").trim();
-                                            String modeloVeiculo = linhas[1].replace("Modelo: ", "").trim();
-
-                                            // Exibe apenas a placa e o modelo do veículo
-                                            System.out.println("Placa: " + placaVeiculo);
-                                            System.out.println("Modelo: " + modeloVeiculo);
-                                            System.out.println("----------------------------------------------");
-                                            veiculosEncontrados = true;
-                                        }
-                                    }
-
-                                    // Caso nenhum veículo seja encontrado para o CPF fornecido
-                                    if (!veiculosEncontrados) {
-                                        System.out.println("Nenhum veículo encontrado para o CPF " + cpfAtual);
-                                        break;
-                                    }
-                                    break;
-
-                                default:
-                                    System.out.println("Opção Inválida!");
-                                    break;
-                            }
                         }
+                        switch (opcaoCliente) {
+                            case 1:
+                                // Exibir detalhes do cliente
+                                System.out.println("\n=== Detalhes do Cliente ===");
+                                System.out.println("Nome: " + clienteAtual.getNome());
+                                System.out.println("CPF: " + clienteAtual.getCpf());
+                                break;
+                            case 2:
+                                System.out.println("\nDigite os dados do veículo para adicionar:");
+                                System.out.print("Placa: ");
+                                String placa = scanner.nextLine();
+                                System.out.print("Modelo: ");
+                                String modelo = scanner.nextLine();
+
+                                // Cria o veículo e associa ao cliente
+                                Veiculo novoVeiculo = new Veiculo(placa, clienteAtual, modelo);
+
+                                // Grava o veículo no arquivo
+                                if (novoVeiculo.gravarEmArquivo()) {
+                                    System.out.println("Veículo adicionado com sucesso para o cliente " + clienteAtual.getNome());
+                                } else {
+                                    System.out.println("Erro ao adicionar o veículo.");
+                                }
+                                break;
+                            case 3:
+                                // Exibir veículos do cliente
+                                System.out.println("\nVeículos cadastrados para o cliente " + clienteAtual.getNome() + ":");
+
+                                List<String> todosVeiculos = Veiculo.lerVeiculosDoArquivo();
+                                boolean veiculosEncontrados = false;
+
+                                // Itera sobre todos os veículos para filtrar pelo CPF do cliente
+                                for (String veiculoInfo : todosVeiculos) {
+                                    if (veiculoInfo.contains("CPF: " + cpfAtual)) {
+                                        String[] linhas = veiculoInfo.split("\n");
+                                        String placaVeiculo = linhas[0].replace("Placa: ", "").trim();
+                                        String modeloVeiculo = linhas[1].replace("Modelo: ", "").trim();
+
+                                        // Exibe apenas a placa e o modelo do veículo
+                                        System.out.println("Placa: " + placaVeiculo);
+                                        System.out.println("Modelo: " + modeloVeiculo);
+                                        System.out.println("----------------------------------------------");
+                                        veiculosEncontrados = true;
+                                    }
+                                }
+
+                                // Caso nenhum veículo seja encontrado para o CPF fornecido
+                                if (!veiculosEncontrados) {
+                                    System.out.println("Nenhum veículo encontrado para o CPF " + cpfAtual);
+                                    break;
+                                }
+                                break;
+
+                            default:
+                                System.out.println("Opção Inválida!");
+                                break;
+                        }
+                    }
                     break;
                 case 4:
                     // Selecionar Estacionamento
@@ -191,7 +191,7 @@ public class EstacionamentoApp {
 
                     Estacionamento estacionamentoAtual = null;
 
-                    for (String e: estacionamentos) {
+                    for (String e : estacionamentos) {
                         if (e.contains("ID: " + idAtual)) {
                             String[] linhas = e.split("\n");
                             String nomeEstacionamento = linhas[0].replace("Estacionamento: ", "");
@@ -205,179 +205,218 @@ public class EstacionamentoApp {
                             System.out.println("Estacionamento selecionado: " + estacionamentoAtual.getNome());
                         }
                     }
-                        if(estacionamentoAtual == null){
-                            System.out.println("Estacionamento com ID " + idAtual + " não encontrado!");
-                        }else{
-                            boolean done = true;
-                            while (done) {
-                                System.out.println("(1) Exibir Detalhes do Estacionamento");
-                                System.out.println("(2) Cadastrar Vaga");
-                                System.out.println("(3) Reservar Vaga");
-                                System.out.println("(4) Gerar Cobrança");
-                                System.out.println("(5) Pagar Cobrança");
-                                System.out.println("(0) Voltar");
-                                System.out.print(">");
-                                int escolha = scanner.nextInt();
-                                scanner.nextLine();
+                    if (estacionamentoAtual == null) {
+                        System.out.println("Estacionamento com ID " + idAtual + " não encontrado!");
+                    } else {
+                        boolean done = true;
+                        while (done) {
+                            System.out.println("(1) Exibir Detalhes do Estacionamento");
+                            System.out.println("(2) Cadastrar Vaga");
+                            System.out.println("(3) Reservar Vaga");
+                            System.out.println("(4) Gerar Cobrança");
+                            System.out.println("(5) Pagar Cobrança");
+                            System.out.println("(0) Voltar");
+                            System.out.print(">");
+                            int escolha = scanner.nextInt();
+                            scanner.nextLine();
 
-                                if(escolha == 0){
-                                    System.out.println("Encerrando sistema...");
-                                    done = false;
-                                }
+                            if (escolha == 0) {
+                                System.out.println("Encerrando sistema...");
+                                done = false;
+                            }
 
-                                switch (escolha) {
-                                    case 1:
-                                        //Exibir informacoes do Estacionamento
-                                        System.out.println("===Informações do Estacionamento===");
-                                        System.out.println("Estacionamento: " + estacionamentoAtual.getNome());
-                                        System.out.println("Endereço: " + estacionamentoAtual.getRua() + " - " + estacionamentoAtual.getBairro() + ", " + estacionamentoAtual.getNumero());
-                                        break;
-                                    case 2:
-                                        //Cadastrar Vaga
-                                        System.out.println("Escolha o tipo de vaga:");
-                                        System.out.println("(1) Vaga Padrão");
-                                        System.out.println("(2) Vaga Idoso");
-                                        System.out.println("(3) Vaga PCD");
-                                        System.out.println("(4) Vaga VIP");
-                                        System.out.print("> ");
-                                        int tipoVaga = scanner.nextInt();
-                                        scanner.nextLine();
+                            switch (escolha) {
+                                case 1:
+                                    //Exibir informacoes do Estacionamento
+                                    System.out.println("===Informações do Estacionamento===");
+                                    System.out.println("Estacionamento: " + estacionamentoAtual.getNome());
+                                    System.out.println("Endereço: " + estacionamentoAtual.getRua() + " - " + estacionamentoAtual.getBairro() + ", " + estacionamentoAtual.getNumero());
+                                    break;
+                                case 2:
+                                    //Cadastrar Vaga
+                                    System.out.println("Escolha o tipo de vaga:");
+                                    System.out.println("(1) Vaga Padrão");
+                                    System.out.println("(2) Vaga Idoso");
+                                    System.out.println("(3) Vaga PCD");
+                                    System.out.println("(4) Vaga VIP");
+                                    System.out.print("> ");
+                                    int tipoVaga = scanner.nextInt();
+                                    scanner.nextLine();
 
-                                        Vaga novaVaga = null;
+                                    Vaga novaVaga = null;
 
-                                        //Cadatrar Tipo da Vaga
-                                        switch (tipoVaga) {
-                                            case 1:
-                                                novaVaga = new Vaga(idAtual); // Vaga Padrão
-                                                break;
-                                            case 2:
-                                                novaVaga = new VagaIdoso(idAtual); // Vaga Idoso
-                                                break;
-                                            case 3:
-                                                novaVaga = new VagaPCD(idAtual); // Vaga PCD
-                                                break;
-                                            case 4:
-                                                novaVaga = new VagaVIP(idAtual); // Vaga VIP
-                                                break;
-                                            default:
-                                                System.out.println("Tipo de vaga inválido!");
-                                                return;
-                                        }
-
-                                        estacionamentoAtual.adicionarVaga(novaVaga);
-                                        break;
-
-                                    case 3:
-                                        // Reservar Vaga
-                                        System.out.print("Digite o ID da vaga a ser reservada: ");
-                                        int idVaga = scanner.nextInt();
-                                        scanner.nextLine();
-
-
-                                        if (estacionamentoAtual.reservarVagaPorId(idVaga)) {
-                                            System.out.println("Vaga ID " + idVaga + " reservada com sucesso!");
-                                        } else {
-                                            System.out.println("Falha ao reservar a vaga. Verifique se a vaga está disponível.");
-                                        }
-                                        break;
-
-                                    case 4:
-                                        // Gerar cobrança
-                                        System.out.print("Digite o ID da vaga para cobrança: ");
-                                        int idVagaCobranca = scanner.nextInt();
-                                        scanner.nextLine();
-
-                                        // Obtém a vaga com o ID informado
-                                        Vaga vagaCobranca = estacionamento.getVagaPorId(idVagaCobranca);
-                                        if (vagaCobranca == null) {
-                                            System.out.println("Vaga não encontrada!");
+                                    //Cadatrar Tipo da Vaga
+                                    switch (tipoVaga) {
+                                        case 1:
+                                            novaVaga = new Vaga(idAtual); // Vaga Padrão
                                             break;
-                                        }
+                                        case 2:
+                                            novaVaga = new VagaIdoso(idAtual); // Vaga Idoso
+                                            break;
+                                        case 3:
+                                            novaVaga = new VagaPCD(idAtual); // Vaga PCD
+                                            break;
+                                        case 4:
+                                            novaVaga = new VagaVIP(idAtual); // Vaga VIP
+                                            break;
+                                        default:
+                                            System.out.println("Tipo de vaga inválido!");
+                                            return;
+                                    }
+
+                                    estacionamentoAtual.adicionarVaga(novaVaga);
+                                    break;
+
+                                case 3:
+                                    // Reservar Vaga
+                                    System.out.print("Digite o ID da vaga a ser reservada: ");
+                                    int idVaga = scanner.nextInt();
+                                    scanner.nextLine();
+
+
+                                    if (estacionamentoAtual.reservarVagaPorId(idVaga)) {
+                                        System.out.println("Vaga ID " + idVaga + " reservada com sucesso!");
+                                    } else {
+                                        System.out.println("Falha ao reservar a vaga. Verifique se a vaga está disponível.");
+                                    }
+                                    break;
+
+                                case 4:
+                                    // Gerar cobrança
+
+                                    // Listar as vagas disponiveis
+                                    System.out.println("=== Vagas Disponíveis ===");
+                                    List<Vaga> vagasDisponiveis = estacionamentoAtual.getVagasDisponiveis();
+
+                                    if (vagasDisponiveis.isEmpty()) {
+                                        System.out.println("Não há vagas disponíveis no momento.");
+                                        break;
+                                    }
+
+                                    for (Vaga vaga : vagasDisponiveis) {
+                                        System.out.println("ID da Vaga: " + vaga.getId() + " - Tipo: " + vaga.getClass().getSimpleName());
+                                    }
+
+                                    ///////////////////////////////////
+
+
+                                    System.out.print("Digite o ID da vaga para cobrança: ");
+                                    int idVagaCobranca = scanner.nextInt();
+                                    scanner.nextLine();
+
+                                    // Obtém a vaga com o ID informado
+                                    Vaga vagaCobranca = estacionamento.getVagaPorId(idVagaCobranca);
+                                    if (vagaCobranca == null || !vagaCobranca.isDesocupada()) {
+                                        System.out.println("Vaga não encontrada ou não disponível!");
+                                        break;
+                                    }
+
+                                    // Reservar a vaga pelo Estacionamento
+                                    if (estacionamentoAtual.reservarVagaPorId(idVagaCobranca)) {  // Corrigido para usar o objeto Estacionamento
+                                        // Ocupa a vaga
+                                        vagaCobranca.atualizarStatusNoArquivo("Ocupada");
 
                                         // Solicita a placa do veículo
                                         System.out.print("Digite a placa do veículo: ");
                                         String placaVeiculo = scanner.nextLine();
-                                        Veiculo veiculoCobranca = new Veiculo(placaVeiculo, );
+                                        Veiculo veiculoCobranca = new Veiculo(placaVeiculo, vagaCobranca.getClienteAssociado());
 
                                         // Cria a cobrança
-                                        Cobranca cobranca = new Cobranca(idVagaCobranca, estacionamento, veiculoCobranca);
-
-                                        // Define a hora de saída e calcula o tempo e valor
-                                        cobranca.setHoraSaida(LocalTime.now());
-                                        cobranca.calcularTempoFinal();
-                                        cobranca.calcularValorTotal();
+                                        Cobranca cobranca = new Cobranca(idVagaCobranca, estacionamentoAtual, veiculoCobranca);
 
                                         // Grava a cobrança registrada nos arquivos
                                         cobranca.gravarEmArquivo();
                                         System.out.println("Cobrança gerada com sucesso! Valor total: R$ " + cobranca.getValorTotal());
+                                    } else {
+                                        System.out.println("Não foi possível reservar a vaga.");
+                                    }
+                                    break;
 
-                                        // Realiza o pagamento e libera a vaga
-                                        if (cobranca.pagar()) {
-                                            System.out.println("Vaga liberada após pagamento.");
-                                        } else {
-                                            System.out.println("Erro ao liberar a vaga.");
-                                        }
-                                        break;
-
-                                    case 5:
-                                        // Solicita o ID da vaga para pagamento
-                                        System.out.print("Digite o ID da vaga para pagamento: ");
-                                        int idVagaPagamento = scanner.nextInt();
-                                        scanner.nextLine(); // Consome a nova linha
-
-                                        // Obtém a vaga correspondente
-                                        Vaga vagaPagamento = estacionamento.getVagaPorId(idVagaPagamento);
-                                        if (vagaPagamento == null) {
-                                            System.out.println("Vaga não encontrada!");
-                                            break;
-                                        }
-
-                                        // Verifica se a vaga já está ocupada
-                                        if (!vagaPagamento.isOcupada()) {
-                                            System.out.println("Esta vaga não está ocupada.");
-                                            break;
-                                        }
-
-                                        // Solicita a placa do veículo
-                                        System.out.print("Digite a placa do veículo: ");
-                                        String placaVeiculoPagamento = scanner.nextLine();
-                                        Veiculo veiculoPagamento = new Veiculo(placaVeiculoPagamento);
-
-                                        // Encontra a cobrança associada ao veículo
-                                        Cobranca cobrancaPagamento = vagaPagamento.getCobrancaAssociada(veiculoPagamento);
-                                        if (cobrancaPagamento == null) {
-                                            System.out.println("Cobrança não encontrada para o veículo informado!");
-                                            break;
-                                        }
-
-                                        // Define a hora de saída como o horário atual
-                                        cobrancaPagamento.setHoraSaida(LocalTime.now());
-                                        cobrancaPagamento.calcularTempoFinal(); // Recalcula o tempo, se necessário
-                                        cobrancaPagamento.calcularValorTotal(); // Recalcula o valor total, se necessário
-
-                                        // Realiza o pagamento
-                                        if (cobrancaPagamento.pagar()) {
-                                            System.out.println("Pagamento realizado com sucesso!");
-                                            System.out.println("Valor total: R$ " + cobrancaPagamento.getValorTotal());
-
-                                            // Libera a vaga
-                                            vagaPagamento.liberarVaga();
-                                            System.out.println("Vaga liberada.");
-                                        } else {
-                                            System.out.println("Erro ao processar o pagamento.");
-                                        }
-                                        break;
-                                    default:
-                                        System.out.println("Opção inválida! Por favor, escolha uma opção válida.");
-                                        break;
-                                }
+//                                case 5:
+//                                    // Solicita o ID da vaga para pagamento
+//                                    System.out.print("Digite o ID da vaga para pagamento: ");
+//                                    int idVagaPagamento = scanner.nextInt();
+//                                    scanner.nextLine(); // Consome a nova linha
+//
+//                                    // Obtém a vaga correspondente
+//                                    Vaga vagaPagamento = estacionamento.getVagaPorId(idVagaPagamento);
+//                                    if (vagaPagamento == null) {
+//                                        System.out.println("Vaga não encontrada!");
+//                                        break;
+//                                    }
+//
+//                                    // Verifica se a vaga já está ocupada
+//                                    if (vagaPagamento.isDesocupada()) {
+//                                        System.out.println("Esta vaga não está ocupada.");
+//                                        break;
+//                                    }
+//
+//                                    // Solicita a placa do veículo
+//                                    System.out.print("Digite a placa do veículo: ");
+//                                    String placaVeiculoPagamento = scanner.nextLine();
+//                                    Veiculo veiculoPagamento = new Veiculo(placaVeiculoPagamento);
+//
+//                                    // Encontra a cobrança associada ao veículo
+//                                    Cobranca cobrancaPagamento = vagaPagamento.getCobrancaAssociada(veiculoPagamento);
+//                                    if (cobrancaPagamento == null) {
+//                                        System.out.println("Cobrança não encontrada para o veículo informado!");
+//                                        break;
+//                                    }
+//
+//                                    // Define a hora de saída como o horário atual
+//                                    cobrancaPagamento.setHoraSaida(LocalTime.now());
+//                                    cobrancaPagamento.calcularTempoFinal(); // Recalcula o tempo, se necessário
+//
+//
+//                                    // Aqui está o cálculo do valor total baseado no tipo da vaga
+//                                    double valorTotal = 0.0;
+//
+//                                    // Obtém a tarifa base (por exemplo, de uma configuração ou constante)
+//                                    double tarifaBase = 10.0;
+//
+//                                    // Verifica se a vaga é uma instância de Vaga e calcula o valor total
+//                                    if (vagaPagamento instanceof Vaga) {
+//                                        // Se a vaga for do tipo Vaga, calcula o valor normalmente
+//                                        valorTotal = vagaPagamento.calcularValor(tarifaBase);
+//                                    } else if (vagaPagamento instanceof VagaVIP) {
+//                                        // Se a vaga for do tipo VagaVIP, utiliza o método da classe VagaVIP
+//                                        valorTotal = ((VagaVIP) vagaPagamento).calcularValor(tarifaBase);
+//                                    } else if (vagaPagamento instanceof VagaIdoso) {
+//                                        // Aqui você deve implementar a lógica de VagaIdoso
+//                                        valorTotal = ((VagaIdoso) vagaPagamento).calcularValor(tarifaBase); // Método específico para Vaga Idoso
+//                                    } else if (vagaPagamento instanceof VagaPCD) {
+//                                        // Aqui você deve implementar a lógica de VagaPCD
+//                                        valorTotal = ((VagaPCD) vagaPagamento).calcularValor(tarifaBase); // Método específico para Vaga PCD
+//                                    } else {
+//                                        System.out.println("Tipo de vaga desconhecido.");
+//                                    }
+//
+//                                    cobrancaPagamento.calcularValorTotal(); // Recalcula o valor total, se necessário
+//                                    cobrancaPagamento.setValorTotal(valorTotal);
+//
+//                                    // Realiza o pagamento
+//                                    if (cobrancaPagamento.pagar()) {
+//                                        System.out.println("Pagamento realizado com sucesso!");
+//                                        System.out.println("Valor total: R$ " + cobrancaPagamento.getValorTotal());
+//
+//                                        // Libera a vaga
+//                                        vagaPagamento.liberarVaga();
+//                                        System.out.println("Vaga liberada.");
+//                                    } else {
+//                                        System.out.println("Erro ao processar o pagamento.");
+//                                    }
+//                                    break;
+                                default:
+                                    System.out.println("Opção inválida! Por favor, escolha uma opção válida.");
+                                    break;
                             }
                         }
                     }
             }
+        }
         scanner.close();
 
-        }
+    }
 
 }
 

@@ -1,4 +1,0 @@
-ID: 1
-Status: Desocupada
-Tipo: VagaVIP
---------------------------------

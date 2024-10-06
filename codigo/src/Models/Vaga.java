@@ -1,8 +1,11 @@
 package Models;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Vaga {
+
+public class Vaga implements EncontrarMaior{
 
     private int id;
     protected double tarifaBase;
@@ -13,21 +16,9 @@ public class Vaga {
     private static int nextId = 1;
 
     public Vaga() {
-        this.id = nextId;
-        nextId++;
+        this.id = EncontrarMaiorId() + 1;
         this.status = true;
         this.tarifaBase = 10.0;
-    }
-
-    public boolean ocuparVaga() {
-        if (status) {
-            this.status = false;
-            // O true retorna a ocupação da vaga.
-            return true;
-        } else {
-            // O false retorna a não ocupação da vaga.
-            return false;
-        }
     }
 
     public boolean isDesocupada(){
@@ -37,6 +28,7 @@ public class Vaga {
     public boolean liberarVaga() {
         if (!status) { // Se a vaga estiver ocupada
             this.status = true; // Liberar a vaga
+            // gravarEmArquivo();
             return true;
         } else {
             return false; // A vaga já está desocupada
@@ -96,4 +88,8 @@ public class Vaga {
     }
 
 
+    @Override
+    public int EncontrarMaiorId() {
+        return 0;
+    }
 }

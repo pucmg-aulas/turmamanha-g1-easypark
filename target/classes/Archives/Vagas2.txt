@@ -1,4 +1,4 @@
 ID: 1
-Status: Ocupada
-Tipo: VagaPCD
+Status: Desocupada
+Tipo: VagaVIP
 --------------------------------

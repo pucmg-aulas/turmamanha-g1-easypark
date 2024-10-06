@@ -21,11 +21,11 @@ public class Cobranca {
         this.vaga = estacionamento.getVagaPorId(idVaga);
         this.veiculo = veiculo;
         this.horaEntrada = LocalTime.now();
-        if (this.vaga != null){
-            this.vaga.ocuparVaga();
-        }else{
-            System.out.println("Vaga não encontrada!");
-        }
+//        if (this.vaga != null){
+//        //    this.vaga.reservarVagaPorId();
+//        }else{
+//            System.out.println("Vaga não encontrada!");
+//        }
     }
 
     public Vaga getVaga() {

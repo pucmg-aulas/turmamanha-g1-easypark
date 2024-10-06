@@ -66,6 +66,52 @@ public class Estacionamento implements EncontrarMaior{
         return vagas;
     }
 
+    public boolean reservarVagaPorId(int idVaga) {
+        File vagaFile = new File("./codigo/src/Archives/Vagas" + this.id + ".txt");
+        List<String> linhas = new ArrayList<>();
+        boolean vagaEncontrada = false;
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(vagaFile))) {
+            String linha;
+
+            while ((linha = leitor.readLine()) != null) {
+                // Verifica se a linha contém o ID da vaga
+                if (linha.contains("ID: " + idVaga)) {
+                    vagaEncontrada = true;
+                    linhas.add(linha); // Adiciona a linha da vaga
+                    String statusLinha = leitor.readLine(); // Lê a linha de status
+                    if (statusLinha.contains("Desocupada")) {
+                        linhas.add("Status: Ocupada"); // Atualiza o status para "Ocupada"
+                    } else {
+                        System.out.println("A vaga já está ocupada.");
+                        return false;
+                    }
+                } else {
+                    linhas.add(linha); // Adiciona as outras linhas sem modificações
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+            return false;
+        }
+
+        if (vagaEncontrada) {
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(vagaFile))) {
+                // Reescreve todas as linhas no arquivo
+                for (String l : linhas) {
+                    escritor.write(l + "\n");
+                }
+                return true;
+            } catch (IOException e) {
+                System.out.println("Erro ao gravar o arquivo: " + e.getMessage());
+                return false;
+            }
+        } else {
+            System.out.println("Vaga com ID " + idVaga + " não encontrada.");
+            return false;
+        }
+    }
+
 
     // Método para gravar os dados de vários estacionamentos
     public boolean gravarEstacionamentosEmArquivo() {

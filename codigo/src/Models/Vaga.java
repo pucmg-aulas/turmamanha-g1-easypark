@@ -15,7 +15,7 @@ public class Vaga{
     // Status False: Ocupado
     private boolean status;
     private static int nextId = 1;
-    private static final String FILE_PATH = "./codigo/src/Archives/Vagas"; // Usaremos Vagas_idEstacionamento.txt
+    private static final String FILE_PATH = "./codigo/src/Archives/Vagas";
 
 
     public Vaga(int idEstacionamento) {
@@ -39,9 +39,20 @@ public class Vaga{
         }
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
+    }
+
+    public int getIdEstacionamento() {
+        return idEstacionamento;
+    }
+
+    public double getTarifaBase() {
+        return tarifaBase;
     }
 
     public boolean getStatus() {
@@ -52,7 +63,7 @@ public class Vaga{
         return tarifaBase;
     }
 
-    File vaga = new File("./src/Models/Archives/Vaga.txt");
+    File vaga = new File("./codigo/src/Archives/Vaga.txt");
 
 
     // Método para ler os dados da vaga 
@@ -94,7 +105,7 @@ public class Vaga{
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado, iniciando novo arquivo...");
+            //System.out.println("Arquivo não encontrado, iniciando novo arquivo...");
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
         }
@@ -129,6 +140,10 @@ public class Vaga{
             System.out.println("Erro ao atualizar o status no arquivo: " + e.getMessage());
             return false;
         }
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
 }

@@ -1,0 +1,7 @@
+Vaga: 1
+Veículo: ABCD123
+Hora de Entrada: 2024-10-06T22:47:55.562260100
+Hora de Saída: N/A
+Tempo Total: N/A
+Valor Total: R$0
+------------------------------------------

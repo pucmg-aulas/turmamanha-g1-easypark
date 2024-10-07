@@ -148,4 +148,28 @@ public class Veiculo{
         }
     }
 
+    public static Veiculo getVeiculoPorPlaca(String placa) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./codigo/src/Archives/Veiculo.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("Placa: " + placa)) {
+                    // Lê o modelo
+                    String modelo = br.readLine().replace("Modelo: ", "").trim();
+                    // Lê o CPF do cliente
+                    String cpf = br.readLine().replace("CPF: ", "").trim();
+                    // Lê o nome do cliente
+                    String clienteNome = br.readLine().replace("Cliente: ", "").trim();
+
+                    // Cria o cliente associado
+                    Cliente cliente = new Cliente(clienteNome, cpf);
+                    // Retorna o veículo
+                    return new Veiculo(placa, cliente, modelo);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de veículos: " + e.getMessage());
+        }
+        return null; // Retorna null se não encontrar o veículo
+    }
+
 }

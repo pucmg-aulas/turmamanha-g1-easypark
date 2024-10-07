@@ -29,12 +29,55 @@ public class Estacionamento implements EncontrarMaior{
     }
 
     public Vaga getVagaPorId(int id) {
-        for (Vaga v : vagas) {
-            if (v.getId() == id) {
-                return v;
+        String filePath = "./codigo/src/Archives/Vagas" + this.id + ".txt"; // Ajuste o caminho se necessário
+        File arquivoVagas = new File(filePath);
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoVagas))) {
+            String linha;
+            Vaga vagaAtual = null;
+            int idAtual = -1;
+
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.startsWith("ID: ")) {
+                    idAtual = Integer.parseInt(linha.split(": ")[1]);
+                    // Inicializa a vaga como uma vaga comum (você pode modificar para criar uma vaga especial se necessário)
+                    vagaAtual = new Vaga(this.id);
+                    vagaAtual.setId(idAtual); // Defina o ID da vaga atual
+                }
+
+                if (linha.startsWith("Status: ")) {
+                    String status = linha.split(": ")[1].trim();
+                    if (vagaAtual != null) {
+                        vagaAtual.setStatus("Desocupada".equalsIgnoreCase(status));
+                    }
+                }
+
+                if (linha.startsWith("Tipo: ")) {
+                    String tipoVaga = linha.split(": ")[1].trim();
+                    // Aqui você pode criar a vaga do tipo correto, se necessário
+                    // Exemplo:
+                    if (tipoVaga.equalsIgnoreCase("VagaPCD")) {
+                        vagaAtual = new VagaPCD(this.id);
+                        vagaAtual.setId(idAtual);
+                    } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
+                        vagaAtual = new VagaVIP(this.id);
+                        vagaAtual.setId(idAtual);
+                    } else {
+                        vagaAtual = new Vaga(this.id);
+                        vagaAtual.setId(idAtual);
+                    }
+                }
+
+                // Aqui você pode adicionar lógica para armazenar as vagas em uma lista ou retornar diretamente a vaga encontrada
+                if (vagaAtual != null && vagaAtual.getId() == id) {
+                    return vagaAtual; // Retorna a vaga encontrada
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de vagas: " + e.getMessage());
         }
-        return null;
+
+        return null; // Retorna null se não encontrou a vaga
     }
 
     public int getId() {
@@ -68,31 +111,128 @@ public class Estacionamento implements EncontrarMaior{
 
     public List<Vaga> getVagasDisponiveis() {
         List<Vaga> vagasDisponiveis = new ArrayList<>();
+        Vaga vagaAtual = null;
+        int idVaga = 0;
 
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoEstacionamento))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader("./codigo/src/Archives/Vagas" + this.id + ".txt"))) {
             String linha;
-            Vaga vagaAtual = null;
 
             while ((linha = leitor.readLine()) != null) {
-
                 if (linha.startsWith("ID: ")) {
-                    int idVaga = Integer.parseInt(linha.substring(4));
-                    vagaAtual = new Vaga(idVaga);
+                    idVaga = Integer.parseInt(linha.substring(4).trim());
+                    vagaAtual = null; // Reseta a vagaAtual ao encontrar um novo ID
                 }
 
-                if (linha.startsWith("Status: ")) {
-                    String statusVaga = linha.substring(8);
-                    if ("Desocupada".equalsIgnoreCase(statusVaga)) {
-                        vagasDisponiveis.add(vagaAtual);
+                if (linha.startsWith("Tipo: ")) {
+                    String tipoVaga = linha.substring(6).trim();
+
+                    // Cria a vaga com base no tipo específico encontrado no arquivo
+                    if (tipoVaga.equalsIgnoreCase("VagaIdoso")) {
+                        vagaAtual = new VagaIdoso(id); // Instancia VagaIdoso
+                    } else if (tipoVaga.equalsIgnoreCase("VagaPCD")) {
+                        vagaAtual = new VagaPCD(id); // Instancia VagaPCD
+                    } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
+                        vagaAtual = new VagaVIP(id); // Instancia VagaVIP
+                    } else if (tipoVaga.equalsIgnoreCase("Vaga")) {
+                        vagaAtual = new Vaga(id); // Instancia uma vaga comum
+                    }
+
+                    // Define o ID da vaga se a instância for criada com sucesso
+                    if (vagaAtual != null) {
+                        vagaAtual.setId(idVaga);
                     }
                 }
+
+                if (linha.startsWith("Status: ") && vagaAtual != null) {
+                    String statusVaga = linha.substring(8).trim();
+
+                    // Define o status da vaga com base no valor lido no arquivo
+                    vagaAtual.setStatus(statusVaga.equalsIgnoreCase("Desocupada"));
+                }
+
+                // Ao chegar no final de uma vaga ("--------------------------------"), verifica o status e adiciona se for desocupada
+                if (linha.equals("--------------------------------")) {
+                    if (vagaAtual != null && vagaAtual.isDesocupada()) {
+                        vagasDisponiveis.add(vagaAtual);
+                    }
+                    vagaAtual = null; // Reseta para preparar a leitura da próxima vaga
+                }
             }
+
+            // Adiciona a última vaga lida, se não tiver sido adicionada antes
+            if (vagaAtual != null && vagaAtual.isDesocupada()) {
+                vagasDisponiveis.add(vagaAtual);
+            }
+
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo de vagas: " + e.getMessage());
         }
 
         return vagasDisponiveis;
     }
+
+    public List<Vaga> getVagasOcupadas() {
+        List<Vaga> vagasDisponiveis = new ArrayList<>();
+        Vaga vagaAtual = null;
+        int idVaga = 0;
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader("./codigo/src/Archives/Vagas" + this.id + ".txt"))) {
+            String linha;
+
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.startsWith("ID: ")) {
+                    idVaga = Integer.parseInt(linha.substring(4).trim());
+                    vagaAtual = null; // Reseta a vagaAtual ao encontrar um novo ID
+                }
+
+                if (linha.startsWith("Tipo: ")) {
+                    String tipoVaga = linha.substring(6).trim();
+
+                    // Cria a vaga com base no tipo específico encontrado no arquivo
+                    if (tipoVaga.equalsIgnoreCase("VagaIdoso")) {
+                        vagaAtual = new VagaIdoso(id); // Instancia VagaIdoso
+                    } else if (tipoVaga.equalsIgnoreCase("VagaPCD")) {
+                        vagaAtual = new VagaPCD(id); // Instancia VagaPCD
+                    } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
+                        vagaAtual = new VagaVIP(id); // Instancia VagaVIP
+                    } else if (tipoVaga.equalsIgnoreCase("Vaga")) {
+                        vagaAtual = new Vaga(id); // Instancia uma vaga comum
+                    }
+
+                    // Define o ID da vaga se a instância for criada com sucesso
+                    if (vagaAtual != null) {
+                        vagaAtual.setId(idVaga);
+                    }
+                }
+
+                if (linha.startsWith("Status: ") && vagaAtual != null) {
+                    String statusVaga = linha.substring(8).trim();
+
+                    // Define o status da vaga com base no valor lido no arquivo
+                    vagaAtual.setStatus(statusVaga.equalsIgnoreCase("Ocupada"));
+                }
+
+                // Ao chegar no final de uma vaga ("--------------------------------"), verifica o status e adiciona se for desocupada
+                if (linha.equals("--------------------------------")) {
+                    if (vagaAtual != null && vagaAtual.isDesocupada()) {
+                        vagasDisponiveis.add(vagaAtual);
+                    }
+                    vagaAtual = null; // Reseta para preparar a leitura da próxima vaga
+                }
+            }
+
+            // Adiciona a última vaga lida, se não tiver sido adicionada antes
+            if (vagaAtual != null && vagaAtual.isDesocupada()) {
+                vagasDisponiveis.add(vagaAtual);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de vagas: " + e.getMessage());
+        }
+
+        return vagasDisponiveis;
+    }
+
 
     public boolean reservarVagaPorId(int idVaga) {
         File vagaFile = new File("./codigo/src/Archives/Vagas" + this.id + ".txt");
@@ -260,4 +400,6 @@ public class Estacionamento implements EncontrarMaior{
             System.out.println("Erro ao salvar a vaga no arquivo: " + e.getMessage());
         }
     }
+
+
 }

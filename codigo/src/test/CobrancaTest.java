@@ -42,9 +42,9 @@ public class CobrancaTest {
     @Test
     public void testCalcularValorTotalRegular() {
         Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.setHoraSaida(cobranca.getHoraEntrada().plusMinutes(30)); // 30 minutos de estadia
+        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(30))); // 30 minutos de estadia
         cobranca.calcularTempoFinal();
-        cobranca.calcularValorTotal();
+        cobranca.calcularValor();
 
         double valorEsperado = (30.0 / 15) * 4; // 2 frações de 15 minutos, 4 reais por fração
         assertEquals("O valor total deve ser 8 reais", valorEsperado, cobranca.getValorTotal(), 0.01);
@@ -53,9 +53,9 @@ public class CobrancaTest {
     @Test
     public void testCalcularValorTotalVIP() {
         Cobranca cobranca = new Cobranca(2, estacionamento, veiculo); // Vaga VIP
-        cobranca.setHoraSaida(cobranca.getHoraEntrada().plusMinutes(30)); // 30 minutos de estadia
+        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(30))); // 30 minutos de estadia
         cobranca.calcularTempoFinal();
-        cobranca.calcularValorTotal();
+        cobranca.calcularValor();
 
         double valorBase = (30.0 / 15) * 4; // 2 frações de 15 minutos
         double valorEsperado = valorBase * 1.20; // Vaga VIP, 20% mais caro
@@ -65,9 +65,9 @@ public class CobrancaTest {
     @Test
     public void testValorTotalLimite() {
         Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.setHoraSaida(cobranca.getHoraEntrada().plusMinutes(600)); // 10 horas de estadia
+        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(600))); // 10 horas de estadia
         cobranca.calcularTempoFinal();
-        cobranca.calcularValorTotal();
+        cobranca.calcularValor();
 
         assertEquals("O valor total deve ser limitado a 50 reais", 50.0, cobranca.getValorTotal(), 0.01);
     }
@@ -84,7 +84,7 @@ public class CobrancaTest {
         Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
         cobranca.setHoraSaida(LocalTime.now().plusMinutes(30));
         cobranca.calcularTempoFinal();
-        cobranca.calcularValorTotal();
+        cobranca.calcularValor();
         boolean sucesso = cobranca.gravarEmArquivo();
         assertTrue("A gravação em arquivo deve ser bem-sucedida", sucesso);
     }

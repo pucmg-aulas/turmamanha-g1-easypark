@@ -1,5 +1,5 @@
 ID: 1
-Status: Ocupada
+Status: Desocupada
 Tipo: Vaga
 Estacionamento: 1
 --------------------------------

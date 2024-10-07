@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,10 +68,33 @@ public class Cobranca {
     }
 
     public double calcularValor() {
-        return this.tempoTotal * vaga.getTarifaBase(); // Supondo que cada vaga tem sua própria tarifa
+        // Calcular a duração total em minutos
+        long minutos = Duration.between(horaEntrada, horaSaida).toMinutes();
+
+        // Calcular o valor base (R$4 a cada 15 minutos)
+        double valorBase = (minutos / 15) * 4;
+
+        // Aplica o limite de R$50
+        valorBase = Math.min(valorBase, 50);
+
+        // Se a vaga for VIP, aumenta o valor em 20%
+        if (vaga instanceof VagaVIP) {
+            valorTotal = valorBase * 1.2; // 20% a mais
+        } else if (vaga instanceof VagaIdoso) {
+            valorTotal = valorBase * 0.85; // 15% de desconto
+        } else if (vaga instanceof VagaPCD) {
+            valorTotal = valorBase * 0.87; // 13% de desconto
+        } else {
+            valorTotal = valorBase; // Vaga padrão
+        }
+
+        // Arredondar para 2 casas decimais, se necessário
+        valorTotal = Math.round(valorTotal * 100.0) / 100.0;
+
+        return valorTotal;
     }
 
-    private boolean atualizarArquivoComInformacoes() {
+    public boolean atualizarArquivoComInformacoes() {
         File cobrancas = new File(FILE_PATH);
         File tempFile = new File("./src/Models/Archives/Cobrancas_temp.txt");
 
@@ -135,31 +159,31 @@ public class Cobranca {
     }
 
     // Método para ler os dados de um arquivo de texto
-    public static Cobranca lerDeArquivo(String nomeArquivo, Estacionamento estacionamento) {
+    public static LocalDateTime lerHoraEntradaDeArquivo(String nomeArquivo, int idVaga) {
         try (BufferedReader leitor = new BufferedReader(new FileReader(nomeArquivo))) {
-            // Leitura do ID da vaga
-            int idVaga = Integer.parseInt(leitor.readLine().trim());
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                // Verifica se a linha contém a vaga correspondente
+                if (linha.startsWith("Vaga: " + idVaga)) {
+                    // Lê as próximas linhas para encontrar a Hora de Entrada
+                    for (int i = 0; i < 3; i++) {
+                        linha = leitor.readLine();
+                        if (linha == null) {
+                            return null; // Se não houver linha suficiente, retorna null
+                        }
 
-            // Leitura da placa do veículo
-            String placa = leitor.readLine().trim();
-            Veiculo veiculo = new Veiculo(placa, new Cliente("Guilherme", "111"), "Tracker");
-
-            // Leitura da hora de entrada
-            LocalTime horaEntrada = LocalTime.parse(leitor.readLine().trim(), DateTimeFormatter.ofPattern("HH:mm"));
-
-            // Leitura da hora de saída
-            LocalTime horaSaida = LocalTime.parse(leitor.readLine().trim(), DateTimeFormatter.ofPattern("HH:mm"));
-
-            // Criação da instância de Cobranca
-            Cobranca cobranca = new Cobranca(idVaga, estacionamento, veiculo);
-            cobranca.horaEntrada = LocalDateTime.from(horaEntrada);
-            cobranca.setHoraSaida(horaSaida);
-            cobranca.calcularTempoFinal();
-            cobranca.calcularValor();
-
-            return cobranca;
+                        // Verifica se esta linha é a Hora de Entrada
+                        if (linha.startsWith("Hora de Entrada: ")) {
+                            String horaEntradaStr = linha.split(": ")[1].trim();
+                            return LocalDateTime.parse(horaEntradaStr); // Retorna a hora de entrada como LocalDateTime
+                        }
+                    }
+                }
+            }
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+        } catch (DateTimeParseException e) {
+            System.out.println("Erro ao analisar a hora de entrada: " + e.getMessage());
         }
         return null;
     }
@@ -238,4 +262,46 @@ public class Cobranca {
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
+
+    public void setHoraEntrada(LocalDateTime horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public static void removerCobrancaDoArquivo(String nomeArquivo, int idVaga) {
+        File arquivo = new File(nomeArquivo);
+        List<String> linhas = new ArrayList<>();
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            boolean found = false;
+
+            while ((linha = leitor.readLine()) != null) {
+                // Adiciona a linha à lista, exceto a que corresponde à vaga paga
+                if (linha.startsWith("Vaga: " + idVaga)) {
+                    found = true; // Indica que a cobrança foi encontrada
+                    // Pula as próximas linhas da cobrança a ser removida
+                    for (int i = 0; i < 4; i++) {
+                        linha = leitor.readLine();
+                        if (linha == null) break; // Evita NullPointerException
+                    }
+                } else {
+                    linhas.add(linha);
+                }
+            }
+
+            if (found) {
+                // Grava as linhas restantes de volta ao arquivo
+                try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+                    for (String l : linhas) {
+                        escritor.write(l);
+                        escritor.newLine();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler ou escrever no arquivo: " + e.getMessage());
+        }
+    }
+
+
 }

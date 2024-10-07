@@ -9,6 +9,8 @@ import Models.VagaIdoso;
 import Models.VagaVIP;
 import Models.VagaPCD;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
@@ -347,6 +349,7 @@ public class EstacionamentoApp {
 
                                     // Obtém a vaga correspondente
                                     Vaga vagaPagamento = estacionamentoAtual.getVagaPorId(idVagaPagamento);
+                                    vagaPagamento.setStatus(false);
                                     if (vagaPagamento == null) {
                                         System.out.println("Vaga não encontrada!");
                                         break;
@@ -363,43 +366,36 @@ public class EstacionamentoApp {
                                     Veiculo veiculoCobrancaPagamento = Veiculo.getVeiculoPorPlaca(placaVeiculoPagamento);
 
                                     LocalTime horaSaida = LocalTime.now();
-                                    // Aqui, você pode usar um método na classe Cobranca para definir a hora de saída e calcular o tempo
-                                    // Exemplo:
-                                    Cobranca cobrancaPagamento = new Cobranca(idVagaPagamento, estacionamentoAtual, veiculoCobrancaPagamento); // Crie a instância de cobrança
-                                    cobrancaPagamento.setHoraSaida(horaSaida);
+                                    Cobranca cobrancaPagamento = new Cobranca(idVagaPagamento, estacionamentoAtual, veiculoCobrancaPagamento); // Cria a instância de cobrança
+                                    LocalDateTime horaEntrada = Cobranca.lerHoraEntradaDeArquivo("./codigo/src/Archives/Cobrancas.txt", idVagaPagamento);
 
-                                    // Obter a tarifa base (por exemplo, de uma configuração ou constante)
-                                    double tarifaBase = 10.0;
+                                    if (horaEntrada != null) {
+                                        cobrancaPagamento.setHoraSaida(horaSaida); // Define a hora de saída na cobrança
+                                        cobrancaPagamento.setHoraEntrada(horaEntrada); // Define a hora de entrada na cobrança
 
-                                    // Calcular o valor total baseado no tipo da vaga
-                                    double valorTotal = 0.0;
+                                        // Calcula o tempo e o valor
+                                        cobrancaPagamento.calcularTempoFinal(); // Calcula a duração
+                                        cobrancaPagamento.calcularValor(); // Calcula o valor total com base nas regras
 
-                                    // Verifica se a vaga é uma instância de Vaga e calcula o valor total
-                                    if (vagaPagamento instanceof VagaVIP) {
-                                        valorTotal = ((VagaVIP) vagaPagamento).calcularValor(tarifaBase); // Vaga VIP tem 20% a mais
-                                    } else if (vagaPagamento instanceof VagaIdoso) {
-                                        valorTotal = ((VagaIdoso) vagaPagamento).calcularValor(tarifaBase); // Vaga Idoso tem 15% de desconto
-                                    } else if (vagaPagamento instanceof VagaPCD) {
-                                        valorTotal = ((VagaPCD) vagaPagamento).calcularValor(tarifaBase); // Vaga PCD tem 13% de desconto
+                                        // Aqui você pode gravar a cobrança no arquivo
+                                        cobrancaPagamento.gravarEmArquivo();
+
+                                        // Realiza o pagamento
+                                        if (cobrancaPagamento.pagar()) {
+                                            System.out.println("Pagamento realizado com sucesso!");
+                                            System.out.println("Valor total: R$ " + cobrancaPagamento.getValorTotal());
+
+                                            // Libera a vaga
+                                            vagaPagamento.liberarVaga();
+                                            System.out.println("Vaga liberada.");
+
+                                            // Remove a cobrança do arquivo
+                                            Cobranca.removerCobrancaDoArquivo("./codigo/src/Archives/Cobrancas.txt", idVagaPagamento);
+                                        } else {
+                                            System.out.println("Erro ao processar o pagamento.");
+                                        }
                                     } else {
-                                        // Para vagas padrão, aplica a tarifa base normalmente
-                                        valorTotal = vagaPagamento.calcularValor(tarifaBase);
-                                    }
-
-                                    // Aqui você pode criar a cobrança e gravar no arquivo
-                                    cobrancaPagamento.setValorTotal(valorTotal);
-                                    cobrancaPagamento.gravarEmArquivo();
-
-                                    // Realiza o pagamento
-                                    if (cobrancaPagamento.pagar()) {
-                                        System.out.println("Pagamento realizado com sucesso!");
-                                        System.out.println("Valor total: R$ " + cobrancaPagamento.getValorTotal());
-
-                                        // Libera a vaga
-                                        vagaPagamento.liberarVaga();
-                                        System.out.println("Vaga liberada.");
-                                    } else {
-                                        System.out.println("Erro ao processar o pagamento.");
+                                        System.out.println("Erro: Não foi possível ler a hora de entrada para a vaga " + idVagaPagamento);
                                     }
                                     break;
                             }

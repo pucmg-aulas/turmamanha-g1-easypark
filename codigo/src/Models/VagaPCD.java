@@ -1,8 +1,8 @@
 package Models;
 
-public class VagaPCD extends Vaga{
+public class VagaPCD extends Vaga {
 
-    private static final double DESCONTO_PCD = 0.13;
+    public static final double DESCONTO_PCD = 0.13; // Tornar público e estático
 
     public VagaPCD(int idEstacionamento) {
         super(idEstacionamento);

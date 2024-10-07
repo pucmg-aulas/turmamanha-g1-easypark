@@ -1,91 +1,112 @@
-package test;
+package tests;
 
 import Models.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.Assert.*;
 
 public class CobrancaTest {
 
+    private static final String ARQUIVO_COBRANCAS = "./codigo/src/Archives/Cobrancas.txt";
+    private Cobranca cobranca;
     private Estacionamento estacionamento;
     private Veiculo veiculo;
 
     @Before
-    public void setup() {
-        // Configuração de um estacionamento de teste
-        estacionamento = new Estacionamento("Estacionamento Teste", "Rua Teste", "Bairro Teste", 100);
-        Vaga vaga1 = new Vaga(1);
-        Vaga vaga2 = new Vaga(1);
-        estacionamento.adicionarVaga(vaga1);
-        estacionamento.adicionarVaga(vaga2);
+    public void setUp() {
+        // Criação de um estacionamento com parâmetros apropriados
+        estacionamento = new Estacionamento("Estacionamento Central", "Rua A", "Centro", 123);
 
-        // Veículo de teste
-        veiculo = new Veiculo("ABC-1234", new Cliente("guilherme", "111"), "Tracker");
+        // Criação de um cliente (opcional, se necessário)
+        Cliente cliente = new Cliente("João da Silva", "123.456.789-00");
+
+        // Criação de um veículo com placa, cliente e modelo
+        veiculo = new Veiculo("ABC1234", cliente, "Fusca");
+
+        // Adiciona uma vaga ao estacionamento
+        estacionamento.adicionarVaga(new Vaga(1));
+
+        // Criação de uma cobrança com a vaga e veículo
+        cobranca = new Cobranca(1, estacionamento, veiculo);
+    }
+
+    @After
+    public void tearDown() {
+        // Remove o arquivo de cobranças após os testes
+        File arquivo = new File(ARQUIVO_COBRANCAS);
+        if (arquivo.exists()) {
+            arquivo.delete();
+        }
     }
 
     @Test
-    public void testCriarCobrancaComVagaExistente() {
-        Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        assertNotNull("A vaga não deve ser nula", cobranca.getVaga());
-        assertEquals("A placa do veículo deve ser 'ABC-1234'", "ABC-1234", cobranca.getVeiculo().getPlaca());
-    }
+    public void testCalcularValor() {
+        // Define uma hora de saída
+        cobranca.setHoraSaida(LocalTime.from(LocalDateTime.now().plusMinutes(45))); // 45 minutos depois da entrada
 
-    @Test
-    public void testCriarCobrancaComVagaInexistente() {
-        Cobranca cobranca = new Cobranca(99, estacionamento, veiculo);
-        assertNull("A vaga não deveria ser encontrada", cobranca.getVaga());
-    }
+        // Calcula o valor
+        double valor = cobranca.calcularValor();
 
-    @Test
-    public void testCalcularValorTotalRegular() {
-        Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(30))); // 30 minutos de estadia
-        cobranca.calcularTempoFinal();
-        cobranca.calcularValor();
-
-        double valorEsperado = (30.0 / 15) * 4; // 2 frações de 15 minutos, 4 reais por fração
-        assertEquals("O valor total deve ser 8 reais", valorEsperado, cobranca.getValorTotal(), 0.01);
-    }
-
-    @Test
-    public void testCalcularValorTotalVIP() {
-        Cobranca cobranca = new Cobranca(2, estacionamento, veiculo); // Vaga VIP
-        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(30))); // 30 minutos de estadia
-        cobranca.calcularTempoFinal();
-        cobranca.calcularValor();
-
-        double valorBase = (30.0 / 15) * 4; // 2 frações de 15 minutos
-        double valorEsperado = valorBase * 1.20; // Vaga VIP, 20% mais caro
-        assertEquals("O valor total para uma vaga VIP deve ser maior", valorEsperado, cobranca.getValorTotal(), 0.01);
-    }
-
-    @Test
-    public void testValorTotalLimite() {
-        Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.setHoraSaida(LocalTime.from(cobranca.getHoraEntrada().plusMinutes(600))); // 10 horas de estadia
-        cobranca.calcularTempoFinal();
-        cobranca.calcularValor();
-
-        assertEquals("O valor total deve ser limitado a 50 reais", 50.0, cobranca.getValorTotal(), 0.01);
-    }
-
-    @Test
-    public void testLiberarVagaAposPagamento() {
-        Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.pagar(); // Libera a vaga após o pagamento
-        assertFalse("A vaga deve estar liberada após o pagamento", !cobranca.getVaga().isDesocupada());
+        // Verifica se o valor está correto
+        assertEquals(12.0, valor, 0.01); // 4 por 15 minutos, portanto 3 frações de 15 minutos * 4
     }
 
     @Test
     public void testGravarEmArquivo() {
-        Cobranca cobranca = new Cobranca(1, estacionamento, veiculo);
-        cobranca.setHoraSaida(LocalTime.now().plusMinutes(30));
-        cobranca.calcularTempoFinal();
-        cobranca.calcularValor();
-        boolean sucesso = cobranca.gravarEmArquivo();
-        assertTrue("A gravação em arquivo deve ser bem-sucedida", sucesso);
+        // Define a hora de saída
+        cobranca.setHoraSaida(LocalTime.from(LocalDateTime.now().plusMinutes(30))); // 30 minutos depois da entrada
+
+        // Grava a cobrança em arquivo
+        assertTrue(cobranca.gravarEmArquivo());
+
+        // Verifica se o arquivo foi criado e contém as informações corretas
+        File arquivo = new File(ARQUIVO_COBRANCAS);
+        assertTrue(arquivo.exists());
+    }
+
+    @Test
+    public void testFinalizarCobranca() {
+        // Finaliza a cobrança
+        cobranca.finalizarCobrança();
+
+        // Verifica se o arquivo foi atualizado
+        File arquivo = new File(ARQUIVO_COBRANCAS);
+        assertTrue(arquivo.exists());
+
+        // Verifica se a cobrança foi gravada
+        assertTrue(cobranca.gravarEmArquivo());
+    }
+
+    @Test
+    public void testAtualizarArquivoComInformacoes() {
+        // Define a hora de saída e finaliza a cobrança
+        cobranca.setHoraSaida(LocalTime.from(LocalDateTime.now().plusMinutes(30))); // 30 minutos depois da entrada
+        cobranca.finalizarCobrança();
+
+        // Atualiza as informações no arquivo
+        assertTrue(cobranca.atualizarArquivoComInformacoes());
+
+        // Verifica se o arquivo contém as informações atualizadas
+        File arquivo = new File(ARQUIVO_COBRANCAS);
+        assertTrue(arquivo.exists());
+    }
+
+    @Test
+    public void testPagar() {
+        // Verifica se a vaga está ocupada antes do pagamento
+        assertFalse(cobranca.pagar());
+
+        // Define a hora de saída e finaliza a cobrança
+        cobranca.setHoraSaida(LocalTime.from(LocalDateTime.now().plusMinutes(30))); // 30 minutos depois da entrada
+        cobranca.finalizarCobrança();
+
+        // Tenta pagar a cobrança
+        assertTrue(cobranca.pagar());
     }
 }

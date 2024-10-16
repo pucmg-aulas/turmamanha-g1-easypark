@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Vaga{
+public abstract class Vaga{
 
     private int id;
     protected double tarifaBase;
@@ -24,6 +24,8 @@ public class Vaga{
         this.tarifaBase = 10.0;
         this.idEstacionamento = idEstacionamento;
     }
+
+    public abstract String getTipo();
 
     public boolean isDesocupada(){
         return status;

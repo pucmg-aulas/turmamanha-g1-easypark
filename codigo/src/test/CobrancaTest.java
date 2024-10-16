@@ -1,4 +1,4 @@
-package tests;
+package test;
 
 import Models.*;
 import org.junit.After;
@@ -21,7 +21,7 @@ public class CobrancaTest {
     @Before
     public void setUp() {
         // Criação de um estacionamento com parâmetros apropriados
-        estacionamento = new Estacionamento("Estacionamento Central", "Rua A", "Centro", 123);
+        estacionamento = new Estacionamento("Estacionamento Central", "Rua A", "Centro", 123, 50);
 
         // Criação de um cliente (opcional, se necessário)
         Cliente cliente = new Cliente("João da Silva", "123.456.789-00");
@@ -30,7 +30,7 @@ public class CobrancaTest {
         veiculo = new Veiculo("ABC1234", cliente, "Fusca");
 
         // Adiciona uma vaga ao estacionamento
-        estacionamento.adicionarVaga(new Vaga(1));
+        // estacionamento.adicionarVaga(new Vaga(1));
 
         // Criação de uma cobrança com a vaga e veículo
         cobranca = new Cobranca(1, estacionamento, veiculo);

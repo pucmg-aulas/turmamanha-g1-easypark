@@ -41,6 +41,7 @@ public class EstacionamentoApp {
 
             switch (opcao) {
                 case 1:
+
                     // Cadastro de Estacionamento
                     System.out.print("Digite o nome do estacionamento: ");
                     String nome = scanner.nextLine();
@@ -55,16 +56,28 @@ public class EstacionamentoApp {
                     int numero = scanner.nextInt();
                     scanner.nextLine();
 
-                    Estacionamento estacionamento = new Estacionamento(nome, rua, bairro, numero);
+                    System.out.println("Digite a quantidade de vagas do estacionamento: ");
+                    int qntdVagas = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Estacionamento estacionamento = new Estacionamento(nome, rua, bairro, numero, qntdVagas);
                     if (estacionamento.gravarEstacionamentosEmArquivo()) {
                         System.out.println("---------------------------------------");
                         System.out.println("Estacionamento cadastrado com sucesso!");
                         System.out.println("ID do Estacionamento: " + estacionamento.getId()); // Mostra o ID do estacionamento
-                        System.out.println("---------------------------------------");
+                        System.out.println("Total de Vagas: " + qntdVagas);
+
+                        // Exibir vagas criadas
+                        for (Vaga vaga : estacionamento.getVagas()) {
+                            System.out.println("Vaga ID: " + vaga.getId() + " - Tipo: " + vaga.getTipo());
+                        }
+
+                        System.out.println("---------------------------------------");;
                     }
                     break;
 
                 case 2:
+
                     // Cadastrar cliente
                     System.out.print("Digite o nome do cliente: ");
                     String nomeCliente = scanner.nextLine();
@@ -200,8 +213,9 @@ public class EstacionamentoApp {
                             String ruaEstacionamento = linhas[2].split(", ")[0].replace("Endereço: ", "");
                             int numeroEstacionamento = Integer.parseInt(linhas[2].split(", ")[1].split(" - ")[0]);
                             String bairroEstacionamento = linhas[2].split(", ")[1].split(" - ")[1];
+                            int qntdVagasEstacionamento = Integer.parseInt(linhas[3].replace("Vagas: ", ""));
 
-                            estacionamentoAtual = new Estacionamento(nomeEstacionamento, ruaEstacionamento, bairroEstacionamento, numeroEstacionamento);
+                            estacionamentoAtual = new Estacionamento(nomeEstacionamento, ruaEstacionamento, bairroEstacionamento, numeroEstacionamento, qntdVagasEstacionamento);
                             estacionamentoAtual.setId(idAtual);
 
                             System.out.println("Estacionamento selecionado: " + estacionamentoAtual.getNome());
@@ -234,40 +248,41 @@ public class EstacionamentoApp {
                                     System.out.println("Estacionamento: " + estacionamentoAtual.getNome());
                                     System.out.println("Endereço: " + estacionamentoAtual.getRua() + " - " + estacionamentoAtual.getBairro() + ", " + estacionamentoAtual.getNumero());
                                     break;
-                                case 2:
-                                    //Cadastrar Vaga
-                                    System.out.println("Escolha o tipo de vaga:");
-                                    System.out.println("(1) Vaga Padrão");
-                                    System.out.println("(2) Vaga Idoso");
-                                    System.out.println("(3) Vaga PCD");
-                                    System.out.println("(4) Vaga VIP");
-                                    System.out.print("> ");
-                                    int tipoVaga = scanner.nextInt();
-                                    scanner.nextLine();
 
-                                    Vaga novaVaga = null;
-
-                                    //Cadatrar Tipo da Vaga
-                                    switch (tipoVaga) {
-                                        case 1:
-                                            novaVaga = new Vaga(idAtual); // Vaga Padrão
-                                            break;
-                                        case 2:
-                                            novaVaga = new VagaIdoso(idAtual); // Vaga Idoso
-                                            break;
-                                        case 3:
-                                            novaVaga = new VagaPCD(idAtual); // Vaga PCD
-                                            break;
-                                        case 4:
-                                            novaVaga = new VagaVIP(idAtual); // Vaga VIP
-                                            break;
-                                        default:
-                                            System.out.println("Tipo de vaga inválido!");
-                                            return;
-                                    }
-
-                                    estacionamentoAtual.adicionarVaga(novaVaga);
-                                    break;
+//                                case 2:
+//                                    //Cadastrar Vaga
+//                                    System.out.println("Escolha o tipo de vaga:");
+//                                    System.out.println("(1) Vaga Padrão");
+//                                    System.out.println("(2) Vaga Idoso");
+//                                    System.out.println("(3) Vaga PCD");
+//                                    System.out.println("(4) Vaga VIP");
+//                                    System.out.print("> ");
+//                                    int tipoVaga = scanner.nextInt();
+//                                    scanner.nextLine();
+//
+//                                    Vaga novaVaga = null;
+//
+//                                    //Cadatrar Tipo da Vaga
+//                                    switch (tipoVaga) {
+//                                        case 1:
+//                                            novaVaga = new Vaga(idAtual); // Vaga Padrão
+//                                            break;
+//                                        case 2:
+//                                            novaVaga = new VagaIdoso(idAtual); // Vaga Idoso
+//                                            break;
+//                                        case 3:
+//                                            novaVaga = new VagaPCD(idAtual); // Vaga PCD
+//                                            break;
+//                                        case 4:
+//                                            novaVaga = new VagaVIP(idAtual); // Vaga VIP
+//                                            break;
+//                                        default:
+//                                            System.out.println("Tipo de vaga inválido!");
+//                                            return;
+//                                    }
+//
+//                                    estacionamentoAtual.adicionarVaga(novaVaga);
+//                                    break;
 
                                 case 3:
                                     // Reservar Vaga

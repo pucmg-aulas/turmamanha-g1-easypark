@@ -12,4 +12,9 @@ public class VagaPCD extends Vaga {
     public double calcularValor(double tarifaBase) {
         return tarifaBase * (1 - DESCONTO_PCD);
     }
+
+    @Override
+    public String getTipo() {
+        return "PCD";
+    }
 }

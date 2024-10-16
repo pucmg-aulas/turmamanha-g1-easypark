@@ -12,4 +12,9 @@ public class VagaVIP extends Vaga{
     public double calcularValor(double tarifaBase) {
         return tarifaBase * (1 + AUMENTO_VIP);
     }
+
+    @Override
+    public String getTipo() {
+        return "VIP";
+    }
 }

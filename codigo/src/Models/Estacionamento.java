@@ -11,16 +11,48 @@ public class Estacionamento implements EncontrarMaior{
     private String rua;
     private String bairro;
     private int numero;
+    private int qntdVagas;
     private List<Vaga> vagas;
     private static String arquivoEstacionamento = "./codigo/src/Archives/Estacionamentos.txt";
 
-    public Estacionamento(String nome, String rua, String bairro, int numero) {
+    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) {
         this.nome = nome;
         this.rua = rua;
         this.bairro = bairro;
         this.numero = numero;
+        this.qntdVagas = qntdVagas;
         this.vagas = new ArrayList<>();
         this.id = EncontrarMaiorId() + 1;
+        this.instanciarVagas();
+    }
+
+  public void instanciarVagas() {
+        int vagasRegulares = (int) (qntdVagas * 0.5);
+        int vagasIdoso = (int) (qntdVagas * 0.2);
+        int vagasPCD = (int) (qntdVagas * 0.2);
+        int vagasVIP = (int) (qntdVagas * 0.1);
+        int idVaga = 1;
+
+        int totalInstanciadas = vagasRegulares + vagasIdoso + vagasPCD + vagasVIP;
+
+        // Ajusta para compensar qualquer arredondamento que cause diferença no total
+        while (totalInstanciadas < qntdVagas) {
+            vagasRegulares++;
+            totalInstanciadas++;
+        }
+
+        for (int i = 0; i < vagasRegulares; i++) {
+            vagas.add(new VagaRegular(idVaga++));
+        }
+        for (int i = 0; i < vagasIdoso; i++) {
+            vagas.add(new VagaIdoso(idVaga++));
+        }
+        for (int i = 0; i < vagasPCD; i++) {
+            vagas.add(new VagaPCD(idVaga++));
+        }
+        for (int i = 0; i < vagasVIP; i++) {
+            vagas.add(new VagaVIP(idVaga++));
+        }
     }
 
     public void adicionarVaga(Vaga vaga) {
@@ -40,9 +72,6 @@ public class Estacionamento implements EncontrarMaior{
             while ((linha = leitor.readLine()) != null) {
                 if (linha.startsWith("ID: ")) {
                     idAtual = Integer.parseInt(linha.split(": ")[1]);
-                    // Inicializa a vaga como uma vaga comum (você pode modificar para criar uma vaga especial se necessário)
-                    vagaAtual = new Vaga(this.id);
-                    vagaAtual.setId(idAtual); // Defina o ID da vaga atual
                 }
 
                 if (linha.startsWith("Status: ")) {
@@ -54,17 +83,15 @@ public class Estacionamento implements EncontrarMaior{
 
                 if (linha.startsWith("Tipo: ")) {
                     String tipoVaga = linha.split(": ")[1].trim();
-                    // Aqui você pode criar a vaga do tipo correto, se necessário
-                    // Exemplo:
+                    // Cria a vaga com base no tipo
                     if (tipoVaga.equalsIgnoreCase("VagaPCD")) {
-                        vagaAtual = new VagaPCD(this.id);
-                        vagaAtual.setId(idAtual);
+                        vagaAtual = new VagaPCD(idAtual);
                     } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
-                        vagaAtual = new VagaVIP(this.id);
-                        vagaAtual.setId(idAtual);
+                        vagaAtual = new VagaVIP(idAtual);
+                    } else if (tipoVaga.equalsIgnoreCase("VagaIdoso")) {
+                        vagaAtual = new VagaIdoso(idAtual);
                     } else {
-                        vagaAtual = new Vaga(this.id);
-                        vagaAtual.setId(idAtual);
+                        vagaAtual = new VagaRegular(idAtual); // Vaga regular como padrão
                     }
                 }
 
@@ -133,8 +160,8 @@ public class Estacionamento implements EncontrarMaior{
                         vagaAtual = new VagaPCD(id); // Instancia VagaPCD
                     } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
                         vagaAtual = new VagaVIP(id); // Instancia VagaVIP
-                    } else if (tipoVaga.equalsIgnoreCase("Vaga")) {
-                        vagaAtual = new Vaga(id); // Instancia uma vaga comum
+                    } else if (tipoVaga.equalsIgnoreCase("VagaRegular")) {
+                        vagaAtual = new VagaRegular(id); // Instancia uma vaga comum
                     }
 
                     // Define o ID da vaga se a instância for criada com sucesso
@@ -196,7 +223,7 @@ public class Estacionamento implements EncontrarMaior{
                     } else if (tipoVaga.equalsIgnoreCase("VagaVIP")) {
                         vagaAtual = new VagaVIP(id); // Instancia VagaVIP
                     } else if (tipoVaga.equalsIgnoreCase("Vaga")) {
-                        vagaAtual = new Vaga(id); // Instancia uma vaga comum
+                        vagaAtual = new VagaRegular(id); // Instancia uma vaga comum
                     }
 
                     // Define o ID da vaga se a instância for criada com sucesso
@@ -302,6 +329,7 @@ public class Estacionamento implements EncontrarMaior{
                 escritor.write("Estacionamento: " + this.getNome() + "\n");
                 escritor.write("ID: " + this.getId() + "\n");
                 escritor.write("Endereço: " + this.getRua() + ", " + this.getNumero() + " - " + this.getBairro() + "\n");
+                escritor.write("Vagas: " + this.qntdVagas + "\n");
                 escritor.write("--------------------------------\n");
             }
 

@@ -12,4 +12,9 @@ public class VagaIdoso extends Vaga{
         double valorBase = super.calcularValor(tarifaBase);
         return tarifaBase * (1 - DESCONTO_IDOSO);
     }
+
+    @Override
+    public String getTipo() {
+        return "IDOSO";
+    }
 }

@@ -2,20 +2,15 @@ package Models;
 
 import java.io.*;
 
-
-
-public abstract class Vaga{
-
+public abstract class Vaga {
     private int id;
     protected double tarifaBase;
     private int idEstacionamento;
 
-    // Status True: Desocupado
-    // Status False: Ocupado
+    // Status True: Desocupado, False: Ocupado
     private boolean status;
     private static int nextId = 1;
     private static final String FILE_PATH = "./codigo/src/Archives/Vagas";
-
 
     public Vaga(int idEstacionamento) {
         this.id = EncontrarMaiorId(idEstacionamento) + 1;
@@ -44,7 +39,6 @@ public abstract class Vaga{
 
         return maiorId;
     }
-
 
     public int getId() {
         return id;
@@ -75,7 +69,7 @@ public abstract class Vaga{
     }
 
     public void setStatus(boolean status) {
-        this.status = status;
+        this.status = status; 
     }
 
     public static int getNextId() {

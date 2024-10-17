@@ -1,0 +1,15 @@
+ID: 1
+Status: Desocupada
+Tipo: Vaga
+Estacionamento: 1
+--------------------------------
+ID: 2
+Status: Desocupada
+Tipo: VagaPCD
+Estacionamento: 1
+--------------------------------
+ID: 3
+Status: Desocupada
+Tipo: VagaVIP
+Estacionamento: 1
+--------------------------------

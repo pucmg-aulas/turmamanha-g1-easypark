@@ -1,7 +1,6 @@
-
-
 //import Controllers.EstacionamentoController;
-
+//import Models.Estacionamento;
+//import Models.Vaga;
 
 import javax.swing.JOptionPane;
 
@@ -13,11 +12,11 @@ public class CadastroEstacionamentoView extends javax.swing.JInternalFrame {
     /**
      * Creates new form CadastroEstacionamentoView
      */
-    //private EstacionamentoController estacionamentoController;
+  // private EstacionamentoController estacionamentoController;
 
     public CadastroEstacionamentoView() {
         initComponents();
-        //estacionamentoController = new EstacionamentoController();
+   //     estacionamentoController = new EstacionamentoController();
     }
 
     /**
@@ -142,24 +141,29 @@ public class CadastroEstacionamentoView extends javax.swing.JInternalFrame {
         String rua = ruaEstacionamento.getText();
         int numero = Integer.parseInt(numeroEstacionamento.getText());
         int qntdVagas = (int) qntdVagasEstacionamento.getValue();
+        if(qntdVagas <= 0){
+            JOptionPane.showMessageDialog(null, "Cadastre uma quantidade de vagas válidas!");
+        }else{
+           // Estacionamento novoEstacionamento = new Estacionamento(nome, rua, bairro, numero, qntdVagas);
 
-        //Estacionamento novoEstacionamento = new Estacionamento(nome, rua, bairro, numero, qntdVagas);
+            for (int i = 0; i < qntdVagas; i++) {
+            //Vaga vaga = new Vaga();
+            //novoEstacionamento.adicionarVaga(vaga);
+            }
 
-       // for (int i = 0; i < qntdVagas; i++) {
-       //     Vaga vaga = new Vaga();
-       //     novoEstacionamento.adicionarVaga(vaga);
-       // }
+          //  estacionamentoController.setEstacionamento(novoEstacionamento);
 
-       // estacionamentoController.setEstacionamento(novoEstacionamento);
+//            if (estacionamentoController.salvarEstacionamento()) {
+//                JOptionPane.showMessageDialog(null, "Estacionamento Cadastrado com Sucesso!");
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Erro ao cadastrar estacionamento.");
+//            }
 
-       // if (estacionamentoController.salvarEstacionamento()) {
-        //    JOptionPane.showMessageDialog(null, "Estacionamento Cadastrado com Sucesso!");
-       // } else {
-       //     JOptionPane.showMessageDialog(null, "Erro ao cadastrar estacionamento.");
-       // }
+            JOptionPane.showMessageDialog(null, "Estacionamento Cadastrado!");
+            this.dispose();
+        }
 
-        JOptionPane.showMessageDialog(null, "Estacionamento Cadastrado!");
-        this.dispose();
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

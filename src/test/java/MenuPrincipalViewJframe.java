@@ -1,8 +1,5 @@
 
 
-
-
-
 /**
  *
  * @author user
@@ -172,9 +169,7 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
         telaSobre.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+   
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

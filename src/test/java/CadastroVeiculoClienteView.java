@@ -1,23 +1,21 @@
+import Controllers.ClienteController;
+import Controllers.VeiculoController;
+import java.io.IOException;
 
 
 import javax.swing.JOptionPane;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 
-/**
- *
- * @author user
- */
 public class CadastroVeiculoClienteView extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form CadastroVeiculoClienteView
-     */
-    public CadastroVeiculoClienteView() {
+    private ClienteController cc;
+    private VeiculoController vc;
+    
+    public CadastroVeiculoClienteView(String cpf) {
         initComponents();
+        cc = new ClienteController();
+        cc.setCliente(cc.getNomeClientePorCpf(cpf), cpf);
+        vc = new VeiculoController();
     }
 
     /**
@@ -137,17 +135,30 @@ public class CadastroVeiculoClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_modeloVeiculoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       
         String placa = placaVeiculo.getText();
         String modelo = modeloVeiculo.getText();
+        if(placa.isEmpty() || modelo.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+            return;
+        }
         
-        JOptionPane.showMessageDialog(null, "Veiculo Cadastrado!");
-        this.dispose();
+        try {
+            boolean veiculoCadastrado =  vc.cadastrarVeiculoPorCliente(modelo, placa, cc.getCliente());
+            
+            if(veiculoCadastrado){
+                JOptionPane.showMessageDialog(null, "Veículo cadastrado com sucesso");
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Veículo com a placa " + placa + " já existe!");
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o veículo: " + ex.getMessage());
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -18,13 +18,13 @@ public class EstacionamentoDAO{
     private static EstacionamentoDAO instance;
     private final String Arquivo = Estacionamento.getArquivoPath();
 
-    private EstacionamentoDAO() {
-        estacionamentos = ler(Arquivo);
+    private EstacionamentoDAO() throws IOException {
+        estacionamentos = lerEstacionamentos();
         if(estacionamentos == null){
             estacionamentos = new ArrayList<>();
         }
     }
-    public static EstacionamentoDAO getInstance() {
+    public static EstacionamentoDAO getInstance() throws IOException {
         if (instance == null) {
             instance = new EstacionamentoDAO();
         }
@@ -84,6 +84,7 @@ public class EstacionamentoDAO{
        }catch(IOException ex){
            throw new IOException(ex.getMessage());
        }
+       return false;
    }
    
    private List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{

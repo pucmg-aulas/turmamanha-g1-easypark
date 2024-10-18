@@ -6,4 +6,8 @@ public class VagaRegular extends Vaga{
         super(idEstacionamento);
     }
 
+    @Override
+    public String getTipo(){
+        return "Regular";
+    }
 }

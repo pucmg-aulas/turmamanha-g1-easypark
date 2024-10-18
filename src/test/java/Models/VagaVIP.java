@@ -11,4 +11,9 @@ public class VagaVIP extends Vaga{
     public static double getAumentoVip() {
         return AUMENTO_VIP;
     }
+
+    @Override
+    public String getTipo(){
+        return "VIP";
+    }
 }

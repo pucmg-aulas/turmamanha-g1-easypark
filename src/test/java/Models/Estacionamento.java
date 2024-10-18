@@ -8,13 +8,22 @@ public class Estacionamento implements EncontrarMaior {
     private int id;
     private String nome;
     private String rua;
-    private String numero;
+    private int numero;
     private String bairro;
     private List<Vaga> vagas;
     private static final String ARQUIVO = "./src/test/java/Archives/Estacionamentos.txt";
 
-    public Estacionamento(String nome, String rua, String bairro, String numero, int qntdVagas) {
+    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) {
         this.id = EncontrarMaiorId() + 1;
+        this.nome = nome;
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.vagas = new ArrayList<>(qntdVagas);
+    }
+
+    public Estacionamento(int id, String nome, String rua, String bairro, int numero, int qntdVagas) {
+        this.id = id;
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -30,6 +39,12 @@ public class Estacionamento implements EncontrarMaior {
             });
         }
     }
+
+    public int getQntdVagas(){
+        return vagas.size();
+    }
+
+
 
     @Override
     public int EncontrarMaiorId() {
@@ -77,11 +92,11 @@ public class Estacionamento implements EncontrarMaior {
         this.rua = rua;
     }
 
-    public String getNumero() {
+    public int getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 

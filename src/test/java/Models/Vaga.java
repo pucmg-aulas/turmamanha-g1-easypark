@@ -68,7 +68,7 @@ public abstract class Vaga {
         this.idEstacionamento = idEstacionamento;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -83,4 +83,7 @@ public abstract class Vaga {
     public static void setNextId(int nextId) {
         Vaga.nextId = nextId;
     }
+
+    public abstract String getTipo();
 }
+

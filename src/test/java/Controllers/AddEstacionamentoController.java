@@ -1,8 +1,10 @@
 package Controllers;
+
 import dao.EstacionamentoDAO;
 import view.CadastroEstacionamentoView;
 import Models.Estacionamento;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -11,7 +13,7 @@ public class AddEstacionamentoController  {
     private CadastroEstacionamentoView view;
     private EstacionamentoDAO estacionamentos;
 
-    public AddEstacionamentoController(JDesktopPane desktopPane) throws FileNotFoundException {
+    public AddEstacionamentoController(JDesktopPane desktopPane) throws IOException {
         this.view = new CadastroEstacionamentoView();
         this.estacionamentos = EstacionamentoDAO.getInstance();
         

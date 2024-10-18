@@ -10,4 +10,9 @@ public class VagaIdoso extends Vaga{
     public double getDESCONTO_IDOSO() {
         return DESCONTO_IDOSO;
     }
+
+    @Override
+    public String getTipo(){
+        return "Idoso";
+    }
 }

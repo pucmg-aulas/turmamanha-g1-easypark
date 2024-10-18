@@ -11,4 +11,9 @@ public class VagaPCD extends Vaga {
     public double getDESCONTO_PCD() {
         return DESCONTO_PCD;
     }
+
+    @Override
+    public String getTipo(){
+        return "PCD";
+    }
 }

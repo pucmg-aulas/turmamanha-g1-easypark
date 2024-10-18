@@ -1,16 +1,20 @@
 package Models;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estacionamento {
+public class Estacionamento implements EncontrarMaior {
+    private int id;
     private String nome;
     private String rua;
-    private int numero;
+    private String numero;
     private String bairro;
     private List<Vaga> vagas;
+    private static final String ARQUIVO = "./src/test/java/Archives/Estacionamentos.txt";
 
-    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) {
+    public Estacionamento(String nome, String rua, String bairro, String numero, int qntdVagas) {
+        this.id = EncontrarMaiorId() + 1;
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -20,7 +24,7 @@ public class Estacionamento {
     }
 
 
-    public void instanciarVagas(int qntdVagas) {
+    private void instanciarVagas(int qntdVagas) {
         for (int i = 0; i < qntdVagas; i++) {
             vagas.add(new Vaga(i + 1) {
                 // Implementação concreta da classe Vaga
@@ -28,78 +32,77 @@ public class Estacionamento {
         }
     }
 
+    @Override
+    public int EncontrarMaiorId() {
+        File arquivo = new File(ARQUIVO);
+        int maiorId = 0;
 
-    public void adicionarVaga(Vaga vaga) {
-        vagas.add(vaga);
-    }
-
-
-    public Vaga getVagaPorId(int id) {
-        return vagas.stream().filter(v -> v.getId() == id).findFirst().orElse(null);
-    }
-
-
-    public List<Vaga> getVagasDisponiveis() {
-        List<Vaga> vagasDisponiveis = new ArrayList<>();
-        for (Vaga vaga : vagas) {
-            if (vaga.isStatus()) { // Usando o método isStatus()
-                vagasDisponiveis.add(vaga);
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.startsWith("ID: ")) {
+                    int idAtual = Integer.parseInt(linha.replace("ID: ", "").trim());
+                    if (idAtual > maiorId) {
+                        maiorId = idAtual;
+                    }
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
         }
-        return vagasDisponiveis;
+
+        return maiorId;
     }
 
-
-    public List<Vaga> getVagasOcupadas() {
-        List<Vaga> vagasOcupadas = new ArrayList<>();
-        for (Vaga vaga : vagas) {
-            if (!vaga.isStatus()) { // Usando o método isStatus()
-                vagasOcupadas.add(vaga);
-            }
-        }
-        return vagasOcupadas;
+    public int getId() {
+        return id;
     }
 
-
-    public boolean reservarVagaPorId(int id) {
-        Vaga vaga = getVagaPorId(id);
-        if (vaga != null && vaga.isStatus()) { // Usando o método isStatus()
-            vaga.setStatus(false); // Marca a vaga como ocupada
-            return true;
-        }
-        return false;
+    public void setId(int id) {
+        this.id = id;
     }
-
-
-    public boolean gravarEstacionamentosEmArquivo() {
-
-        System.out.println("Estacionamento salvo em arquivo.");
-        return true;
-    }
-
-    public static List<Estacionamento> lerEstacionamentosDoArquivo() {
-
-        return new ArrayList<>();
-    }
-
 
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getRua() {
         return rua;
     }
 
-    public int getNumero() {
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getNumero() {
         return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getBairro() {
         return bairro;
     }
 
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
     public List<Vaga> getVagas() {
         return vagas;
+    }
+
+    public void setVagas(List<Vaga> vagas) {
+        this.vagas = vagas;
+    }
+    
+    public static String getArquivoPath(){
+        return ARQUIVO;
     }
 }

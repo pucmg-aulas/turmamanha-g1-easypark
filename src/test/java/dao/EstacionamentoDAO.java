@@ -1,15 +1,18 @@
 package dao;
 
 import Models.Estacionamento;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstacionamentoDAO extends AbstractDAO {
+public class EstacionamentoDAO{
 
     private List<Estacionamento> estacionamentos;
     private static EstacionamentoDAO instance;
@@ -33,9 +36,9 @@ public class EstacionamentoDAO extends AbstractDAO {
         cadastrarEstacionamento(estacionamento);
     }
 
-    public void removeEstacionamento(Estacionamento estacionamento) {
+    public void removeEstacionamento(Estacionamento estacionamento) throws IOException {
         estacionamentos.remove(estacionamento);
-        gravar(Arquivo, estacionamentos);
+        salvarEstacionamentoArquivo(estacionamentos);
     }
 
     public List<Estacionamento> getAllEstacionamentos(){
@@ -52,11 +55,12 @@ public class EstacionamentoDAO extends AbstractDAO {
     }
     
     public boolean cadastrarEstacionamento(Estacionamento estacionamento) throws IOException{
-        salvarEstacionamentoArquivo(estacionamento);
+        estacionamentos.add(estacionamento);
+        salvarEstacionamentoArquivo(estacionamentos);
         return true;
     } 
     
-   private boolean salvarEstacionamentoArquivo(Estacionamento e) throws IOException{
+   private boolean salvarEstacionamentoArquivo(List<Estacionamento> e) throws IOException{
        File arquivo = new File(Arquivo);
        
        try{
@@ -69,14 +73,41 @@ public class EstacionamentoDAO extends AbstractDAO {
                arquivo.createNewFile();
            }
            
-           try(BufferedWriter bw = new BufferedWriter(new FileWriter(Arquivo, true))){
-               bw.write(e.getId() + ";" + e.getNome() + ";" + e.getRua()+ ";" + e.getBairro()+ ";" + e.getNumero()+ ";");
-               bw.newLine();
-               bw.flush();
+           try(BufferedWriter bw = new BufferedWriter(new FileWriter(Arquivo))){
+               for(Estacionamento es: e){
+                   bw.write(es.getId() + ";" + es.getNome() + ";" + es.getRua()+ ";" + es.getBairro()+ ";" + es.getNumero()+ ";" + es.getQntdVagas());
+                   bw.newLine();
+                   bw.flush();
                return true;
+               }
            }
        }catch(IOException ex){
            throw new IOException(ex.getMessage());
        }
+   }
+   
+   private List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
+       List<Estacionamento> estacionamentos = new ArrayList();
+       try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))){
+           String linha;
+           
+           while((linha = br.readLine()) != null){
+               String[] dados = linha.split(";");
+               String id = dados[0];
+               String nome = dados[1];
+               String rua = dados[2];
+               String bairro = dados[3];
+               String numero = dados[4];
+               String qntVagas = dados[5];
+               
+               Estacionamento e = new Estacionamento(Integer.parseInt(id), nome, rua, bairro, Integer.parseInt(numero),Integer.parseInt(qntVagas));
+               estacionamentos.add(e);
+           }
+           
+           return estacionamentos;
+       }catch(IOException e){
+           throw new RuntimeException(e);
+       }
+       
    }
 }

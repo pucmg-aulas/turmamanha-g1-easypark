@@ -10,7 +10,7 @@ public abstract class Vaga {
     // Status True: Desocupado, False: Ocupado
     private boolean status;
     private static int nextId = 1;
-    private static final String FILE_PATH = "./codigo/src/Archives/Vagas";
+    private final String FILE_PATH = "./codigo/src/Archives/Vagas" + idEstacionamento;
 
     public Vaga(int idEstacionamento) {
         this.id = EncontrarMaiorId(idEstacionamento) + 1;
@@ -48,6 +48,10 @@ public abstract class Vaga {
         this.id = id;
     }
 
+    public String getArquivoPath(){
+        return FILE_PATH;
+    }
+   
     public double getTarifaBase() {
         return tarifaBase;
     }

@@ -20,7 +20,6 @@ public class Estacionamento implements EncontrarMaior {
         this.numero = numero;
         this.bairro = bairro;
         this.vagas = new ArrayList<>(qntdVagas);
-        instanciarVagas(qntdVagas);
     }
 
 

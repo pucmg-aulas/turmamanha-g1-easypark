@@ -6,6 +6,9 @@ public class VagaIdoso extends Vaga{
     public VagaIdoso(int idEstacionamento) {
         super(idEstacionamento);
     }
+    public VagaIdoso(int idEstacionamento, boolean status) {
+        super(idEstacionamento, status);
+    }
 
     public double getDESCONTO_IDOSO() {
         return DESCONTO_IDOSO;

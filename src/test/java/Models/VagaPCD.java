@@ -8,6 +8,9 @@ public class VagaPCD extends Vaga {
         super(idEstacionamento);
     }
 
+    public VagaPCD(int idEstacionamento, boolean status) {
+        super(idEstacionamento, status);
+    }
     public double getDESCONTO_PCD() {
         return DESCONTO_PCD;
     }

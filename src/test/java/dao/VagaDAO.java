@@ -19,19 +19,20 @@ import java.util.List;
  * @author USER
  */
 public class VagaDAO{
-    private ArrayList<Vaga> vagas;
+    private List<Vaga> vagas;
     private static VagaDAO instance;
 
-    private VagaDAO(){
+    private VagaDAO(int idEstacionamento){
+        vagas = carregarVagasArquivo(idEstacionamento);
         if(vagas == null){
             vagas = new ArrayList<>();
         }
       
     }
     
-    public static VagaDAO getInstance(){
+    public static VagaDAO getInstance(int idEstacionamento){
         if(instance == null){
-            instance = new VagaDAO();
+            instance = new VagaDAO(idEstacionamento);
         }
         return instance;
     }

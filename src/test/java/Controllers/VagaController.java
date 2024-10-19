@@ -1,7 +1,7 @@
 package Controllers;
 
 import dao.VagaDAO;
-import Models.Estacionamento
+import Models.Estacionamento;
 
 public class VagaController {
 

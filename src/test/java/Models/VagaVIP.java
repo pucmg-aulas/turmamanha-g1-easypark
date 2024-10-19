@@ -7,6 +7,10 @@ public class VagaVIP extends Vaga{
     public VagaVIP(int idEstacionamento) {
         super(idEstacionamento);
     }
+    
+    public VagaVIP(int idEstacionamento, boolean status) {
+        super(idEstacionamento, status);
+    }
 
     public static double getAumentoVip() {
         return AUMENTO_VIP;

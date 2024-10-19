@@ -18,6 +18,13 @@ public abstract class Vaga {
         this.tarifaBase = 10.0;
         this.idEstacionamento = idEstacionamento;
     }
+    
+    public Vaga(int idEstacionamento, boolean status) {
+        this.id = EncontrarMaiorId(idEstacionamento) + 1;
+        this.status = status;
+        this.tarifaBase = 10.0;
+        this.idEstacionamento = idEstacionamento;
+    }
 
     public int EncontrarMaiorId(int idEstacionamento) {
         File arquivo = new File(FILE_PATH);

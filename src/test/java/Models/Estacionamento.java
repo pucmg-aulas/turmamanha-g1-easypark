@@ -32,13 +32,13 @@ public class Estacionamento implements EncontrarMaior {
     }
 
 
-    private void instanciarVagas(int qntdVagas) {
-        for (int i = 0; i < qntdVagas; i++) {
-            vagas.add(new Vaga(i + 1) {
-                // Implementação concreta da classe Vaga
-            });
-        }
-    }
+//    private void instanciarVagas(int qntdVagas) {
+//        for (int i = 0; i < qntdVagas; i++) {
+//            vagas.add(new Vaga(i + 1) {
+//                // Implementação concreta da classe Vaga
+//            });
+//        }
+//    }
 
     public int getQntdVagas(){
         return vagas.size();

@@ -31,10 +31,6 @@ public class EstacionamentoDAO{
         return instance;
     }
 
-    public void addEstacionamento(Estacionamento estacionamento) throws IOException {
-        estacionamentos.add(estacionamento);
-        cadastrarEstacionamento(estacionamento);
-    }
 
     public void removeEstacionamento(Estacionamento estacionamento) throws IOException {
         estacionamentos.remove(estacionamento);
@@ -56,8 +52,7 @@ public class EstacionamentoDAO{
     
     public boolean cadastrarEstacionamento(Estacionamento estacionamento) throws IOException{
         estacionamentos.add(estacionamento);
-        salvarEstacionamentoArquivo(estacionamentos);
-        return true;
+        return salvarEstacionamentoArquivo(estacionamentos);
     } 
     
    private boolean salvarEstacionamentoArquivo(List<Estacionamento> e) throws IOException{
@@ -65,7 +60,7 @@ public class EstacionamentoDAO{
        
        try{
            File diretorio = arquivo.getParentFile();
-           if(diretorio != null && diretorio.exists()){
+           if(diretorio != null && !diretorio.exists()){
                diretorio.mkdir();
            }
            
@@ -78,17 +73,17 @@ public class EstacionamentoDAO{
                    bw.write(es.getId() + ";" + es.getNome() + ";" + es.getRua()+ ";" + es.getBairro()+ ";" + es.getNumero()+ ";" + es.getQntdVagas());
                    bw.newLine();
                    bw.flush();
-               return true;
+              
                }
+                return true;
            }
        }catch(IOException ex){
            throw new IOException(ex.getMessage());
        }
-       return false;
    }
    
    private List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
-       List<Estacionamento> estacionamentos = new ArrayList();
+       List<Estacionamento> estacionamentosLista = new ArrayList();
        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))){
            String linha;
            
@@ -102,10 +97,10 @@ public class EstacionamentoDAO{
                String qntVagas = dados[5];
                
                Estacionamento e = new Estacionamento(Integer.parseInt(id), nome, rua, bairro, Integer.parseInt(numero),Integer.parseInt(qntVagas));
-               estacionamentos.add(e);
+               estacionamentosLista.add(e);
            }
            
-           return estacionamentos;
+           return estacionamentosLista;
        }catch(IOException e){
            throw new RuntimeException(e);
        }

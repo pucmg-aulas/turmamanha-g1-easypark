@@ -1,13 +1,17 @@
 package Models;
 
-public class VagaIdoso extends Vaga{
-    private static final double DESCONTO_IDOSO = 0.15;
+import java.io.IOException;
 
-    public VagaIdoso(int idEstacionamento) {
-        super(idEstacionamento);
+public class VagaIdoso extends Vaga{
+    private static final double DESCONTO_IDOSO = 0.85;
+
+    public VagaIdoso(int idEstacionamento, int id) throws IOException {
+        super(idEstacionamento, id);
+        this.tarifaBase = getTarifaBase() * DESCONTO_IDOSO;
     }
-    public VagaIdoso(int idEstacionamento, boolean status) {
-        super(idEstacionamento, status);
+    public VagaIdoso(int idEstacionamento, boolean status, int id) throws IOException {
+        super(idEstacionamento, status, id);
+        this.tarifaBase = getTarifaBase() * DESCONTO_IDOSO;
     }
 
     public double getDESCONTO_IDOSO() {

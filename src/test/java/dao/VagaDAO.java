@@ -4,6 +4,7 @@
  */
 package dao;
 
+import Models.Estacionamento;
 import Models.Vaga;
 import Models.VagaIdoso;
 import Models.VagaRegular;
@@ -55,16 +56,16 @@ public class VagaDAO{
                     Vaga vaga = null;
                     switch (tipo) {
                         case "Regular":
-                            vaga = new VagaRegular(id, status);
+                            vaga = new VagaRegular(id, status, id);
                             break;
                         case "Idoso":
-                            vaga = new VagaIdoso(id, status);
+                            vaga = new VagaIdoso(id, status, id);
                             break;
                         case "PCD":
-                            vaga = new VagaPCD(id, status);
+                            vaga = new VagaPCD(id, status, id);
                             break;
                         case "VIP":
-                            vaga = new VagaVIP(id, status);
+                            vaga = new VagaVIP(id, status, id);
                             break;
                     }
 
@@ -80,13 +81,13 @@ public class VagaDAO{
         return vagasCarregadas;
     }
 
-    private boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
+    public boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
 
-        File arquivo = new File("./src/java/Archives/Vagas"+idEstacionamento+".txt");
+        File arquivo = new File("./src/test/java/Archives/Vagas"+idEstacionamento+".txt");
 
         try{
             File diretorio = arquivo.getParentFile();
-            if(diretorio != null && diretorio.exists()){
+            if(diretorio != null && !diretorio.exists()){
                 diretorio.mkdir();
             }
 
@@ -100,59 +101,52 @@ public class VagaDAO{
                     bw.write(vaga.getId() + ";" + vaga.getTipo() + ";" + statusString);
                     bw.newLine();
                     bw.flush();
-                    return true;
                 }
+                return true;
             }
         }catch(IOException ex){
             throw new IOException(ex.getMessage());
         }
-        return false;
     }
 
-    public void salvarVagaEmArquivo(Vaga vaga, int idEstacionamento) {
-        try {
-            List<Vaga> listaVagaUnica = new ArrayList<>();
-            listaVagaUnica.add(vaga);
-            salvarVagasArquivo(listaVagaUnica, idEstacionamento);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void instanciarVagas(int qntdVagas, int idEstacionamento) {
+    public void instanciarVagas(int qntdVagas, int idEstacionamento) throws IOException {
         int vagasRegulares = (int) (qntdVagas * 0.5);
         int vagasIdoso = (int) (qntdVagas * 0.2);
         int vagasPCD = (int) (qntdVagas * 0.2);
         int vagasVIP = (int) (qntdVagas * 0.1);
-        int idVaga = 1;
 
         int totalInstanciadas = vagasRegulares + vagasIdoso + vagasPCD + vagasVIP;
-
+        List<Vaga> vagaLista = new ArrayList<>();
+        
         while (totalInstanciadas < qntdVagas) {
             vagasRegulares++;
             totalInstanciadas++;
         }
+        int maiorIdExistente = 0;
+        int proximoId = maiorIdExistente + 1;
 
         for (int i = 0; i < vagasRegulares; i++) {
-            Vaga vaga = new VagaRegular(idVaga++);
+            Vaga vaga = new VagaRegular(idEstacionamento, proximoId++);
             vagas.add(vaga);
-            salvarVagaEmArquivo(vaga, idEstacionamento);
+            vagaLista.add(vaga); 
         }
         for (int i = 0; i < vagasIdoso; i++) {
-            Vaga vaga = new VagaIdoso(idVaga++);
+            Vaga vaga = new VagaIdoso(idEstacionamento, proximoId++);
             vagas.add(vaga);
-            salvarVagaEmArquivo(vaga, idEstacionamento);
+            vagaLista.add(vaga);  
         }
         for (int i = 0; i < vagasPCD; i++) {
-            Vaga vaga = new VagaPCD(idVaga++);
+            Vaga vaga = new VagaPCD(idEstacionamento,proximoId++);
             vagas.add(vaga);
-            salvarVagaEmArquivo(vaga, idEstacionamento);
+            vagaLista.add(vaga);         
         }
         for (int i = 0; i < vagasVIP; i++) {
-            Vaga vaga = new VagaVIP(idVaga++);
+            Vaga vaga = new VagaVIP(idEstacionamento,proximoId++);
             vagas.add(vaga);
-            salvarVagaEmArquivo(vaga, idEstacionamento);
+            vagaLista.add(vaga);
         }
+        
+        salvarVagasArquivo(vagaLista, idEstacionamento);
     }
 
     public Vaga getVagaPorId(int id){
@@ -190,6 +184,32 @@ public class VagaDAO{
         return vagasOcupadas;
     }
 
+     public Estacionamento lerEstacionamentoPorId(int idEstacionamento) throws FileNotFoundException, IOException{
+       Estacionamento estacionamentoAtual;
+       try(BufferedReader br = new BufferedReader(new FileReader(Estacionamento.getArquivoPath()))){
+           String linha;
+           
+           while((linha = br.readLine()) != null){
+               String[] dados = linha.split(";");
+               String id = dados[0];
+               int idNumero = Integer.parseInt(id);
+               String nome = dados[1];
+               String rua = dados[2];
+               String bairro = dados[3];
+               String numero = dados[4];
+               String qntVagas = dados[5];
+               
+               if(idEstacionamento == idNumero){
+                    estacionamentoAtual = new Estacionamento(idNumero, nome, rua, bairro, Integer.parseInt(numero),Integer.parseInt(qntVagas));
+                    return estacionamentoAtual;
+               }
+           }
+           return estacionamentoAtual = null;
+       }catch(IOException e){
+           throw new RuntimeException(e);
+       }
+       
+   }
 
     
 }

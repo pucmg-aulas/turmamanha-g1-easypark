@@ -9,42 +9,21 @@ public abstract class Vaga {
 
     // Status True: Desocupado, False: Ocupado
     private boolean status;
-    private static int nextId = 1;
+    private int nextId = 1;
     private final String FILE_PATH = "./codigo/src/Archives/Vagas" + idEstacionamento;
 
-    public Vaga(int idEstacionamento) {
-        this.id = EncontrarMaiorId(idEstacionamento) + 1;
+    public Vaga(int idEstacionamento, int id) throws IOException {
+        this.id = id;
         this.status = true;
         this.tarifaBase = 10.0;
         this.idEstacionamento = idEstacionamento;
     }
     
-    public Vaga(int idEstacionamento, boolean status) {
-        this.id = EncontrarMaiorId(idEstacionamento) + 1;
+    public Vaga(int idEstacionamento, boolean status, int id) throws IOException {
+        this.id = id;
         this.status = status;
         this.tarifaBase = 10.0;
         this.idEstacionamento = idEstacionamento;
-    }
-
-    public int EncontrarMaiorId(int idEstacionamento) {
-        File arquivo = new File(FILE_PATH);
-        int maiorId = 0;
-
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
-            String linha;
-            while ((linha = leitor.readLine()) != null) {
-                if (linha.startsWith("ID: ")) {
-                    int idAtual = Integer.parseInt(linha.replace("ID: ", "").trim());
-                    if (idAtual > maiorId) {
-                        maiorId = idAtual;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
-        }
-
-        return maiorId;
     }
 
     public int getId() {
@@ -83,12 +62,12 @@ public abstract class Vaga {
         this.status = status; 
     }
 
-    public static int getNextId() {
+    public  int getNextId() {
         return nextId;
     }
 
-    public static void setNextId(int nextId) {
-        Vaga.nextId = nextId;
+    public void setNextId(int nextId) {
+        this.nextId = nextId;
     }
 
     public abstract String getTipo();

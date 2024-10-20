@@ -10,10 +10,7 @@ import javax.swing.*;
  */
 public class CadastroEstacionamentoView extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form CadastroEstacionamentoView
-     */
-  // private EstacionamentoController estacionamentoController;
+
 
     public CadastroEstacionamentoView() {
         initComponents();

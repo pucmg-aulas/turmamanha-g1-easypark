@@ -4,22 +4,24 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estacionamento implements EncontrarMaior {
+public class Estacionamento{
     private int id;
     private String nome;
     private String rua;
     private int numero;
     private String bairro;
     private List<Vaga> vagas;
+    private int qntdVagas;
     private static final String ARQUIVO = "./src/test/java/Archives/Estacionamentos.txt";
 
-    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) {
+    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) throws FileNotFoundException {
         this.id = EncontrarMaiorId() + 1;
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
-        this.vagas = new ArrayList<>(qntdVagas);
+        this.vagas = new ArrayList<>();
+        this.qntdVagas = qntdVagas;
     }
 
     public Estacionamento(int id, String nome, String rua, String bairro, int numero, int qntdVagas) {
@@ -28,7 +30,8 @@ public class Estacionamento implements EncontrarMaior {
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
-        this.vagas = new ArrayList<>(qntdVagas);
+        this.vagas = new ArrayList<>();
+        this.qntdVagas = qntdVagas;
     }
 
 
@@ -41,30 +44,32 @@ public class Estacionamento implements EncontrarMaior {
 //    }
 
     public int getQntdVagas(){
-        return vagas.size();
+        return qntdVagas;
     }
 
 
-
-    @Override
-    public int EncontrarMaiorId() {
+    public int EncontrarMaiorId() throws FileNotFoundException {
         File arquivo = new File(ARQUIVO);
         int maiorId = 0;
 
+        if(!arquivo.exists()){
+            return maiorId;
+        }
+        
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             while ((linha = leitor.readLine()) != null) {
-                if (linha.startsWith("ID: ")) {
-                    int idAtual = Integer.parseInt(linha.replace("ID: ", "").trim());
-                    if (idAtual > maiorId) {
-                        maiorId = idAtual;
-                    }
-                }
-            }
-        } catch (IOException e) {
+                String[] dados = linha.split(";");
+                int idAtual = Integer.parseInt(dados[0]);
+                
+                if(idAtual > maiorId){
+                    maiorId = idAtual;
+                } 
+               }
+            }catch (IOException e) {
             System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
+        
         }
-
         return maiorId;
     }
 

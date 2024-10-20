@@ -132,10 +132,10 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-//        CadastroEstacionamentoView telaCadEst = new CadastroEstacionamentoView();
-//        jDesktopPane1.add(telaCadEst);
-//        telaCadEst.setVisible(true);
-        new AddEstacionamentoController(jDesktopPane1);
+        CadastroEstacionamentoView telaCadEst = new CadastroEstacionamentoView();
+        jDesktopPane1.add(telaCadEst);
+        telaCadEst.setVisible(true);
+       // new AddEstacionamentoController(jDesktopPane1);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

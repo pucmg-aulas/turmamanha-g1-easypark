@@ -1,6 +1,6 @@
 package view;
 
-import Controllers.AddEstacionamentoController;
+import Controllers.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -150,9 +150,15 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        SelecionarEstacionamentoView telaSelEst = new SelecionarEstacionamentoView(jDesktopPane1);
-        jDesktopPane1.add(telaSelEst);
-        telaSelEst.setVisible(true);
+        
+         try {
+            SelectEstacionamentoController selectEstacionamentoController = new SelectEstacionamentoController(jDesktopPane1);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //SelecionarEstacionamentoView telaSelEst = new SelecionarEstacionamentoView(jDesktopPane1);
+        //jDesktopPane1.add(telaSelEst);
+        //telaSelEst.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

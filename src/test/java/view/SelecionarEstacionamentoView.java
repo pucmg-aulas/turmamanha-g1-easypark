@@ -1,8 +1,7 @@
 package view;
 
-import javax.swing.JDesktopPane;
-
-
+import javax.swing.*;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -13,6 +12,7 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
     private JDesktopPane jDesktopPane1;
 
     public SelecionarEstacionamentoView(JDesktopPane jDesktopPane1) {
+        
         this.jDesktopPane1 = jDesktopPane1;
         initComponents();
     }
@@ -29,10 +29,10 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        listaEstacionamento = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -47,20 +47,19 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        listaEstacionamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                listaEstacionamentoActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Selecionar Estacionamento");
 
-        jButton1.setText("Confirmar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnConfirmarActionPerformed(evt);
             }
         });
 
@@ -71,9 +70,9 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(listaEstacionamento, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(btnConfirmar))
                 .addContainerGap(126, Short.MAX_VALUE))
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -85,9 +84,9 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(listaEstacionamento, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnConfirmar)
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
@@ -105,31 +104,43 @@ public class SelecionarEstacionamentoView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
-      
-        MenuEstacionamentoView menuEst = new MenuEstacionamentoView(jDesktopPane1);
-        jDesktopPane1.add(menuEst);
-        menuEst.setVisible(true);
-        
-        this.dispose();
+
+
+//        MenuEstacionamentoView menuEst = new MenuEstacionamentoView(jDesktopPane1);
+//        jDesktopPane1.add(menuEst);
+//        menuEst.setVisible(true);
+//
+//        this.dispose();
   
 
    
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnConfirmarActionPerformed
+    public void addConfirmButtonActionListener(ActionListener actionListener) {
+        btnConfirmar.addActionListener(actionListener);
+    }
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    public JButton getBtnConfirmar() {
+        return btnConfirmar;
+    }
+
+    public JComboBox<String> getListaEstacionamento() {
+        return listaEstacionamento;
+    }
+
+    private void listaEstacionamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaEstacionamentoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_listaEstacionamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnConfirmar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox<String> listaEstacionamento;
     // End of variables declaration//GEN-END:variables
 }

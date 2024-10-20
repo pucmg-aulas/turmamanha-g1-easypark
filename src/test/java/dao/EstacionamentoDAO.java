@@ -82,7 +82,7 @@ public class EstacionamentoDAO{
        }
    }
    
-   private List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
+   public List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
        List<Estacionamento> estacionamentosLista = new ArrayList();
        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))){
            String linha;

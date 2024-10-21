@@ -4,10 +4,21 @@
  */
 package Controllers;
 
+import javax.swing.JDesktopPane;
+import view.MenuEstacionamentoView;
+
 /**
  *
  * @author user
  */
 public class MenuEstacionamentoController {
+    private MenuEstacionamentoView view;
     
+    
+    public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento){
+        this.view = new MenuEstacionamentoView(desktopPane);
+        
+        desktopPane.add(view);
+        this.view.setVisible(true);
+    }
 }

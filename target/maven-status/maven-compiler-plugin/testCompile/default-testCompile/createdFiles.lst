@@ -69,6 +69,7 @@ view\GerarCobrancaView$4.class
 view\ExibirDetalhesEstacionamentoView$1.class
 view\MenuPrincipalViewJframe$7.class
 view\PagarCobrancaView$2.class
+Controllers\MenuEstacionamentoController.class
 view\SelecionarClienteView$1.class
 Controllers\VeiculoController.class
 view\CadastroVeiculoClienteView.class

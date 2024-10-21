@@ -16,26 +16,25 @@ import java.util.List;
 public class SelectEstacionamentoController {
     private SelecionarEstacionamentoView view;
     private EstacionamentoDAO estacionamentoDAO;
+    private JDesktopPane desktopPane;
 
     public SelectEstacionamentoController(JDesktopPane desktopPane) throws IOException {
         this.view = new SelecionarEstacionamentoView(desktopPane);
         this.estacionamentoDAO = EstacionamentoDAO.getInstance();
+        this.desktopPane = desktopPane;
         
         desktopPane.add(view);
         this.view.setVisible(true);
         listarEstacionamentos();
 
         this.view.addConfirmButtonActionListener(e -> {
-            Estacionamento estacionamentoSelecionado = (Estacionamento) view.getListaEstacionamento().getSelectedItem();
-            //String estacionamentoSelecionado = (String) this.view.getListaEstacionamento().getSelectedItem();
-            
-         try {
-            MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(jDesktopPane1);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
+            String estacionamentoSelecionado = (String) view.getListaEstacionamento().getSelectedItem();
+            String[] dadosEstacionamento = estacionamentoSelecionado.split("-");
+            int idEstacionamentoSelecionado = Integer.parseInt(dadosEstacionamento[0]);
             JOptionPane.showMessageDialog(view,"Estacionamento selecionado: " + estacionamentoSelecionado);
+            JOptionPane.showMessageDialog(view,"Estacionamento selecionado: " + idEstacionamentoSelecionado);
+            MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
+        
         });
     }
 
@@ -48,7 +47,7 @@ public class SelectEstacionamentoController {
 
             for (Estacionamento estacionamento : estacionamentos) {
           
-               view.getListaEstacionamento().addItem(estacionamento.getNome());
+               view.getListaEstacionamento().addItem(estacionamento.getId() + "-" + estacionamento.getNome());
             }
 
         } catch (Exception e) {

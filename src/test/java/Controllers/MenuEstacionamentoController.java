@@ -13,10 +13,11 @@ import view.MenuEstacionamentoView;
  */
 public class MenuEstacionamentoController {
     private MenuEstacionamentoView view;
-    
+    private int idEstacionamento;
     
     public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento){
         this.view = new MenuEstacionamentoView(desktopPane);
+        this.idEstacionamento = idEstacionamento;
         
         desktopPane.add(view);
         this.view.setVisible(true);

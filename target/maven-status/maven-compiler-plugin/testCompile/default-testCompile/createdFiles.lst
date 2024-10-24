@@ -2,6 +2,7 @@ view\PagarCobrancaView$5.class
 view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Models\Veiculo.class
+view\CobrancaView$2.class
 view\CadastroEstacionamentoView.class
 Controllers\SelectEstacionamentoController.class
 view\MenuPrincipalViewJframe$3.class
@@ -15,6 +16,7 @@ view\CadastroClienteView$2.class
 view\ExibirDetalhesEstacionamentoView.class
 view\ReservarVagaView$1.class
 view\GerarCobrancaView$3.class
+view\DadosDaCobranca$1.class
 view\MenuClienteView$2.class
 view\CadastroEstacionamentoView$1.class
 view\SelecionarClienteView.class
@@ -30,6 +32,7 @@ view\GerarCobrancaView$5.class
 view\PagarCobrancaView$3.class
 view\ReservarVagaView.class
 view\MenuClienteView.class
+view\DadosDaCobranca.class
 view\MenuPrincipalViewJframe$4.class
 view\MenuEstacionamentoView$1.class
 view\GerarCobrancaView$4.class

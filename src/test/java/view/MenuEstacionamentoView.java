@@ -1,6 +1,10 @@
 package view;
 
+import Controllers.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 
@@ -39,8 +43,8 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        Detalhes = new javax.swing.JButton();
+        listarVagasBtn = new javax.swing.JButton();
+        detalhesBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -61,17 +65,17 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton3.setText("Reservar Vaga");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        listarVagasBtn.setText("Exibir Vagas");
+        listarVagasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                listarVagasBtnActionPerformed(evt);
             }
         });
 
-        Detalhes.setText("Exibir Detalhes do Estacionamento");
-        Detalhes.addActionListener(new java.awt.event.ActionListener() {
+        detalhesBtn.setText("Exibir Detalhes do Estacionamento");
+        detalhesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DetalhesActionPerformed(evt);
+                detalhesBtnActionPerformed(evt);
             }
         });
 
@@ -99,10 +103,10 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(Detalhes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(detalhesBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(listarVagasBtn, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,9 +119,9 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
-                .addComponent(Detalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(detalhesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(listarVagasBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -153,35 +157,48 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
         telaGerarCobranca.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void listarVagasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listarVagasBtnActionPerformed
         // TODO add your handling code here:
-        ReservarVagaView telaReservarVaga = new ReservarVagaView();
-        jDesktopPane1.add(telaReservarVaga);
-        telaReservarVaga.setVisible(true);
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+         try {
+            ListarVagasController listarVagasController = new ListarVagasController(jDesktopPane1);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+    }//GEN-LAST:event_listarVagasBtnActionPerformed
 
-    private void DetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetalhesActionPerformed
+    private void detalhesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detalhesBtnActionPerformed
         // TODO add your handling code here:
         ExibirDetalhesEstacionamentoView telaDetalhesEst = new ExibirDetalhesEstacionamentoView();
         jDesktopPane1.add(telaDetalhesEst);
         telaDetalhesEst.setVisible(true);
-    }//GEN-LAST:event_DetalhesActionPerformed
-    public void DetalhesButton(ActionListener actionListener) {
-        Detalhes.addActionListener(actionListener);
+    }//GEN-LAST:event_detalhesBtnActionPerformed
+    
+    public void addDetalhesButtonActionListener(ActionListener actionListener) {
+        detalhesBtn.addActionListener(actionListener);
     }
+    
     public JButton getDetalhes(){
-        return Detalhes;
+        return detalhesBtn;
+    }
+    
+     public void addListarVagasBtnActionListener(ActionListener actionListener) {
+        listarVagasBtn.addActionListener(actionListener);
+    }
+   
+    public JButton getListarVagasBtn(){
+        return listarVagasBtn;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Detalhes;
+    private javax.swing.JButton detalhesBtn;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton listarVagasBtn;
     // End of variables declaration//GEN-END:variables
 }

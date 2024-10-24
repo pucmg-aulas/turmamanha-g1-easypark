@@ -20,12 +20,6 @@ public class MenuEstacionamentoController {
         this.idEstacionamento = idEstacionamento;
         desktopPane.add(view);
         this.view.setVisible(true);
-        
-        
-        this.view.DetalhesButton( e ->{
-            
-    }
-        
-        );
+  
     }
 }

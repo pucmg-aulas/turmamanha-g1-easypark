@@ -15,9 +15,11 @@ public class CadastroVeiculoClienteView extends javax.swing.JInternalFrame {
     
     public CadastroVeiculoClienteView(String cpf) {
         initComponents();
+        
         cc = new ClienteController();
         cc.setCliente(cc.getNomeClientePorCpf(cpf), cpf);
         vc = new VeiculoController();
+        
     }
 
     /**

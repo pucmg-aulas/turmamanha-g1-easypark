@@ -18,6 +18,7 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
      */
     public MenuPrincipalViewJframe() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

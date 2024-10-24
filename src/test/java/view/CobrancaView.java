@@ -109,9 +109,10 @@ public class CobrancaView extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         DadosDaCobranca dadosDaCobranca = new DadosDaCobranca();
-    
+        
     // Define a tela como visível
     dadosDaCobranca.setVisible(true);
+    this.dispose();
     
     // Opcional: pode definir a posição da nova janela se necessário
     dadosDaCobranca.setLocationRelativeTo(null);
@@ -127,6 +128,8 @@ public class CobrancaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         MenuPrincipalViewJframe principal = new MenuPrincipalViewJframe();
         principal.setVisible(true);
+        this.dispose();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -1,16 +1,27 @@
 package view;
-
+import Controllers.MenuEstacionamentoController;
+import javax.swing.JDesktopPane;
 /**
  *
  * @author user
  */
 public class ExibirDetalhesEstacionamentoView extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ExibirDetalhesEstacionamentoView
-     */
-    public ExibirDetalhesEstacionamentoView() {
+       private MenuEstacionamentoController mec;
+  
+      public ExibirDetalhesEstacionamentoView(String cpf) {
         initComponents();
+        mec = new MenuEstacionamentoController((JDesktopPane desktopPane, int idEstacionamento);
+        mec.set(mec.getNomeClientePorCpf(cpf), cpf);
+        
+        carregarDadosCliente();
+    }
+
+    
+    private void carregarDadosCliente() {
+        // Atualiza os campos de texto com os dados do cliente
+        campoNome.setText(cc.getCliente().getNome());
+        campoCpf.setText(cc.getCliente().getCpf());
     }
 
     /**

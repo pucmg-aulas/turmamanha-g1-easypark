@@ -52,7 +52,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" alignment="2" min="-2" pref="409" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                          <Component id="detalhesBtn" alignment="1" min="-2" pref="516" max="-2" attributes="0"/>
+                          <Component id="Btndetalhes" alignment="1" min="-2" pref="516" max="-2" attributes="0"/>
                           <Component id="jButton4" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
                           <Component id="jButton2" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
                           <Component id="listarVagasBtn" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
@@ -72,7 +72,7 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                  <Component id="detalhesBtn" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="Btndetalhes" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   <Component id="listarVagasBtn" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
@@ -109,12 +109,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listarVagasBtnActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="detalhesBtn">
+        <Component class="javax.swing.JButton" name="Btndetalhes">
           <Properties>
             <Property name="text" type="java.lang.String" value="Exibir Detalhes do Estacionamento"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="detalhesBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtndetalhesActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">

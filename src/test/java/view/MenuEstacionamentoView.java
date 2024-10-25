@@ -44,7 +44,7 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         listarVagasBtn = new javax.swing.JButton();
-        detalhesBtn = new javax.swing.JButton();
+        Btndetalhes = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -72,10 +72,10 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
             }
         });
 
-        detalhesBtn.setText("Exibir Detalhes do Estacionamento");
-        detalhesBtn.addActionListener(new java.awt.event.ActionListener() {
+        Btndetalhes.setText("Exibir Detalhes do Estacionamento");
+        Btndetalhes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                detalhesBtnActionPerformed(evt);
+                BtndetalhesActionPerformed(evt);
             }
         });
 
@@ -103,7 +103,7 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(detalhesBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Btndetalhes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(listarVagasBtn, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -119,7 +119,7 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
-                .addComponent(detalhesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Btndetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(listarVagasBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -168,19 +168,20 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
           
     }//GEN-LAST:event_listarVagasBtnActionPerformed
 
-    private void detalhesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detalhesBtnActionPerformed
+    private void BtndetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtndetalhesActionPerformed
         // TODO add your handling code here:
         ExibirDetalhesEstacionamentoView telaDetalhesEst = new ExibirDetalhesEstacionamentoView();
         jDesktopPane1.add(telaDetalhesEst);
         telaDetalhesEst.setVisible(true);
-    }//GEN-LAST:event_detalhesBtnActionPerformed
+    }//GEN-LAST:event_BtndetalhesActionPerformed
+    
     
     public void addDetalhesButtonActionListener(ActionListener actionListener) {
-        detalhesBtn.addActionListener(actionListener);
+        Btndetalhes.addActionListener(actionListener);
     }
     
     public JButton getDetalhes(){
-        return detalhesBtn;
+        return Btndetalhes;
     }
     
      public void addListarVagasBtnActionListener(ActionListener actionListener) {
@@ -192,7 +193,7 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton detalhesBtn;
+    private javax.swing.JButton Btndetalhes;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;

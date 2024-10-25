@@ -41,41 +41,41 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        listarVagasBtn = new javax.swing.JButton();
-        Btndetalhes = new javax.swing.JButton();
+        btnPagarCobranca = new javax.swing.JButton();
+        btnGerarCobranca = new javax.swing.JButton();
+        btnListarVagas = new javax.swing.JButton();
+        BtnDetalhes = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
         setClosable(true);
 
-        jButton2.setText("Pagar Cobrança");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnPagarCobranca.setText("Pagar Cobrança");
+        btnPagarCobranca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnPagarCobrancaActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Gerar Cobrança");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnGerarCobranca.setText("Gerar Cobrança");
+        btnGerarCobranca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnGerarCobrancaActionPerformed(evt);
             }
         });
 
-        listarVagasBtn.setText("Exibir Vagas");
-        listarVagasBtn.addActionListener(new java.awt.event.ActionListener() {
+        btnListarVagas.setText("Exibir Vagas");
+        btnListarVagas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listarVagasBtnActionPerformed(evt);
+                btnListarVagasActionPerformed(evt);
             }
         });
 
-        Btndetalhes.setText("Exibir Detalhes do Estacionamento");
-        Btndetalhes.addActionListener(new java.awt.event.ActionListener() {
+        BtnDetalhes.setText("Exibir Detalhes do Estacionamento");
+        BtnDetalhes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtndetalhesActionPerformed(evt);
+                BtnDetalhesActionPerformed(evt);
             }
         });
 
@@ -103,10 +103,10 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(Btndetalhes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(listarVagasBtn, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BtnDetalhes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGerarCobranca, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPagarCobranca, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnListarVagas, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -119,13 +119,13 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
-                .addComponent(Btndetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BtnDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(listarVagasBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnListarVagas, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnGerarCobranca, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPagarCobranca, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(92, Short.MAX_VALUE))
         );
 
@@ -143,63 +143,66 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnPagarCobrancaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarCobrancaActionPerformed
         // TODO add your handling code here:
         PagarCobrancaView telaPagarCobranca = new PagarCobrancaView();
         jDesktopPane1.add(telaPagarCobranca);
         telaPagarCobranca.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnPagarCobrancaActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnGerarCobrancaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarCobrancaActionPerformed
         // TODO add your handling code here:
-        GerarCobrancaView telaGerarCobranca = new GerarCobrancaView();
-        jDesktopPane1.add(telaGerarCobranca);
-        telaGerarCobranca.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnGerarCobrancaActionPerformed
 
-    private void listarVagasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listarVagasBtnActionPerformed
-        // TODO add your handling code here:
-        
-         //try {
-         //   ListarVagasController listarVagasController = new ListarVagasController(jDesktopPane1);
-       // } catch (IOException ex) {
-        //    Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
-       // }
-          
-    }//GEN-LAST:event_listarVagasBtnActionPerformed
+    private void btnListarVagasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarVagasActionPerformed
+        // TODO add your handling code here 
+    }//GEN-LAST:event_btnListarVagasActionPerformed
 
-    private void BtndetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtndetalhesActionPerformed
+    private void BtnDetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDetalhesActionPerformed
         // TODO add your handling code here:
-        ExibirDetalhesEstacionamentoView telaDetalhesEst = new ExibirDetalhesEstacionamentoView();
-        jDesktopPane1.add(telaDetalhesEst);
-        telaDetalhesEst.setVisible(true);
-    }//GEN-LAST:event_BtndetalhesActionPerformed
+     
+    }//GEN-LAST:event_BtnDetalhesActionPerformed
     
-    
-    public void addDetalhesButtonActionListener(ActionListener actionListener) {
-        Btndetalhes.addActionListener(actionListener);
+    public void addDetalhesBtnActionListener(ActionListener actionListener) {
+        BtnDetalhes.addActionListener(actionListener);
     }
     
     public JButton getDetalhes(){
-        return Btndetalhes;
+        return BtnDetalhes;
     }
     
      public void addListarVagasBtnActionListener(ActionListener actionListener) {
-        listarVagasBtn.addActionListener(actionListener);
+        btnListarVagas.addActionListener(actionListener);
     }
    
     public JButton getListarVagasBtn(){
-        return listarVagasBtn;
+        return btnListarVagas;
+    }
+    
+    public void addGerarCobrancaBtnActionListener(ActionListener actionListener) {
+        btnGerarCobranca.addActionListener(actionListener);
+    }
+    
+    public JButton getGerarCobranca(){
+        return btnGerarCobranca;
+    }
+    
+    public void addPagarCobrancaBtnActionListener(ActionListener actionListener) {
+        btnPagarCobranca.addActionListener(actionListener);
+    }
+    
+    public JButton getPagarCobranca(){
+        return btnPagarCobranca;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Btndetalhes;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton BtnDetalhes;
+    private javax.swing.JButton btnGerarCobranca;
+    private javax.swing.JButton btnListarVagas;
+    private javax.swing.JButton btnPagarCobranca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton listarVagasBtn;
     // End of variables declaration//GEN-END:variables
 }

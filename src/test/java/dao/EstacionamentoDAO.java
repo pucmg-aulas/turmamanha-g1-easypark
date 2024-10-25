@@ -88,11 +88,7 @@ public class EstacionamentoDAO{
        }
    }
 
-
-
-
-
-    public Estacionamento buscarEstacionamentoPorId(int id) {
+    public Estacionamento buscarInformacoesPorId(int id) {
         try (BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
 
@@ -118,10 +114,6 @@ public class EstacionamentoDAO{
 
         return null; // Retorna null se o ID não for encontrado
     }
-
-
-
-
 
     public List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
        List<Estacionamento> estacionamentosLista = new ArrayList();

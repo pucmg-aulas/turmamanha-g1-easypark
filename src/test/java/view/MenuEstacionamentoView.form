@@ -52,10 +52,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" alignment="2" min="-2" pref="409" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                          <Component id="Btndetalhes" alignment="1" min="-2" pref="516" max="-2" attributes="0"/>
-                          <Component id="jButton4" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
-                          <Component id="listarVagasBtn" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                          <Component id="BtnDetalhes" alignment="1" min="-2" pref="516" max="-2" attributes="0"/>
+                          <Component id="btnGerarCobranca" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                          <Component id="btnPagarCobranca" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                          <Component id="btnListarVagas" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -72,49 +72,49 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                  <Component id="Btndetalhes" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="BtnDetalhes" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="listarVagasBtn" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="btnListarVagas" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="jButton4" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="btnGerarCobranca" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="btnPagarCobranca" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace pref="92" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="btnPagarCobranca">
           <Properties>
             <Property name="text" type="java.lang.String" value="Pagar Cobran&#xe7;a"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPagarCobrancaActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="btnGerarCobranca">
           <Properties>
             <Property name="text" type="java.lang.String" value="Gerar Cobran&#xe7;a"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGerarCobrancaActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="listarVagasBtn">
+        <Component class="javax.swing.JButton" name="btnListarVagas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Exibir Vagas"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listarVagasBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnListarVagasActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="Btndetalhes">
+        <Component class="javax.swing.JButton" name="BtnDetalhes">
           <Properties>
             <Property name="text" type="java.lang.String" value="Exibir Detalhes do Estacionamento"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtndetalhesActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnDetalhesActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">

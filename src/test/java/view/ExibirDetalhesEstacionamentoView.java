@@ -9,7 +9,7 @@ public class ExibirDetalhesEstacionamentoView extends javax.swing.JInternalFrame
 
        private MenuEstacionamentoController mec;
   
-      public ExibirDetalhesEstacionamentoView(String cpf) {
+      public ExibirDetalhesEstacionamentoView(String id) {
         initComponents();
         mec = new MenuEstacionamentoController((JDesktopPane desktopPane, int idEstacionamento);
         mec.set(mec.getNomeClientePorCpf(cpf), cpf);

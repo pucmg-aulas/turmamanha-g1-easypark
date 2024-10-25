@@ -8,9 +8,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+
+
+
 
 public class EstacionamentoDAO{
 
@@ -81,8 +87,43 @@ public class EstacionamentoDAO{
            throw new IOException(ex.getMessage());
        }
    }
-   
-   public List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
+
+
+
+
+
+    public Estacionamento buscarEstacionamentoPorId(int id) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
+            String linha;
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
+
+                if (Integer.parseInt(dados[0]) == id) {
+                    String nome = dados[1];
+                    String rua = dados[2];
+                    String bairro = dados[3];
+                    int numero = Integer.parseInt(dados[4]);
+                    int numeroVagas = Integer.parseInt(dados[5]);
+
+                    return new Estacionamento(id, nome, rua, bairro, numero, numeroVagas);
+                }
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao formatar número: " + e.getMessage());
+        }
+
+        return null; // Retorna null se o ID não for encontrado
+    }
+
+
+
+
+
+    public List<Estacionamento> lerEstacionamentos() throws FileNotFoundException, IOException{
        List<Estacionamento> estacionamentosLista = new ArrayList();
        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))){
            String linha;

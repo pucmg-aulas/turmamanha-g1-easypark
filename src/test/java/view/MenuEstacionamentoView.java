@@ -160,11 +160,11 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
     private void listarVagasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listarVagasBtnActionPerformed
         // TODO add your handling code here:
         
-         try {
-            ListarVagasController listarVagasController = new ListarVagasController(jDesktopPane1);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         //try {
+         //   ListarVagasController listarVagasController = new ListarVagasController(jDesktopPane1);
+       // } catch (IOException ex) {
+        //    Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+       // }
           
     }//GEN-LAST:event_listarVagasBtnActionPerformed
 

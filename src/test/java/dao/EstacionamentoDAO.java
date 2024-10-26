@@ -43,18 +43,6 @@ public class EstacionamentoDAO{
         salvarEstacionamentoArquivo(estacionamentos);
     }
 
-    public List<Estacionamento> getAllEstacionamentos(){
-        return estacionamentos;
-    }
-    
-    public Estacionamento getEstacionamentoPorId(int id) {
-        for (Estacionamento estacionamento : estacionamentos) {
-            if (estacionamento.getId() == id) {
-                return estacionamento;
-            }
-        }
-        return null;
-    }
     
     public boolean cadastrarEstacionamento(Estacionamento estacionamento) throws IOException{
         estacionamentos.add(estacionamento);
@@ -88,14 +76,14 @@ public class EstacionamentoDAO{
        }
    }
 
-    public Estacionamento buscarInformacoesPorId(int id) {
+    public Estacionamento getEstacionamentoPorId(int id) {
         try (BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
 
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
-
-                if (Integer.parseInt(dados[0]) == id) {
+                int idAtual = Integer.parseInt(dados[0]);
+                if (idAtual == id) {
                     String nome = dados[1];
                     String rua = dados[2];
                     String bairro = dados[3];

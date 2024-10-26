@@ -1,7 +1,6 @@
 package view;
 
-import Controllers.ClienteController;
-
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 
 
@@ -9,13 +8,11 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
 
     private JDesktopPane jDesktopPane1;
     
-    private ClienteController cc;
     
-    public MenuClienteView(JDesktopPane jDesktopPane1, String cpf) {
+    public MenuClienteView(JDesktopPane jDesktopPane1) {
         initComponents();
         this.jDesktopPane1 = jDesktopPane1;
-        cc = new ClienteController();
-        cc.setCliente(cc.getNomeClientePorCpf(cpf), cpf);
+        
     }
 
     
@@ -24,26 +21,26 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        cadastrarBtn = new javax.swing.JButton();
+        exibirVeiculosBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton12 = new javax.swing.JButton();
+        exibirDetalhesBtn = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
 
         setClosable(true);
 
-        jButton10.setText("Cadatrar Veículo do Cliente");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        cadastrarBtn.setText("Cadatrar Veículo do Cliente");
+        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                cadastrarBtnActionPerformed(evt);
             }
         });
 
-        jButton11.setText("Exibir Veículos do Cliente");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        exibirVeiculosBtn.setText("Exibir Veículos do Cliente");
+        exibirVeiculosBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                exibirVeiculosBtnActionPerformed(evt);
             }
         });
 
@@ -51,10 +48,10 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Menu do Cliente");
 
-        jButton12.setText("Exibir Detalhes do Cliente");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
+        exibirDetalhesBtn.setText("Exibir Detalhes do Cliente");
+        exibirDetalhesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
+                exibirDetalhesBtnActionPerformed(evt);
             }
         });
 
@@ -68,10 +65,10 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(156, 156, 156)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cadastrarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exibirVeiculosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exibirDetalhesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(156, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -89,11 +86,11 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exibirDetalhesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cadastrarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exibirVeiculosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -121,33 +118,43 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
         // TODO add your handling code here:
-        CadastroVeiculoClienteView telaCadVeiculo = new CadastroVeiculoClienteView(cc.getCliente().getCpf());
-        jDesktopPane1.add(telaCadVeiculo);
-        telaCadVeiculo.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
+//        CadastroVeiculoClienteView telaCadVeiculo = new CadastroVeiculoClienteView(cc.getCliente().getCpf());
+//        jDesktopPane1.add(telaCadVeiculo);
+//        telaCadVeiculo.setVisible(true);
+    }//GEN-LAST:event_cadastrarBtnActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void exibirVeiculosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirVeiculosBtnActionPerformed
         // TODO add your handling code here:
-        ExibirVeiculosClienteView telaExibirVeiculos = new ExibirVeiculosClienteView(cc.getCliente().getCpf());
-        jDesktopPane1.add(telaExibirVeiculos);
-        telaExibirVeiculos.setVisible(true);
-    }//GEN-LAST:event_jButton11ActionPerformed
+//        ExibirVeiculosClienteView telaExibirVeiculos = new ExibirVeiculosClienteView(cc.getCliente().getCpf());
+//        jDesktopPane1.add(telaExibirVeiculos);
+//        telaExibirVeiculos.setVisible(true);
+    }//GEN-LAST:event_exibirVeiculosBtnActionPerformed
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+    private void exibirDetalhesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirDetalhesBtnActionPerformed
         // TODO add your handling code here:
         
-        ExibirDetalhesClienteView telaDetalhesCli = new ExibirDetalhesClienteView(cc.getCliente().getCpf());
-        jDesktopPane1.add(telaDetalhesCli);
-        telaDetalhesCli.setVisible(true);
-    }//GEN-LAST:event_jButton12ActionPerformed
+//        ExibirDetalhesClienteView telaDetalhesCli = new ExibirDetalhesClienteView(cc.getCliente().getCpf());
+//        jDesktopPane1.add(telaDetalhesCli);
+//        telaDetalhesCli.setVisible(true);
+    }//GEN-LAST:event_exibirDetalhesBtnActionPerformed
 
+    public JButton getExibirDetalhesBtn(){
+        return exibirDetalhesBtn;
+    }
+    public JButton getExibirVeiculosBtn(){
+        return exibirVeiculosBtn;
+    }
+    
+    public JButton getCadastrarVeiculoBtn(){
+        return cadastrarBtn;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
+    private javax.swing.JButton cadastrarBtn;
+    private javax.swing.JButton exibirDetalhesBtn;
+    private javax.swing.JButton exibirVeiculosBtn;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel3;

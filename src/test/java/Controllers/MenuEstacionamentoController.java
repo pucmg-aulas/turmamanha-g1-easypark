@@ -5,6 +5,9 @@
 package Controllers;
 
 import dao.EstacionamentoDAO;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import view.MenuEstacionamentoView;
 
@@ -33,11 +36,15 @@ public class MenuEstacionamentoController {
   
         
         this.view.addDetalhesBtnActionListener(e -> {
-             this.exibirDetalhesController = new ExibirDetalhesEstacionamentoController(desktopPane, idEstacionamento);
+            try {
+                this.exibirDetalhesController = new ExibirDetalhesEstacionamentoController(desktopPane, idEstacionamento);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         this.view.addListarVagasBtnActionListener(e -> {
-            this.listarVagasController = new ListarVagasController(idEstacionamento);
+         //   this.listarVagasController = new ListarVagasController(idEstacionamento);
         });
         
         this.view.addGerarCobrancaBtnActionListener(e -> {

@@ -1,25 +1,16 @@
 package view;
 
-import Controllers.ClienteController;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JTextField;
 
 public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
 
-    private ClienteController cc;
-    
-    
-    public ExibirDetalhesClienteView(String cpf) {
-        initComponents();
-        cc = new ClienteController();
-        cc.setCliente(cc.getNomeClientePorCpf(cpf), cpf);
-        
-        carregarDadosCliente();
-    }
+    private final JDesktopPane desktopPane;
 
-    
-    private void carregarDadosCliente() {
-        // Atualiza os campos de texto com os dados do cliente
-        campoNome.setText(cc.getCliente().getNome());
-        campoCpf.setText(cc.getCliente().getCpf());
+    public ExibirDetalhesClienteView(JDesktopPane desktopPane) {
+        initComponents();
+        this.desktopPane = desktopPane;
     }
     
     @SuppressWarnings("unchecked")
@@ -27,27 +18,27 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        campoNome = new javax.swing.JTextField();
+        nomeText = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        campoCpf = new javax.swing.JTextField();
+        cpfText = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        voltarBtn = new javax.swing.JButton();
 
-        campoNome.setEditable(false);
-        campoNome.addActionListener(new java.awt.event.ActionListener() {
+        nomeText.setEditable(false);
+        nomeText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoNomeActionPerformed(evt);
+                nomeTextActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Nome: ");
 
-        campoCpf.setEditable(false);
-        campoCpf.addActionListener(new java.awt.event.ActionListener() {
+        cpfText.setEditable(false);
+        cpfText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCpfActionPerformed(evt);
+                cpfTextActionPerformed(evt);
             }
         });
 
@@ -56,10 +47,10 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Detalhes do Cliente");
 
-        jButton2.setText("Voltar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        voltarBtn.setText("Voltar");
+        voltarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                voltarBtnActionPerformed(evt);
             }
         });
 
@@ -73,9 +64,9 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
                         .addGap(161, 161, 161)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nomeText, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)
-                            .addComponent(campoCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 155, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -87,7 +78,7 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(voltarBtn)
                 .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
@@ -100,13 +91,13 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nomeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(voltarBtn)
                 .addGap(32, 32, 32))
         );
 
@@ -134,28 +125,39 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    private void campoCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCpfActionPerformed
+    private void cpfTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfTextActionPerformed
         
-    }//GEN-LAST:event_campoCpfActionPerformed
+    }//GEN-LAST:event_cpfTextActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void voltarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarBtnActionPerformed
        
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_voltarBtnActionPerformed
 
-    private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
+    private void nomeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeTextActionPerformed
         
-    }//GEN-LAST:event_campoNomeActionPerformed
+    }//GEN-LAST:event_nomeTextActionPerformed
 
+    public JTextField getCpf(){
+        return cpfText;
+    }
+    
+    public JTextField getNome(){
+        return nomeText;
+    }
+    
+    public JButton getVoltarBtn(){
+        return voltarBtn;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField campoCpf;
-    private javax.swing.JTextField campoNome;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField cpfText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField nomeText;
+    private javax.swing.JButton voltarBtn;
     // End of variables declaration//GEN-END:variables
 }

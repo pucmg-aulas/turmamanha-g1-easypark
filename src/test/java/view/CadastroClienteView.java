@@ -1,16 +1,16 @@
 package view;
 
 import javax.swing.JOptionPane;
-import Controllers.ClienteController;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 
 public class CadastroClienteView extends javax.swing.JInternalFrame {
 
-   private ClienteController clienteController;
     
     public CadastroClienteView() {
-        clienteController = new ClienteController();
         initComponents();
     }
 
@@ -116,26 +116,7 @@ public class CadastroClienteView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        String nome = nomeCliente.getText();
-        String cpf = cpfCliente.getText();
-        if(nome.isEmpty() || cpf.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-            return;
-        }
-       try {
-           boolean clienteCadastrado = clienteController.cadastrarCliente(nome, cpf);
-           
-           if(clienteCadastrado){
-               JOptionPane.showMessageDialog(null, "Cliente " + nome + " cadastrado com sucesso!");
-               this.dispose();
-           }else{
-               JOptionPane.showMessageDialog(null, "Cliente com CPF: " + cpf + " já está cadastrado!");
-           }
-       } catch (IOException ex) {
-           JOptionPane.showMessageDialog(null, "Erro ao cadastrar o cliente: " + ex.getMessage());
-       }
-        
+   
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cpfClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfClienteActionPerformed
@@ -146,7 +127,20 @@ public class CadastroClienteView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nomeClienteActionPerformed
 
-
+    public void ConfirmButtonActionListener(ActionListener actionListener) {
+        jButton1.addActionListener(actionListener);
+    }
+    
+    public JTextField getCpf(){
+        return cpfCliente;
+    }
+    public JTextField getNome(){
+        return nomeCliente;
+    }
+    public JButton getBtnConfirmar(){
+        return jButton1;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cpfCliente;
     private javax.swing.JButton jButton1;

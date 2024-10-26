@@ -1,17 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controllers;
 
+import Models.Estacionamento;
 import dao.EstacionamentoDAO;
+import java.io.IOException;
 import javax.swing.JDesktopPane;
 import view.ExibirDetalhesEstacionamentoView;
 
-/**
- *
- * @author Enzo
- */
 public class ExibirDetalhesEstacionamentoController {
 
     private ExibirDetalhesEstacionamentoView view;
@@ -19,26 +13,27 @@ public class ExibirDetalhesEstacionamentoController {
     private EstacionamentoDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
 
-public ExibirDetalhesEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento){
-       this.view = new ExibirDetalhesEstacionamentoView(desktopPane);
+public ExibirDetalhesEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
+        this.view = new ExibirDetalhesEstacionamentoView(desktopPane);
         this.idEstacionamento = idEstacionamento;
-        
+        this.estacionamentoDAO = EstacionamentoDAO.getInstance();
+        this.desktopPane = desktopPane;
 
         desktopPane.add(view);
         this.view.setVisible(true);
 
        
-        buscarDetalhesEstacionamento();
+        listarDetalhesEstacionamento();
         
 }
 
-public void buscarDetalhesEstacionamento(){
-    try{
-        Estacionamento estacionamento = estacionamentoDAO.buscarInformacoesPorId(idEstacionamento);
-                view.exibirDetalhesEstacionamento(estacionamento);
-    }catch(Exception e){
-        //possiveis exceções
-    }
+public void listarDetalhesEstacionamento(){
+       Estacionamento estacionamento = estacionamentoDAO.getEstacionamentoPorId(idEstacionamento);
+       view.getBairro().setText(estacionamento.getBairro());
+       view.getRua().setText(estacionamento.getRua());
+       view.getVagas().setText(String.valueOf(estacionamento.getQntdVagas()));
+       view.getNumero().setText(String.valueOf(estacionamento.getNumero()));
+       view.getNome().setText(estacionamento.getNome());
 }
     
 

@@ -1,19 +1,18 @@
 package view;
 
-import Controllers.ClienteController;
 
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
-import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class SelecionarClienteView extends javax.swing.JInternalFrame {
     
-    private ClienteController clienteController;
     private JDesktopPane jDesktopPane1;
    
     public SelecionarClienteView(JDesktopPane jDesktopPane1) {
         initComponents();
         this.jDesktopPane1 = jDesktopPane1;
-        clienteController = new ClienteController();
+        
     }
 
 
@@ -24,7 +23,7 @@ public class SelecionarClienteView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        confirmarBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         cpfCliente = new javax.swing.JTextField();
 
@@ -33,10 +32,10 @@ public class SelecionarClienteView extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Selecionar Cliente");
 
-        jButton1.setText("Confirmar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        confirmarBtn.setText("Confirmar");
+        confirmarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                confirmarBtnActionPerformed(evt);
             }
         });
 
@@ -57,7 +56,7 @@ public class SelecionarClienteView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(214, 214, 214)
-                        .addComponent(jButton1))
+                        .addComponent(confirmarBtn))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(154, 154, 154)
                         .addComponent(jLabel1)))
@@ -82,7 +81,7 @@ public class SelecionarClienteView extends javax.swing.JInternalFrame {
                 .addGap(63, 63, 63)
                 .addComponent(cpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(jButton1)
+                .addComponent(confirmarBtn)
                 .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -105,32 +104,25 @@ public class SelecionarClienteView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        String cpf = cpfCliente.getText();
-        
-        if(clienteController.buscarClientePorCpf(cpf) != null){
-            JOptionPane.showMessageDialog(null, "Cliente encontrado!");
-            clienteController.setCliente(clienteController.getNomeClientePorCpf(cpf), cpf);
-            MenuClienteView telaMenuCli = new MenuClienteView(jDesktopPane1, clienteController.getCliente().getCpf());
-            jDesktopPane1.add(telaMenuCli);
-            telaMenuCli.setVisible(true);
-        
-        this.dispose();
-        }else{
-            JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+  
+    }//GEN-LAST:event_confirmarBtnActionPerformed
 
     private void cpfClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfClienteActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_cpfClienteActionPerformed
 
+    public JButton getConfirmarBtn(){
+        return confirmarBtn;
+    }
+    
+    public JTextField getCpf(){
+        return cpfCliente;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton confirmarBtn;
     private javax.swing.JTextField cpfCliente;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

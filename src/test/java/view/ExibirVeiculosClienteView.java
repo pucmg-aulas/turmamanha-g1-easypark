@@ -1,51 +1,18 @@
 package view;
 
-import Controllers.ClienteController;
-import Controllers.VeiculoController;
-import Models.Veiculo;
-import java.io.IOException;
-
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JList;
 
 public class ExibirVeiculosClienteView extends javax.swing.JInternalFrame {
 
-    private ClienteController cc;
-    private VeiculoController vc;
+    private final JDesktopPane desktopPane;
     
-    public ExibirVeiculosClienteView(String cpf) {
+    public ExibirVeiculosClienteView(JDesktopPane desktopPane) {
         initComponents();
-        cc = new ClienteController();
-        cc.setCliente(cc.getNomeClientePorCpf(cpf), cpf);
-        vc = new VeiculoController();
-        carregarVeiculos();
+        this.desktopPane = desktopPane;
     }
 
-    private void carregarVeiculos(){
-        List<Veiculo> veiculos;
-        List<String> listaVeiculosTexto = new ArrayList();
-        
-        try {
-            veiculos = vc.buscarVeiculosPorCliente(cc.getCliente());
-            if(veiculos.size() > 0){
-              for(Veiculo veiculo: veiculos){
-                String texto = veiculo.getPlaca() + " - " + veiculo.getModelo();
-                listaVeiculosTexto.add(texto);
-                }
-            }else{
-                JOptionPane.showMessageDialog(null, "Não há veículos cadastrados!");
-                this.dispose();
-            }
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao visualizar veículos: " + ex.getMessage());
-        }
-           
-        listaVeiculos.setListData(listaVeiculosTexto.toArray(new String[0]));
-        
-    }
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -55,17 +22,17 @@ public class ExibirVeiculosClienteView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listaVeiculos = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        voltarBtn = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Veículos do Cliente");
 
         jScrollPane1.setViewportView(listaVeiculos);
 
-        jButton2.setText("Voltar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        voltarBtn.setText("Voltar");
+        voltarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                voltarBtnActionPerformed(evt);
             }
         });
 
@@ -89,7 +56,7 @@ public class ExibirVeiculosClienteView extends javax.swing.JInternalFrame {
                 .addContainerGap(156, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(voltarBtn)
                 .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
@@ -102,7 +69,7 @@ public class ExibirVeiculosClienteView extends javax.swing.JInternalFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(voltarBtn)
                 .addGap(32, 32, 32))
         );
 
@@ -125,17 +92,24 @@ public class ExibirVeiculosClienteView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void voltarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarBtnActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_voltarBtnActionPerformed
 
-
+    public JList<String> getListaVeiculos(){
+        return listaVeiculos;
+    }
+    
+    public JButton getVoltarBtn(){
+        return voltarBtn;
+    }
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JList<String> listaVeiculos;
+    private javax.swing.JButton voltarBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -164,16 +164,20 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        CadastroClienteView telaCadCli = new CadastroClienteView();
-        jDesktopPane1.add(telaCadCli);
-        telaCadCli.setVisible(true);
+         try {
+            AddClienteController cadastrarCliente = new AddClienteController(jDesktopPane1);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        SelecionarClienteView telaSelCli = new SelecionarClienteView(jDesktopPane1);
-        jDesktopPane1.add(telaSelCli);
-        telaSelCli.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            SelectClienteController telaSelCli = new SelectClienteController(jDesktopPane1);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu5ActionPerformed

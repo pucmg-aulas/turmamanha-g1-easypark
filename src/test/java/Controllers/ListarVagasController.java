@@ -27,7 +27,7 @@ public class ListarVagasController {
         this.view.setVisible(true);
 
         // Carregando todas as vagas ao inicializar o controller
-        carregarVagasOcupadas();
+        carregarTabelaTodas();
         
         this.view.getVoltarBtn().addActionListener(e -> {
             this.view.dispose();
@@ -45,7 +45,7 @@ public class ListarVagasController {
     }
 
     // Carrega todas as vagas (vai ser chamada no menu Estacionamento)
-    private void carregaTabelaTodas() {
+    private void carregarTabelaTodas() {
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);

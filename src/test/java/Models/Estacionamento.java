@@ -124,4 +124,17 @@ public class Estacionamento{
     public static String getArquivoPath(){
         return ARQUIVO;
     }
+    public double calcularValorMedioUso(List<Pagamento> pagamentos) {
+        double soma = pagamentos.stream().mapToDouble(Pagamento::getValor).sum();
+        return pagamentos.isEmpty() ? 0 : soma / pagamentos.size();
+    }
+
+    public List<ClienteRanking> gerarRankingClientes(List<Pagamento> pagamentos) {
+        return pagamentos.stream()
+                .collect(Collectors.groupingBy(Pagamento::getCliente, Collectors.summingDouble(Pagamento::getValor)))
+                .entrySet().stream()
+                .map(entry -> new ClienteRanking(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparingDouble(ClienteRanking::getTotalGasto).reversed())
+                .collect(Collectors.toList());
+    }
 }

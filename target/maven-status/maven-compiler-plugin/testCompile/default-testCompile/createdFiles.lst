@@ -13,6 +13,7 @@ Models\VagaRegular.class
 view\ExibirDetalhesClienteView$3.class
 view\MenuPrincipalViewJframe$6.class
 view\CadastroClienteView$2.class
+view\ListarVagasView$1.class
 view\ExibirDetalhesEstacionamentoView.class
 view\ReservarVagaView$1.class
 view\GerarCobrancaView$3.class

@@ -1,34 +1,43 @@
 package Controllers;
 
+import Models.Vaga;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import view.*;
-import Models.Vaga;
-import java.util.List;
+import java.util.Iterator;
+import javax.swing.JDesktopPane;
+import dao.VagaDAO;
 
 public class ListarVagasController {
 
-    //Corrigir o idEstacionamento que foi selecionado 
     private ListarVagasView view;
-   // private VagaController vagaController;
     private int idEstacionamento;
+    private JDesktopPane desktopPane;
+    private VagaDAO vagas;
 
-    public ListarVagasController(int idEstacionamento) throws IOException {
+    public ListarVagasController(JDesktopPane desktopPane,int idEstacionamento) throws IOException {
         this.idEstacionamento = idEstacionamento;
-        this.view = new ListarVagasView();
-     //   this.vagaController = new VagaController(idEstacionamento);
+        this.view = new ListarVagasView(desktopPane);
+        this.desktopPane = desktopPane;
+        this.vagas = VagaDAO.getInstance(idEstacionamento);
+        
+        desktopPane.add(view);
+        this.view.setVisible(true);
 
         // Carregando todas as vagas ao inicializar o controller
-        carregaTabelaTodas();
+        carregarVagasOcupadas();
+        
+        this.view.getVoltarBtn().addActionListener(e -> {
+            this.view.dispose();
+        });
 
         // Configurando botões da view
         //this.view.getBtnVagasOcupadas().addActionListener(e -> carregaTabelaOcupadas());
         //this.view.getBtnVagasDisponiveis().addActionListener(e -> carregaTabelaDisponiveis());
         //this.view.addListarVagasBtnActionListener(e -> carregaTabelaTodas());
 
-        this.view.setVisible(true);
     }
 
     public JScrollPane getScrollPane() {
@@ -37,44 +46,51 @@ public class ListarVagasController {
 
     // Carrega todas as vagas (vai ser chamada no menu Estacionamento)
     private void carregaTabelaTodas() {
-      //  List<Vaga> vagas = vagaController.listarVagasDisponiveis(idEstacionamento);
-       // vagas.addAll(vagaController.listarVagasOcupadas(idEstacionamento));
-
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
-
-       // for (Vaga vaga : vagas) {
-      //      tm.addRow(new Object[]{vaga.getId(), vaga.getTipo(), vaga.getStatus()});
-      //  }
-
-        view.getTbVagas().setModel(tm);
+        tm.setNumRows(0);
+        Iterator<Vaga> it = vagas.getVagas().iterator();
+        while(it.hasNext()){
+            Vaga v = it.next();
+            String vaga = v.toString();
+            String linha[] = vaga.split("-");
+            if("true".equals(linha[2])){
+                linha[2] = "Desocupado";
+            }else{
+                linha[2] = "Ocupado";
+            }
+            tm.addRow(new Object[]{linha[0], linha[1], linha[2]});
+        }
+        view.getTableVagas().setModel(tm);
     }
 
-    // Carrega apenas as vagas ocupadas (vai ser chamada no pagar Cobranca)
-    private void carregaTabelaOcupadas() {
-     //   List<Vaga> vagasOcupadas = vagaController.listarVagasOcupadas(idEstacionamento);
-
+     private void carregarVagasDisponíveis() {
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
-
-       // for (Vaga vaga : vagasOcupadas) {
-       //     tm.addRow(new Object[]{vaga.getId(), vaga.getTipo(), vaga.getStatus()});
-       // }
-
-        view.getTbVagas().setModel(tm);
+        tm.setNumRows(0);
+        Iterator<Vaga> it = vagas.getVagasDisponiveis().iterator();
+        while(it.hasNext()){
+            Vaga v = it.next();
+            String vaga = v.toString();
+            String linha[] = vaga.split("-");
+            linha[2] = "Desocupado";
+            tm.addRow(new Object[]{linha[0], linha[1], linha[2]});
+        }
+        view.getTableVagas().setModel(tm);
     }
-
-    // Carrega apenas as vagas disponíveis (vai ser chamada no gerar cobranca)
-    private void carregaTabelaDisponiveis() {
-    //    List<Vaga> vagasDisponiveis = vagaController.listarVagasDisponiveis(idEstacionamento);
-
+     
+      private void carregarVagasOcupadas() {
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
-
-       // for (Vaga vaga : vagasDisponiveis) {
-     //       tm.addRow(new Object[]{vaga.getId(), vaga.getTipo(), vaga.getStatus()});
-     //   }
-
-        view.getTbVagas().setModel(tm);
+        tm.setNumRows(0);
+        Iterator<Vaga> it = vagas.getVagasOcupadas().iterator();
+        while(it.hasNext()){
+            Vaga v = it.next();
+            String vaga = v.toString();
+            String linha[] = vaga.split("-");
+            linha[2] = "Ocupado";
+            tm.addRow(new Object[]{linha[0], linha[1], linha[2]});
+        }
+        view.getTableVagas().setModel(tm);
     }
 }

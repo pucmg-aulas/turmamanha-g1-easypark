@@ -71,5 +71,10 @@ public abstract class Vaga {
     }
 
     public abstract String getTipo();
+    
+    @Override
+    public String toString(){
+        return id + "-" + getTipo() + "-" + status;
+    }
 }
 

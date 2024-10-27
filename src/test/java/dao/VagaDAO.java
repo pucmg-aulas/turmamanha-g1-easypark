@@ -40,7 +40,7 @@ public class VagaDAO{
 
     public List<Vaga> carregarVagasArquivo(int idEstacionamento) {
         List<Vaga> vagasCarregadas = new ArrayList<>();
-        File arquivo = new File("./src/java/Archives/Vagas" + idEstacionamento + ".txt");
+        File arquivo = new File("./src/test/java/Archives/Vagas" + idEstacionamento + ".txt");
 
         if (arquivo.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -55,18 +55,10 @@ public class VagaDAO{
 
                     Vaga vaga = null;
                     switch (tipo) {
-                        case "Regular":
-                            vaga = new VagaRegular(id, status, id);
-                            break;
-                        case "Idoso":
-                            vaga = new VagaIdoso(id, status, id);
-                            break;
-                        case "PCD":
-                            vaga = new VagaPCD(id, status, id);
-                            break;
-                        case "VIP":
-                            vaga = new VagaVIP(id, status, id);
-                            break;
+                        case "Regular" -> vaga = new VagaRegular(idEstacionamento, status, id);
+                        case "Idoso" -> vaga = new VagaIdoso(idEstacionamento, status, id);
+                        case "PCD" -> vaga = new VagaPCD(idEstacionamento, status, id);
+                        case "VIP" -> vaga = new VagaVIP(idEstacionamento, status, id);
                     }
 
                     if (vaga != null) {
@@ -81,7 +73,12 @@ public class VagaDAO{
         return vagasCarregadas;
     }
 
-    public boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
+    public boolean cadastrarVaga(Vaga vaga, int idEstacionamento) throws IOException{
+        vagas.add(vaga);
+        return salvarVagasArquivo(vagas, idEstacionamento);
+    }
+    
+    private boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
 
         File arquivo = new File("./src/test/java/Archives/Vagas"+idEstacionamento+".txt");
 
@@ -158,11 +155,15 @@ public class VagaDAO{
         return null;
     }
 
-    public List<Vaga> getVagasDisponiveis(int idEstacionamento) {
+    public List<Vaga> getVagas(){
+        return vagas;
+       
+    }
+    
+    public List<Vaga> getVagasDisponiveis() {
         List<Vaga> vagasDisponiveis = new ArrayList<>();
-        List<Vaga> vagasCarregadas = carregarVagasArquivo(idEstacionamento);
 
-        for (Vaga vaga : vagasCarregadas) {
+        for (Vaga vaga : this.vagas) {
             if (vaga.getStatus()) {  // true = Desocupado
                 vagasDisponiveis.add(vaga);
             }
@@ -171,11 +172,10 @@ public class VagaDAO{
         return vagasDisponiveis;
     }
 
-    public List<Vaga> getVagasOcupadas(int idEstacionamento) {
+    public List<Vaga> getVagasOcupadas() {
         List<Vaga> vagasOcupadas = new ArrayList<>();
-        List<Vaga> vagasCarregadas = carregarVagasArquivo(idEstacionamento);
 
-        for (Vaga vaga : vagasCarregadas) {
+        for (Vaga vaga : this.vagas) {
             if (!vaga.getStatus()) {  // false = Ocupado
                 vagasOcupadas.add(vaga);
             }

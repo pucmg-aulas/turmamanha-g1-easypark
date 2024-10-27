@@ -44,7 +44,11 @@ public class MenuEstacionamentoController {
         });
         
         this.view.addListarVagasBtnActionListener(e -> {
-         //   this.listarVagasController = new ListarVagasController(idEstacionamento);
+            try {
+                this.listarVagasController = new ListarVagasController(desktopPane, idEstacionamento);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         this.view.addGerarCobrancaBtnActionListener(e -> {

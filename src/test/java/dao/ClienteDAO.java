@@ -86,6 +86,7 @@ public class ClienteDAO {
         throw new IOException(e.getMessage());
         }
     }
+   
     public List<Cliente> lerClientes() throws FileNotFoundException, IOException{
         List<Cliente> clientesLista = new ArrayList();
         

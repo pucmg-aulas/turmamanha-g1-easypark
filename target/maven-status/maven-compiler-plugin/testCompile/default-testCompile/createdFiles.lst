@@ -21,12 +21,15 @@ Controllers\ExibirDetalhesEstacionamentoController.class
 view\MenuClienteView$2.class
 view\CadastroEstacionamentoView$1.class
 view\SelecionarClienteView.class
+Models\Cobranca.class
 view\ExibirDetalhesEstacionamentoView$3.class
 view\CadastroVeiculoClienteView$3.class
 view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
+dao\CobrancaDAO.class
 view\CadastroVeiculoClienteView$1.class
 view\MenuEstacionamentoView.class
+view\ListarVagasView$2.class
 view\ReservarVagaView$3.class
 Controllers\ExibirVeiculosClienteController.class
 Models\Cliente.class
@@ -50,6 +53,7 @@ dao\ClienteDAO.class
 view\CadastroVeiculoClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$2.class
 view\GerarCobrancaView.class
+Models\Pagamento.class
 view\MenuClienteView$3.class
 dao\VeiculoDAO.class
 Models\Vaga.class

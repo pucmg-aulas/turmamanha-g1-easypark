@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import static javax.swing.JOptionPane.showMessageDialog;
 import view.MenuEstacionamentoView;
 
 
@@ -52,14 +53,19 @@ public class MenuEstacionamentoController {
         });
         
         this.view.addGerarCobrancaBtnActionListener(e -> {
-            this.gerarCobrancaController = new GerarCobrancaController();
-            //GerarCobrancaView telaGerarCobranca = new GerarCobrancaView();
-        //jDesktopPane1.add(telaGerarCobranca);
-        //telaGerarCobranca.setVisible(true);
+            try {
+                this.gerarCobrancaController = new GerarCobrancaController(desktopPane, idEstacionamento);
+            } catch (IOException ex) {
+                showMessageDialog(null, "Ocorreu um erro ao iniciar tela de geraçao da cobrança");
+            }
         });
         
         this.view.addPagarCobrancaBtnActionListener(e -> {
-        this.pagarCobrancaController = new PagarCobrancaController();
+            try {
+                this.pagarCobrancaController = new PagarCobrancaController(desktopPane, idEstacionamento);
+            } catch (IOException ex) {
+                showMessageDialog(null, "Ocorreu um erro ao iniciar tela de pagamento da cobrança");
+            }
         });
          
     }

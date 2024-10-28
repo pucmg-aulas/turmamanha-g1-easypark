@@ -145,9 +145,6 @@ public class MenuEstacionamentoView extends javax.swing.JInternalFrame {
 
     private void btnPagarCobrancaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarCobrancaActionPerformed
         // TODO add your handling code here:
-        PagarCobrancaView telaPagarCobranca = new PagarCobrancaView();
-        jDesktopPane1.add(telaPagarCobranca);
-        telaPagarCobranca.setVisible(true);
     }//GEN-LAST:event_btnPagarCobrancaActionPerformed
 
     private void btnGerarCobrancaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarCobrancaActionPerformed

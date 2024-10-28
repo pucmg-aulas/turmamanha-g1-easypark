@@ -77,8 +77,9 @@ public class VagaDAO{
         vagas.add(vaga);
         return salvarVagasArquivo(vagas, idEstacionamento);
     }
+   
     
-    private boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
+    public boolean salvarVagasArquivo(List<Vaga> vagas, int idEstacionamento) throws IOException {
 
         File arquivo = new File("./src/test/java/Archives/Vagas"+idEstacionamento+".txt");
 

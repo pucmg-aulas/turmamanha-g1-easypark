@@ -1,19 +1,20 @@
 package Models;
-/*
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class Cobranca {
-    private Vaga vaga;
-    private Veiculo veiculo;
+    private int idCobranca;
+    private int idVaga;
+    private String placaVeiculo;
+    private int idEstacionamento;
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSaida;
     private int tempoTotal;
@@ -21,37 +22,45 @@ public class Cobranca {
     private static final double LIMITEPRECO = 50;
     private static final double FRACAOTEMPO = 15;
     private double valorTotal;
-    private static final String FILE_PATH = "./codigo/src/Archives/Cobrancas.txt";
+    private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
+private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Cobranca(int idVaga, Estacionamento estacionamento, Veiculo veiculo){
-        this.vaga = estacionamento.getVagaPorId(idVaga);
-        this.veiculo = veiculo;
-        this.horaEntrada = LocalDateTime.now();
-        if (this.vaga != null){
-            vaga.setStatus(false);
-            this.vaga.atualizarStatusNoArquivo("Ocupada");
-        }else{
-            vaga.setStatus(true);
-        }
+    public Cobranca(int idVaga, int idEstacionamento, String placaVeiculo) throws FileNotFoundException{
+        this.idCobranca = EncontrarMaior() + 1;
+        this.idVaga = idVaga;
+        this.placaVeiculo = placaVeiculo;
+        this.idEstacionamento = idEstacionamento;
+        this.horaEntrada = LocalDate.now().atStartOfDay();
+        this.tempoTotal = 0;
+        this.valorTotal = 0;
+        this.horaSaida = null;
+    }
+    
+    public Cobranca(int idCobranca, int idVaga, int idEstacionamento, String placaVeiculo, LocalDateTime horaEntrada){
+        this.idCobranca = idCobranca;
+        this.idVaga = idVaga;
+        this.placaVeiculo = placaVeiculo;
+        this.idEstacionamento = idEstacionamento;
+        this.horaEntrada = horaEntrada;
         this.tempoTotal = 0;
         this.valorTotal = 0;
         this.horaSaida = null;
     }
 
-    public Vaga getVaga() {
-        return vaga;
+    public int getIdVaga() {
+        return idVaga;
     }
 
-    public void setVaga(Vaga vaga) {
-        this.vaga = vaga;
+    public void setIdVaga(int idVaga) {
+        this.idVaga = idVaga;
     }
 
-    public Veiculo getVeiculo() {
-        return veiculo;
+    public String getPlacaVeiculo() {
+        return placaVeiculo;
     }
 
-    public void setVeiculo(Veiculo veiculo) {
-        this.veiculo = veiculo;
+    public void setPlacaVeiculo( String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo;
     }
 
     public LocalDateTime getHoraEntrada() {
@@ -85,5 +94,46 @@ public class Cobranca {
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
+
+    public int getIdCobranca() {
+        return idCobranca;
+    }
+
+    public void setIdCobranca(int idCobranca) {
+        this.idCobranca = idCobranca;
+    }
+
+    public int getIdEstacionamento() {
+        return idEstacionamento;
+    }
+
+    public void setIdEstacionamento(int idEstacionamento) {
+        this.idEstacionamento = idEstacionamento;
+    }
+    
+     public int EncontrarMaior() throws FileNotFoundException {
+        File arquivo = new File(Arquivo);
+        int maiorId = 0;
+
+        if(!arquivo.exists()){
+            return maiorId;
+        }
+        
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
+                String[] dados = linha.split(";");
+                int idAtual = Integer.parseInt(dados[0]);
+                
+                if(idAtual > maiorId){
+                    maiorId = idAtual;
+                } 
+               }
+            }catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
+        
+        }
+        return maiorId;
+    }
 }
-*/

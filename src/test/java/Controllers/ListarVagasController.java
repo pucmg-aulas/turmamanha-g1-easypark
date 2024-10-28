@@ -33,10 +33,6 @@ public class ListarVagasController {
             this.view.dispose();
         });
 
-        // Configurando botões da view
-        //this.view.getBtnVagasOcupadas().addActionListener(e -> carregaTabelaOcupadas());
-        //this.view.getBtnVagasDisponiveis().addActionListener(e -> carregaTabelaDisponiveis());
-        //this.view.addListarVagasBtnActionListener(e -> carregaTabelaTodas());
 
     }
 

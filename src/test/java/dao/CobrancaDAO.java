@@ -1,85 +1,134 @@
 package dao;
-/*
+
+import Models.Cliente;
 import Models.Cobranca;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CobrancaDAO {
 
-    private static final String FILE_PATH = "./codigo/src/Archives/Cobrancas.txt";
-
-    // Método para gravar uma cobrança no arquivo
-    public boolean salvarCobranca(Cobranca cobranca) {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            escritor.write(cobranca.getVaga().getId() + ";" + cobranca.getVeiculo().getPlaca() + ";" + cobranca.getHoraEntrada() + ";" + cobranca.getHoraSaida() + ";" + cobranca.getTempoTotal() + ";" + cobranca.getValorTotal());
-            escritor.newLine();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Erro ao gravar a cobrança: " + e.getMessage());
-            return false;
+    private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private List<Cobranca> cobrancas;
+    private static CobrancaDAO instance;
+    
+    private CobrancaDAO(){
+        cobrancas = lerCobrancas();
+        if(cobrancas == null){
+            cobrancas = new ArrayList<>();
         }
     }
+    
+    public static CobrancaDAO getInstance(){
+        if(instance == null){
+            instance = new CobrancaDAO();
+        }
+        return instance;
+    }
+    
+    public String getPlacaCobranca(int idVaga){
 
-    // Método para ler todas as cobranças do arquivo
-    public List<Cobranca> listarCobrancas() {
-        List<Cobranca> cobrancas = new ArrayList<>();
-
-        try (BufferedReader leitor = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
             while ((linha = leitor.readLine()) != null) {
                 String[] dados = linha.split(";");
-                // Aqui você pode adicionar a lógica para converter esses dados de volta em um objeto Cobranca.
-                // Como o código original de Cobranca não possui um construtor direto com esses parâmetros,
-                // seria necessário adaptar a construção do objeto aqui.
-
-                // Por exemplo:
-                // Cobranca cobranca = new Cobranca(...);
-                // cobrancas.add(cobranca);
+                int idVagaAtual = Integer.parseInt(dados[1]);
+                String placaVeiculo = dados[2];
+                
+                if(idVagaAtual == idVaga){
+                    return placaVeiculo;
+                }
             }
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo de cobranças: " + e.getMessage());
         }
 
-        return cobrancas;
+        return null;
     }
-
-    // Método para remover uma cobrança do arquivo
-    public boolean removerCobranca(int idVaga) {
-        File arquivoOriginal = new File(FILE_PATH);
-        File arquivoTemp = new File("./codigo/src/Archives/Cobrancas_temp.txt");
-        boolean found = false;
-
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoOriginal));
-             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivoTemp))) {
-
-            String linha;
-
-            while ((linha = leitor.readLine()) != null) {
-                String[] dados = linha.split(";");
-                if (Integer.parseInt(dados[0]) != idVaga) {
-                    escritor.write(linha);
-                    escritor.newLine();
-                } else {
-                    found = true; // Encontrou a cobrança e não a escreveu no novo arquivo
-                }
+    
+    
+    public boolean gerarCobranca(Cobranca cobranca) throws IOException{
+        cobrancas.add(cobranca);
+        return salvarCobrancaArquivo(cobrancas);
+    }
+    
+    public boolean salvarCobrancaArquivo(List<Cobranca> cobrancas) throws IOException {
+        File arquivo = new File(Arquivo);
+       
+        try {
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdir();
             }
-        } catch (IOException e) {
-            System.out.println("Erro ao remover a cobrança: " + e.getMessage());
-            return false;
-        }
 
-        // Substituir o arquivo original pelo arquivo temporário
-        if (!arquivoOriginal.delete()) {
-            System.out.println("Erro ao deletar o arquivo original.");
-            return false;
+            if (!arquivo.exists()) {
+                arquivo.createNewFile();
+            }
+            
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(Arquivo))) {
+            for(Cobranca c : cobrancas){
+                String dataEntrada = c.getHoraEntrada().format(formatter);
+                bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada);
+                bw.newLine();
+                bw.flush();
+            }
+            return true;
         }
-        if (!arquivoTemp.renameTo(arquivoOriginal)) {
-            System.out.println("Erro ao renomear o arquivo temporário.");
-            return false;
+    }catch (IOException e) {
+        throw new IOException(e.getMessage());
         }
-
-        return found;
+       
     }
+
+    // Método para ler todas as cobranças do arquivo
+   public List<Cobranca> lerCobrancas() {
+    List<Cobranca> cobrancas = new ArrayList<>();
+
+    File arquivo = new File(Arquivo);
+    if (!arquivo.exists()) {
+        System.out.println("Arquivo de cobranças não encontrado.");
+        return cobrancas; 
+    }
+    
+    try (BufferedReader leitor = new BufferedReader(new FileReader(Arquivo))) {
+        String linha;
+        while ((linha = leitor.readLine()) != null) {
+            String[] dados = linha.split(";");
+
+            if (dados.length < 5 || dados[0].isEmpty() || dados[1].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty()) {
+                System.out.println("Linha inválida ou incompleta: " + linha);
+                continue; 
+            }
+
+            try {
+                int idCobranca = Integer.parseInt(dados[0]);
+                int idVaga = Integer.parseInt(dados[1]);
+                String placaVeiculo = dados[2];
+                int idEstacionamento = Integer.parseInt(dados[3]);
+                LocalDateTime horaEntrada = LocalDateTime.parse(dados[4], formatter);
+
+                Cobranca cobrancaAtual = new Cobranca(idCobranca, idVaga, idEstacionamento, placaVeiculo, horaEntrada);
+                cobrancas.add(cobrancaAtual);
+
+            } catch (NumberFormatException | DateTimeParseException e) {
+                System.out.println("Erro ao processar a linha: " + linha + " - " + e.getMessage());
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Erro ao ler o arquivo de cobranças: " + e.getMessage());
+    }
+
+    return cobrancas.isEmpty() ? null : cobrancas;
 }
-*/
+    // Método para remover uma cobrança do arquivo
+    public boolean removerCobranca(Cobranca cobranca) throws IOException {
+       cobrancas.remove(cobranca);
+       return salvarCobrancaArquivo(cobrancas);
+    }
+    
+    
+}

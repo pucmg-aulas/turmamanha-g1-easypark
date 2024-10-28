@@ -10,7 +10,7 @@ public abstract class Vaga {
     // Status True: Desocupado, False: Ocupado
     private boolean status;
     private int nextId = 1;
-    private final String FILE_PATH = "./codigo/src/Archives/Vagas" + idEstacionamento;
+    private final String FILE_PATH = "./src/test/java/Archives/Vagas" + idEstacionamento;
 
     public Vaga(int idEstacionamento, int id) throws IOException {
         this.id = id;

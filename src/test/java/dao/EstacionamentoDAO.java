@@ -127,4 +127,18 @@ public class EstacionamentoDAO{
        }
        
    }
+    private static List<Pagamento> pagamentos = new ArrayList<>();
+
+    public void adicionarPagamento(Pagamento pagamento) {
+        pagamentos.add(pagamento);
+    }
+
+    public List<Pagamento> obterPagamentos() {
+        return new ArrayList<>(pagamentos);
+    }
+
+    public void limparPagamentos() {
+        pagamentos.clear();
+    }
+
 }

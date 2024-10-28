@@ -32,6 +32,15 @@ public class AddEstacionamentoController  {
         });
         
     }
+    public double obterValorMedioUso() {
+        List<Pagamento> pagamentos = estacionamentoDAO.obterPagamentos();
+        return estacionamento.calcularValorMedioUso(pagamentos);
+    }
+
+    public List<ClienteRanking> obterRankingClientes() {
+        List<Pagamento> pagamentos = estacionamentoDAO.obterPagamentos();
+        return estacionamento.gerarRankingClientes(pagamentos);
+    }
 
     public void addEstacionamento(){
         String nome = view.getTxtNomeEstacionamento().getText();

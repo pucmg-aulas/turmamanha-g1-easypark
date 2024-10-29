@@ -136,4 +136,17 @@ private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("
         }
         return maiorId;
     }
+     
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Cobranca cobranca = (Cobranca) obj;
+        return idCobranca == cobranca.idCobranca; // Compara pelo idCobranca
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(idCobranca); // Deve corresponder ao equals
+    }
 }

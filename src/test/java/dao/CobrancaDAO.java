@@ -58,31 +58,31 @@ public class CobrancaDAO {
     
     public boolean salvarCobrancaArquivo(List<Cobranca> cobrancas) throws IOException {
         File arquivo = new File(Arquivo);
-       
+
         try {
             File diretorio = arquivo.getParentFile();
             if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdir();
+                diretorio.mkdirs(); // use mkdirs para criar diretórios se necessário
             }
 
+            // Cria o arquivo se não existir
             if (!arquivo.exists()) {
                 arquivo.createNewFile();
             }
-            
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(Arquivo))) {
-            for(Cobranca c : cobrancas){
-                String dataEntrada = c.getHoraEntrada().format(formatter);
-                bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada);
-                bw.newLine();
-                bw.flush();
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
+                for (Cobranca c : cobrancas) {
+                    String dataEntrada = c.getHoraEntrada().format(formatter);
+                    bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada);
+                    bw.newLine();
+                }
+                return true; // Indica que a operação foi bem-sucedida
             }
-            return true;
+        } catch (IOException e) {
+            throw new IOException("Erro ao salvar cobranças: " + e.getMessage());
         }
-    }catch (IOException e) {
-        throw new IOException(e.getMessage());
-        }
-       
     }
+
 
     // Método para ler todas as cobranças do arquivo
    public List<Cobranca> lerCobrancas() {
@@ -126,9 +126,16 @@ public class CobrancaDAO {
 }
     // Método para remover uma cobrança do arquivo
     public boolean removerCobranca(Cobranca cobranca) throws IOException {
-       cobrancas.remove(cobranca);
-       return salvarCobrancaArquivo(cobrancas);
+        // Remove a cobrança da lista
+        boolean removido = cobrancas.remove(cobranca);
+
+        // Salva as cobranças atualizadas no arquivo
+        if (removido) {
+            return salvarCobrancaArquivo(cobrancas);
+        }
+        return false; // Retorna false se a cobrança não foi encontrada na lista
     }
+
     
     
 }

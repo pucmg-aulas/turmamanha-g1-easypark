@@ -62,7 +62,7 @@ public class CobrancaDAO {
         try {
             File diretorio = arquivo.getParentFile();
             if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs(); // use mkdirs para criar diretórios se necessário
+                diretorio.mkdirs();
             }
 
             // Cria o arquivo se não existir

@@ -4,6 +4,7 @@ import Models.Cobranca;
 import Models.Vaga;
 import dao.CobrancaDAO;
 import dao.VagaDAO;
+import dao.PagamentoDAO;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.JDesktopPane;
@@ -93,6 +94,9 @@ public class PagarCobrancaController {
                 boolean vagaLiberada = vagaDAO.liberarVaga(idVaga); // Muda o status da vaga para desocupada
 
                 if (vagaLiberada) {
+                    PagamentoDAO pagamentoDAO = new PagamentoDAO();
+                    pagamentoDAO.salvarPagamento(cobranca); 
+                    
                     showMessage("Cobrança paga e vaga liberada com sucesso!");
                     carregarVagasOcupadas();  // Atualiza a tabela
                 } else {

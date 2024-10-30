@@ -1,21 +1,59 @@
 package Models;
 
-public class Pagamento {
-    private int id;
-    private String cliente;
-    private double valor;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Pagamento(int id, String cliente, double valor) {
-        this.id = id;
-        this.cliente = cliente;
-        this.valor = valor;
+public class Pagamento {
+    private int idPagamento;
+    private LocalDateTime dataPagamento;
+
+    private static final String Arquivo = "./src/test/java/Archives/Pagamentos.txt";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public Pagamento() throws IOException {
+        this.idPagamento = encontrarMaiorId() + 1;
+        this.dataPagamento = LocalDateTime.now();
     }
 
-    public int getId() { return id; }
-    public String getCliente() { return cliente; }
-    public double getValor() { return valor; }
+    public int getIdPagamento() {
+        return idPagamento;
+    }
 
-    public void setId(int id) { this.id = id; }
-    public void setCliente(String cliente) { this.cliente = cliente; }
-    public void setValor(double valor) { this.valor = valor; }
+    public LocalDateTime getDataPagamento() {
+        return dataPagamento;
+    }
+    
+    public void setDataPagamento(LocalDateTime dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+
+    public void setIdPagamento(int idPagamento) {
+        this.idPagamento = idPagamento;
+    }
+
+    private int encontrarMaiorId() throws IOException {
+        File arquivo = new File(Arquivo);
+        int maiorId = 0;
+
+        if (!arquivo.exists()) {
+            return maiorId;
+        }
+
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
+                String[] dados = linha.split(";");
+                int idAtual = Integer.parseInt(dados[0]);
+
+                if (idAtual > maiorId) {
+                    maiorId = idAtual;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
+        }
+        return maiorId;
+    }
 }

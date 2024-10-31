@@ -6,8 +6,11 @@ import dao.CobrancaDAO;
 import dao.VagaDAO;
 import dao.PagamentoDAO;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import view.PagarCobrancaView;
 
@@ -19,15 +22,17 @@ public class PagarCobrancaController {
     private VagaDAO vagas;
     private CobrancaDAO cobrancas;
     private PagamentoDAO pagamentos;
+    private LocalDateTime dataSaida;
 
-    public PagarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException {
+    public PagarCobrancaController(JDesktopPane desktopPane, int idEstacionamento, LocalDateTime dataSaida) throws IOException {
         this.view = new PagarCobrancaView(desktopPane);
         this.desktopPane = desktopPane;
         this.idEstacionamento = idEstacionamento;
         this.vagas = VagaDAO.getInstance(idEstacionamento);
         this.cobrancas = CobrancaDAO.getInstance();
         this.pagamentos = PagamentoDAO.getInstance();
-
+        this.dataSaida = dataSaida;
+        
         desktopPane.add(view);
         this.view.setVisible(true);
 
@@ -92,8 +97,8 @@ public class PagarCobrancaController {
                 return;
             }
             
-           // tempoTotal = horaEntrada(cobranca) - horaSaida(pagamento);
-
+            long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
+            JOptionPane.showMessageDialog(view,"Data " + cobranca.getHoraEntrada() + "- " + dataSaida + "- " + diferencaEmMinutos);
             // Remove a cobrança e libera a vaga
             boolean removido = cobrancas.removerCobranca(cobranca);
             if (removido) {

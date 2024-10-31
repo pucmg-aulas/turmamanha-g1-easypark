@@ -71,8 +71,7 @@ public class MenuEstacionamentoController {
             try {
                 String dataSaida = PagamentoDAO.getHoraSaida();
                 LocalDateTime dataSaida2 = LocalDateTime.parse(dataSaida, PagamentoDAO.FORMATTER);
-                JOptionPane.showMessageDialog(view,"Cliente Encontrado: " + dataSaida2);
-                this.pagarCobrancaController = new PagarCobrancaController(desktopPane, idEstacionamento);
+                this.pagarCobrancaController = new PagarCobrancaController(desktopPane, idEstacionamento, dataSaida2);
             } catch (IOException ex) {
                 showMessageDialog(null, "Ocorreu um erro ao iniciar tela de pagamento da cobrança");
             }

@@ -51,6 +51,7 @@ view\ReservarVagaView$2.class
 Controllers\PagarCobrancaController.class
 Controllers\AddClienteController.class
 dao\ClienteDAO.class
+dao\PagamentoDAO.class
 view\CadastroVeiculoClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$2.class
 view\GerarCobrancaView.class

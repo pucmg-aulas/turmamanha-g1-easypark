@@ -2,62 +2,143 @@ package dao;
 
 import Models.HistoricoUso;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistoricoUsoDAO {
-    private static final String ARQUIVO_HISTORICO = "Archives/historico_uso.txt";
+    private List<Historico> historicos;
+    private static HistoricoDAO instance;
+    private static final String ARQUIVO = "./src/test/java/Archives/HistoricoUso.txt";
 
-    public void registrarEntrada(String placaCarro) {
-        LocalDateTime agora = LocalDateTime.now();
-        HistoricoUso historico = new HistoricoUso(placaCarro, agora);
-        List<HistoricoUso> historicos = carregarHistorico();
-        historicos.add(historico);
-        salvarHistorico(historicos);
-    }
-
-    public void registrarSaida(String placaCarro) {
-        List<HistoricoUso> historicos = carregarHistorico();
-        for (HistoricoUso historico : historicos) {
-            if (historico.getPlacaCarro().equals(placaCarro) && historico.getDataSaida() == null) {
-                historico.registrarSaida(LocalDateTime.now());
-                break;
-            }
-        }
-        salvarHistorico(historicos);
-    }
-
-    private void salvarHistorico(List<HistoricoUso> historicos) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_HISTORICO))) {
-            for (HistoricoUso historico : historicos) {
-                writer.write(historico.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private HistoricoDAO() throws IOException {
+        historicos = lerHistoricos();
+        if(historicos == null){
+            historicos = new ArrayList<>();
         }
     }
-
-    public List<HistoricoUso> carregarHistorico() {
-        List<HistoricoUso> historicos = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_HISTORICO))) {
+    
+    public static HistoricoDAO getInstance() throws IOException {
+        if(instance == null) {
+            instance = new HistoricoDAO();
+        }
+        return instance;
+    }
+    
+    public Historico buscarHistoricoPorId(String id) {
+        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
-            while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split(";");
-                String placa = partes[0];
-                LocalDateTime entrada = LocalDateTime.parse(partes[1], DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                LocalDateTime saida = partes[2].isEmpty() ? null : LocalDateTime.parse(partes[2], DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                HistoricoUso historico = new HistoricoUso(placa, entrada);
-                if (saida != null) {
-                    historico.registrarSaida(saida);
+            while((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
+                String idHistorico = dados[0];
+                String descricao = dados[1];
+                String data = dados[2];
+
+                if(id.equals(idHistorico)) {
+                    return new Historico(idHistorico, descricao, data);
                 }
-                historicos.add(historico);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    
+    public boolean cadastrarHistorico(Historico historico) throws IOException {
+        historicos.add(historico);
+        return salvarHistoricoArquivo(historicos);
+    } 
+    
+    private boolean salvarHistoricoArquivo(List<Historico> listaHistoricos) throws IOException {
+        File arquivo = new File(ARQUIVO);
+
+        try {
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdir();
+            }
+
+            if (!arquivo.exists()) {
+                arquivo.createNewFile();
+            }
+
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(ARQUIVO))) {
+                for(Historico historico : listaHistoricos) {
+                    // Escrever o CPF e nome do cliente
+                    bw.write(historico.getCpfCliente() + ";" + historico.getNomeCliente());
+                    bw.newLine();
+                    
+                    // Escrever detalhes da cobrança
+                    bw.write(historico.getDescricao() + ";" + historico.getIdCobranca() + ";" + historico.getIdVaga() + ";"
+                            + historico.getPlacaVeiculo() + ";" + historico.getStatus() + ";" + historico.getDataEntrada());
+                    bw.newLine();
+                    
+                    // Se houver data de saída (pagamento), adicionar linha correspondente
+                    if (historico.getDataSaida() != null && !historico.getDataSaida().isEmpty()) {
+                        bw.write(historico.getDescricao() + ";" + historico.getIdCobranca() + ";" + historico.getIdVaga() + ";"
+                                + historico.getPlacaVeiculo() + ";" + historico.getStatus() + ";" + historico.getDataSaida());
+                        bw.newLine();
+                    }
+                    
+                    // Linha em branco para separar registros
+                    bw.newLine();
+                }
+                bw.flush();
+                return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
-        return historicos;
+    }
+    
+    public List<Historico> lerHistoricos() throws FileNotFoundException, IOException {
+        List<Historico> historicosLista = new ArrayList<>();
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
+            String linha;
+            
+            while((linha = br.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
+
+                // Primeira linha: CPF e nome do cliente
+                String[] dadosCliente = linha.split(";");
+                String cpfCliente = dadosCliente[0];
+                String nomeCliente = dadosCliente[1];
+                
+                // Próxima linha: dados da cobrança
+                linha = br.readLine();
+                String[] dadosCobranca = linha.split(";");
+                String descricao = dadosCobranca[0];
+                String idCobranca = dadosCobranca[1];
+                String idVaga = dadosCobranca[2];
+                String placaVeiculo = dadosCobranca[3];
+                String status = dadosCobranca[4];
+                String dataEntrada = dadosCobranca[5];
+
+                // Cria objeto Historico com data de entrada
+                Historico historico = new Historico(cpfCliente, nomeCliente, descricao, idCobranca, idVaga, placaVeiculo, status, dataEntrada);
+
+                // Verifica se há data de saída (pagamento) na linha seguinte
+                linha = br.readLine();
+                if (linha != null && !linha.trim().isEmpty()) {
+                    String[] dadosPagamento = linha.split(";");
+                    String dataSaida = dadosPagamento[5];
+                    historico.setDataSaida(dataSaida); // Define data de saída no objeto
+                }
+
+                historicosLista.add(historico);
+
+                // Avança para a próxima linha em branco entre registros
+                br.readLine();
+            }
+            return historicosLista;
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    
+    
     }
 }

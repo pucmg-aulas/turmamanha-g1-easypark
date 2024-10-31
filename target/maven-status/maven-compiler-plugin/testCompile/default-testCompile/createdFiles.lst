@@ -1,4 +1,3 @@
-view\PagarCobrancaView$5.class
 view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class
@@ -36,7 +35,6 @@ view\ListarVagasView$2.class
 view\ReservarVagaView$3.class
 Controllers\ExibirVeiculosClienteController.class
 Models\Cliente.class
-view\GerarCobrancaView$5.class
 view\PagarCobrancaView$3.class
 view\ReservarVagaView.class
 Controllers\ListarVagasController.class

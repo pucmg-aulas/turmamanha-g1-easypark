@@ -30,17 +30,19 @@ public class CobrancaDAO {
         return instance;
     }
     
-    public String getPlacaCobranca(int idVaga){
+    public Cobranca getCobranca(int idVaga){
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
             while ((linha = leitor.readLine()) != null) {
                 String[] dados = linha.split(";");
+                int idCobranca = Integer.parseInt(dados[0]);
                 int idVagaAtual = Integer.parseInt(dados[1]);
                 String placaVeiculo = dados[2];
-                
+                int idEstacionamento = Integer.parseInt(dados[3]);
+                LocalDateTime dataEntrada = LocalDateTime.parse(dados[4], formatter);
                 if(idVagaAtual == idVaga){
-                    return placaVeiculo;
+                    return new Cobranca(idCobranca, idVagaAtual, idEstacionamento, placaVeiculo, dataEntrada);
                 }
             }
         } catch (IOException e) {

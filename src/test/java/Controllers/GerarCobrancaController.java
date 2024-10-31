@@ -41,6 +41,8 @@ public class GerarCobrancaController {
         view.getConfirmarBtn().addActionListener(e ->{
             try {
                 createCobranca();
+                limparCampos();
+                carregarVagasDisponiveis();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -73,10 +75,12 @@ public class GerarCobrancaController {
      }
 
     private Cobranca getAtributos() throws FileNotFoundException {
-    String idVaga = view.getId().getText().trim();
+    int selectedRow = view.getVagasTable().getSelectedRow();
+    String idVaga = (String) view.getVagasTable().getValueAt(selectedRow, 0);
     String placaVeiculo = view.getPlaca().getText().trim();
-    int idVagaNumber = Integer.parseInt(idVaga);
 
+    int idVagaNumber = Integer.parseInt(idVaga);
+    
     if (validarCampos(idVaga, placaVeiculo)) {
         Cobranca c = new Cobranca(idVagaNumber, idEstacionamento, placaVeiculo);
         return c;  
@@ -87,7 +91,7 @@ public class GerarCobrancaController {
 }
      
      private boolean validarCampos(String idVaga, String placaVeiculo){
-        return !(idVaga.isEmpty() || placaVeiculo.isEmpty());
+        return !(idVaga.isEmpty()  || placaVeiculo.isEmpty());
     }
      
     private Veiculo isVeiculoCadastrado(String placa) throws FileNotFoundException{
@@ -129,5 +133,9 @@ public class GerarCobrancaController {
         } catch (IOException ex) {
             Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+     }
+     
+     private void limparCampos(){
+         view.getPlaca().setText("");
      }
 }

@@ -5,10 +5,15 @@
 package Controllers;
 
 import dao.EstacionamentoDAO;
+import dao.PagamentoDAO;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import view.MenuEstacionamentoView;
 
@@ -27,10 +32,12 @@ public class MenuEstacionamentoController {
     private int idEstacionamento;
     private EstacionamentoDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
+    private PagamentoDAO pagamentos;
     
-    public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento){
+    public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
         this.view = new MenuEstacionamentoView(desktopPane);
         this.idEstacionamento = idEstacionamento;
+        this.pagamentos = PagamentoDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -62,6 +69,9 @@ public class MenuEstacionamentoController {
         
         this.view.addPagarCobrancaBtnActionListener(e -> {
             try {
+                String dataSaida = PagamentoDAO.getHoraSaida();
+                LocalDateTime dataSaida2 = LocalDateTime.parse(dataSaida, PagamentoDAO.FORMATTER);
+                JOptionPane.showMessageDialog(view,"Cliente Encontrado: " + dataSaida2);
                 this.pagarCobrancaController = new PagarCobrancaController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 showMessageDialog(null, "Ocorreu um erro ao iniciar tela de pagamento da cobrança");

@@ -18,6 +18,7 @@ public class PagarCobrancaController {
     private int idEstacionamento;
     private VagaDAO vagas;
     private CobrancaDAO cobrancas;
+    private PagamentoDAO pagamentos;
 
     public PagarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException {
         this.view = new PagarCobrancaView(desktopPane);
@@ -25,13 +26,18 @@ public class PagarCobrancaController {
         this.idEstacionamento = idEstacionamento;
         this.vagas = VagaDAO.getInstance(idEstacionamento);
         this.cobrancas = CobrancaDAO.getInstance();
+        this.pagamentos = PagamentoDAO.getInstance();
 
         desktopPane.add(view);
         this.view.setVisible(true);
 
         // Configurações dos botões
         view.getVoltarBtn().addActionListener(e -> sair());
-        view.getConfirmarBtn().addActionListener(e -> confirmarPagamento());
+        view.getConfirmarBtn().addActionListener(e -> {
+          //  confirmarPagamento(horaSaida);
+            limparCampos();
+            carregarVagasOcupadas();
+        });
 
         carregarVagasOcupadas();
     }
@@ -49,7 +55,7 @@ public class PagarCobrancaController {
             Vaga v = it.next();
             String[] linha = v.toString().split("-");
             linha[2] = "Ocupado";  // Força o status como "Ocupado"
-            String placa = cobrancas.getPlacaCobranca(Integer.parseInt(linha[0]));
+            String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getPlacaVeiculo();
             tm.addRow(new Object[]{linha[0], linha[1], linha[2], placa});
         }
 
@@ -66,15 +72,14 @@ public class PagarCobrancaController {
             }
 
             // Recupera os dados inseridos nos campos de texto
-            String idVagaText = view.getId().getText();
-            String placaText = view.getPlaca().getText();
-
-            if (idVagaText.isEmpty() || placaText.isEmpty()) {
+            Integer idVaga = (Integer) view.getVagasTable().getValueAt(selectedRow, 0);
+            String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
+            String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
+            
+            if (idVaga == null || placaText.isEmpty()) {
                 showMessage("Preencha o ID da Vaga e a Placa do Veículo.");
                 return;
             }
-
-            int idVaga = Integer.parseInt(idVagaText);
 
             // Busca a cobrança correspondente no DAO
             Cobranca cobranca = cobrancas.lerCobrancas().stream()
@@ -86,6 +91,8 @@ public class PagarCobrancaController {
                 showMessage("Cobrança não encontrada para os dados fornecidos.");
                 return;
             }
+            
+           // tempoTotal = horaEntrada(cobranca) - horaSaida(pagamento);
 
             // Remove a cobrança e libera a vaga
             boolean removido = cobrancas.removerCobranca(cobranca);
@@ -94,8 +101,13 @@ public class PagarCobrancaController {
                 boolean vagaLiberada = vagaDAO.liberarVaga(idVaga); // Muda o status da vaga para desocupada
 
                 if (vagaLiberada) {
-                    PagamentoDAO pagamentoDAO = new PagamentoDAO();
-                    pagamentoDAO.salvarPagamento(cobranca); 
+                 //   LocalTime horaEntrada = cobranca.getHoraEntrada();
+                   // LocalTime horaSaida;
+                 //   long diferencaMinutos = Duration.between(horaEntrada, horaSaida).toMinutes();
+                    
+               //     int tempoTotal = cobranca.getHoraEntrada().
+              //      cobranca.setValorTotal(0);
+               //     pagamentoDAO.salvarPagamento(cobranca); 
                     
                     showMessage("Cobrança paga e vaga liberada com sucesso!");
                     carregarVagasOcupadas();  // Atualiza a tabela
@@ -116,5 +128,9 @@ public class PagarCobrancaController {
 
     private void showMessage(String message) {
         view.showMessage(message);
+    }
+    
+    private void limparCampos(){
+        view.getValor().setText("");
     }
 }

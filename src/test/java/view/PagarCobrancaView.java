@@ -30,10 +30,8 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         vagasTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        idText = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        placaText = new javax.swing.JTextField();
+        valorText = new javax.swing.JTextField();
         confirmarBtn = new javax.swing.JButton();
         voltarBtn = new javax.swing.JButton();
 
@@ -63,19 +61,12 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(vagasTable);
 
-        jLabel3.setText("Digite o ID da Vaga:");
+        jLabel4.setText("Valor a cobrar: ");
 
-        idText.addActionListener(new java.awt.event.ActionListener() {
+        valorText.setEditable(false);
+        valorText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idTextActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Digite a Placa do Veículo:");
-
-        placaText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                placaTextActionPerformed(evt);
+                valorTextActionPerformed(evt);
             }
         });
 
@@ -104,19 +95,11 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
                         .addComponent(jSeparator1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(idText)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(275, 275, 275)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(placaText, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(190, 190, 190)
+                                .addComponent(valorText, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 50, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -132,7 +115,10 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(364, 364, 364)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(388, 388, 388)
+                        .addComponent(jLabel4)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,13 +133,9 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4))
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(placaText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(valorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(voltarBtn)
@@ -181,13 +163,9 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void idTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTextActionPerformed
+    private void valorTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_idTextActionPerformed
-
-    private void placaTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placaTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_placaTextActionPerformed
+    }//GEN-LAST:event_valorTextActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         // TODO add your handling code here:
@@ -201,12 +179,8 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
         return confirmarBtn;
     }
     
-    public JTextField getId(){
-        return idText;
-    }
-    
-    public JTextField getPlaca(){
-        return placaText;
+    public JTextField getValor(){
+        return valorText;
     }
     
     public JButton getVoltarBtn(){
@@ -223,16 +197,14 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmarBtn;
-    private javax.swing.JTextField idText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField placaText;
     private javax.swing.JTable vagasTable;
+    private javax.swing.JTextField valorText;
     private javax.swing.JButton voltarBtn;
     // End of variables declaration//GEN-END:variables
 }

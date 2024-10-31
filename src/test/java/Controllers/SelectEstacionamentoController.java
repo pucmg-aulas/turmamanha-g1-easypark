@@ -11,6 +11,8 @@ import Models.Estacionamento;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class SelectEstacionamentoController {
@@ -32,7 +34,11 @@ public class SelectEstacionamentoController {
             String[] dadosEstacionamento = estacionamentoSelecionado.split("-");
             int idEstacionamentoSelecionado = Integer.parseInt(dadosEstacionamento[0]);
             JOptionPane.showMessageDialog(view,"Estacionamento selecionado: " + idEstacionamentoSelecionado);
-            MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
+            try {
+                MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             sair();
             
         });

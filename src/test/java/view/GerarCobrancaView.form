@@ -26,9 +26,9 @@
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -70,11 +70,6 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="349" max="-2" attributes="0"/>
-                  <Component id="jLabel2" pref="0" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="399" max="-2" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   <Component id="confirmarBtn" min="-2" pref="117" max="-2" attributes="0"/>
@@ -82,24 +77,23 @@
                   <Component id="voltarBtn" min="-2" pref="98" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="349" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jLabel3" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="219" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="idText" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel4" max="32767" attributes="0"/>
-                          <EmptySpace min="200" pref="200" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
-                      <Component id="placaText" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel2" pref="92" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="399" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="263" max="-2" attributes="0"/>
+                  <Component id="placaText" min="-2" pref="312" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -113,15 +107,9 @@
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="186" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel3" alignment="3" max="32767" attributes="0"/>
-                      <Component id="jLabel4" alignment="3" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jLabel4" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="idText" alignment="0" max="32767" attributes="0"/>
-                      <Component id="placaText" alignment="3" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="placaText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="voltarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -145,16 +133,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Vagas Disponiveis"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Digite o ID da Vaga:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="idText">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idTextActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>

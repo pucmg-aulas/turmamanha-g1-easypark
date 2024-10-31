@@ -12,8 +12,24 @@ import java.util.List;
 
 public class PagamentoDAO {
     private static final String ARQUIVO = "./src/test/java/Archives/Pagamentos.txt";
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private List<Pagamento> pagamentos;
+    private static PagamentoDAO instance;
+    
+    private PagamentoDAO() throws IOException{
+        pagamentos = listarPagamentos();
+        if(pagamentos == null){
+            pagamentos = new ArrayList<>();
+        }
+    }
+    
+    public static PagamentoDAO getInstance() throws IOException{
+        if(instance == null){
+            instance = new PagamentoDAO();
+        }
+        return instance;
+    }
+    
     public void salvarPagamento(Cobranca cobranca) throws IOException {
         Pagamento pagamento = new Pagamento();
         int idEstacionamento = cobranca.getIdEstacionamento();
@@ -65,5 +81,9 @@ public class PagamentoDAO {
         }
 
         return pagamentos;
+    }
+    
+    public static String getHoraSaida(){
+        return LocalDateTime.now().format(FORMATTER);
     }
 }

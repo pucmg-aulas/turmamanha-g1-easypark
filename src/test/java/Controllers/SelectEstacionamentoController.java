@@ -33,7 +33,8 @@ public class SelectEstacionamentoController {
             int idEstacionamentoSelecionado = Integer.parseInt(dadosEstacionamento[0]);
             JOptionPane.showMessageDialog(view,"Estacionamento selecionado: " + idEstacionamentoSelecionado);
             MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
-        
+            sair();
+            
         });
     }
 
@@ -54,4 +55,8 @@ public class SelectEstacionamentoController {
             JOptionPane.showMessageDialog(view, "Erro ao carregar estacionamentos: " + e.getMessage());
         }
     }
+    
+    private void sair(){
+         this.view.dispose();
+     }
 }

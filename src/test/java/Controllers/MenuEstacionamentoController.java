@@ -67,6 +67,14 @@ public class MenuEstacionamentoController {
                 showMessageDialog(null, "Ocorreu um erro ao iniciar tela de pagamento da cobrança");
             }
         });
+        
+        this.view.getVoltarBtn().addActionListener(e ->{
+            sair();
+        });
          
     }
+    
+    private void sair(){
+         this.view.dispose();
+     }
 }

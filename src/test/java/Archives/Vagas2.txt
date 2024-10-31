@@ -1,8 +1,8 @@
 1;Regular;Desocupado
 2;Regular;Desocupado
-3;Regular;Ocupado
+3;Regular;Desocupado
 4;Regular;Desocupado
-5;Regular;Ocupado
+5;Regular;Desocupado
 6;Idoso;Desocupado
 7;Idoso;Desocupado
 8;PCD;Desocupado

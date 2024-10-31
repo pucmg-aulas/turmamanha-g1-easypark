@@ -14,16 +14,18 @@ import java.util.List;
 public class VagaDAO {
     private List<Vaga> vagas;
     private static VagaDAO instance;
+    private int idEstacionamento;
 
     private VagaDAO(int idEstacionamento) {
         vagas = carregarVagasArquivo(idEstacionamento);
+        this.idEstacionamento = idEstacionamento;
         if (vagas == null) {
             vagas = new ArrayList<>();
         }
     }
 
     public static VagaDAO getInstance(int idEstacionamento) {
-        if (instance == null) {
+        if (instance == null || instance.idEstacionamento != idEstacionamento) {
             instance = new VagaDAO(idEstacionamento);
         }
         return instance;

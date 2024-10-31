@@ -3,6 +3,7 @@ view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class
 Models\Veiculo.class
+view\MenuEstacionamentoView$5.class
 view\CadastroEstacionamentoView.class
 Controllers\SelectEstacionamentoController.class
 view\MenuPrincipalViewJframe$3.class
@@ -17,6 +18,7 @@ view\ListarVagasView$1.class
 view\ExibirDetalhesEstacionamentoView.class
 view\ReservarVagaView$1.class
 view\GerarCobrancaView$3.class
+view\ExibirHistoricoUsoView.class
 Controllers\ExibirDetalhesEstacionamentoController.class
 view\MenuClienteView$2.class
 view\CadastroEstacionamentoView$1.class
@@ -24,6 +26,7 @@ view\SelecionarClienteView.class
 Models\Cobranca.class
 view\ExibirDetalhesEstacionamentoView$3.class
 view\CadastroVeiculoClienteView$3.class
+view\MenuClienteView$4.class
 view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
 dao\CobrancaDAO.class
@@ -85,7 +88,6 @@ view\GerarCobrancaView$1.class
 view\MenuPrincipalViewJframe.class
 view\CadastroClienteView.class
 view\ExibirVeiculosClienteView.class
-dao\HistoricoUsoDAO.class
 Controllers\AddEstacionamentoController.class
 view\ExibirDetalhesClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$1.class

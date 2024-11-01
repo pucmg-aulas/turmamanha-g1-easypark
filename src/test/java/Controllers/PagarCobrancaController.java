@@ -39,7 +39,7 @@ public class PagarCobrancaController {
         // Configurações dos botões
         view.getVoltarBtn().addActionListener(e -> sair());
         view.getConfirmarBtn().addActionListener(e -> {
-          //  confirmarPagamento(horaSaida);
+            confirmarPagamento();
             limparCampos();
             carregarVagasOcupadas();
         });
@@ -61,6 +61,7 @@ public class PagarCobrancaController {
             String[] linha = v.toString().split("-");
             linha[2] = "Ocupado";  // Força o status como "Ocupado"
             String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getPlacaVeiculo();
+             JOptionPane.showMessageDialog(view,placa);
             tm.addRow(new Object[]{linha[0], linha[1], linha[2], placa});
         }
 
@@ -77,9 +78,20 @@ public class PagarCobrancaController {
             }
 
             // Recupera os dados inseridos nos campos de texto
-            Integer idVaga = (Integer) view.getVagasTable().getValueAt(selectedRow, 0);
+            String idVagaText = (String) view.getVagasTable().getValueAt(selectedRow, 0);
+            JOptionPane.showMessageDialog(view,idVagaText);
+            Integer idVaga = Integer.parseInt(idVagaText);
+
             String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
+              JOptionPane.showMessageDialog(view,placaText);
             String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
+                       
+                         JOptionPane.showMessageDialog(view,tipoVaga);
+
+
+
+            
+            
             
             if (idVaga == null || placaText.isEmpty()) {
                 showMessage("Preencha o ID da Vaga e a Placa do Veículo.");

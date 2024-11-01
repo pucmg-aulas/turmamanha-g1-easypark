@@ -183,6 +183,10 @@ public class PagarCobrancaView extends javax.swing.JInternalFrame {
         return valorText;
     }
     
+      public void setValor(JTextField Valor) {
+        this.valorText = Valor;
+    }
+    
     public JButton getVoltarBtn(){
         return voltarBtn;
     }

@@ -2,7 +2,7 @@ package Models;
 
 import java.io.IOException;
 
-public class VagaVIP extends Vaga{
+public class VagaVIP extends Vaga implements ITipo{
 
     private static final double AUMENTO_VIP = 1.20;
 
@@ -26,4 +26,9 @@ public class VagaVIP extends Vaga{
     public String getTipo(){
         return "VIP";
     }
+    
+    @Override
+     public double calculoValor(double valor){
+       return valor + (valor*AUMENTO_VIP);
+   }
 }

@@ -17,6 +17,8 @@ import view.PagarCobrancaView;
 public class PagarCobrancaController {
 
     private PagarCobrancaView view;
+    private Cobranca modelCobranca;
+    private Vaga modelVaga;
     private JDesktopPane desktopPane;
     private int idEstacionamento;
     private VagaDAO vagas;
@@ -61,7 +63,6 @@ public class PagarCobrancaController {
             String[] linha = v.toString().split("-");
             linha[2] = "Ocupado";  // Força o status como "Ocupado"
             String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getPlacaVeiculo();
-             JOptionPane.showMessageDialog(view,placa);
             tm.addRow(new Object[]{linha[0], linha[1], linha[2], placa});
         }
 
@@ -79,17 +80,12 @@ public class PagarCobrancaController {
 
             // Recupera os dados inseridos nos campos de texto
             String idVagaText = (String) view.getVagasTable().getValueAt(selectedRow, 0);
-            JOptionPane.showMessageDialog(view,idVagaText);
             Integer idVaga = Integer.parseInt(idVagaText);
-
             String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
-              JOptionPane.showMessageDialog(view,placaText);
             String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
-                       
-                         JOptionPane.showMessageDialog(view,tipoVaga);
 
 
-
+            //////////////////////////modelVaga vaga = new modelVaga(idEstacionamento, idVaga);
             
             
             
@@ -110,7 +106,7 @@ public class PagarCobrancaController {
             }
             
             long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
-            JOptionPane.showMessageDialog(view,"Data " + cobranca.getHoraEntrada() + "- " + dataSaida + "- " + diferencaEmMinutos);
+           
             // Remove a cobrança e libera a vaga
             boolean removido = cobrancas.removerCobranca(cobranca);
             if (removido) {
@@ -133,6 +129,9 @@ public class PagarCobrancaController {
                 }
             } else {
                 showMessage("Erro ao remover a cobrança.");
+                
+             
+             ///////////////////////////////  view.setValor(modelVaga.calculoValor(calculoValorParcial(calculoFracao(diferencaEmMinuitos))));
             }
         } catch (NumberFormatException ex) {
             showMessage("ID da Vaga deve ser um número válido.");
@@ -140,6 +139,7 @@ public class PagarCobrancaController {
             ex.printStackTrace();
             showMessage("Ocorreu um erro: " + ex.getMessage());
         }
+        
     }
 
 
@@ -149,5 +149,15 @@ public class PagarCobrancaController {
     
     private void limparCampos(){
         view.getValor().setText("");
+    }
+    
+    private long calculoFracao(long diferencaEmMinutos){
+       long qtdFracao = diferencaEmMinutos/modelCobranca.FRACAOTEMPO;
+       return qtdFracao;
+    }
+    
+    private long calculoValorParcial(long qtdFracao){
+        long valorTotal = qtdFracao*modelCobranca.VALORTEMPO;
+        return valorTotal;
     }
 }

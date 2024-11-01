@@ -2,7 +2,7 @@ package Models;
 
 import java.io.IOException;
 
-public class VagaPCD extends Vaga {
+public class VagaPCD extends Vaga implements ITipo {
 
     private static final double DESCONTO_PCD = 0.87;
 
@@ -23,4 +23,10 @@ public class VagaPCD extends Vaga {
     public String getTipo(){
         return "PCD";
     }
+    
+    @Override
+     public double calculoValor(double valor){
+       return valor - (valor*DESCONTO_PCD);
+   }
+    
 }

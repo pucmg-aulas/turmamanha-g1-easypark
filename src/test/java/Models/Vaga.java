@@ -6,6 +6,7 @@ public abstract class Vaga {
     private int id;
     protected double tarifaBase;
     private int idEstacionamento;
+    private ITipo tipoVaga;
 
     // Status True: Desocupado, False: Ocupado
     private boolean status;
@@ -75,6 +76,10 @@ public abstract class Vaga {
     @Override
     public String toString(){
         return id + "-" + getTipo() + "-" + status;
+    }
+    
+    public double calculoValor(double valor){
+        return tipoVaga.calculoValor(valor);
     }
 }
 

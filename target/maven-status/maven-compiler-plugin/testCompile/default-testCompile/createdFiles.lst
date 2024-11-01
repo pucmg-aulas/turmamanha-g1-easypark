@@ -12,6 +12,7 @@ view\MenuEstacionamentoView$2.class
 Models\VagaRegular.class
 view\ExibirDetalhesClienteView$3.class
 view\MenuPrincipalViewJframe$6.class
+Models\ITipo.class
 view\CadastroClienteView$2.class
 view\ListarVagasView$1.class
 view\ExibirDetalhesEstacionamentoView.class

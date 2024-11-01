@@ -18,9 +18,9 @@ public class Cobranca {
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSaida;
     private int tempoTotal;
-    private static final double VALORTEMPO = 4;
-    private static final double LIMITEPRECO = 50;
-    private static final double FRACAOTEMPO = 15;
+    public static final long VALORTEMPO = 4;
+    public static final double LIMITEPRECO = 50;
+    public static final long FRACAOTEMPO = 15;
     private double valorTotal;
     private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
 private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

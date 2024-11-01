@@ -2,7 +2,7 @@ package Models;
 
 import java.io.IOException;
 
-public class VagaIdoso extends Vaga{
+public class VagaIdoso extends Vaga implements ITipo{
     private static final double DESCONTO_IDOSO = 0.85;
 
     public VagaIdoso(int idEstacionamento, int id) throws IOException {
@@ -22,4 +22,9 @@ public class VagaIdoso extends Vaga{
     public String getTipo(){
         return "Idoso";
     }
+    
+    @Override
+   public double calculoValor(double valor){
+       return valor - (valor*DESCONTO_IDOSO);
+   }
 }

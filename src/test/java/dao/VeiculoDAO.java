@@ -127,14 +127,18 @@ public class VeiculoDAO {
         return veiculos;
     }
     
-    public List<Veiculo> lerVeiculos(){
-        List<Veiculo> veiculosLista = new ArrayList();
-        
-        try(BufferedReader br = new BufferedReader(new FileReader(Arquivo))){
+   public List<Veiculo> lerVeiculos() {
+        List<Veiculo> veiculosLista = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
-            
-            while((linha = br.readLine()) != null){
+
+            while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
+                if (dados.length < 4) {
+                    System.out.println("Linha inválida no arquivo de veículos: " + linha);
+                    continue;
+                }
                 String placa = dados[0];
                 String modelo = dados[1];
                 String cpfCliente = dados[2];
@@ -142,11 +146,11 @@ public class VeiculoDAO {
                 Veiculo novoVeiculo = new Veiculo(placa, new Cliente(nomeCliente, cpfCliente), modelo);
                 veiculosLista.add(novoVeiculo);
             }
-            
+
             return veiculosLista;
-        }catch(IOException e){
-           throw new RuntimeException(e);
-       }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
 }

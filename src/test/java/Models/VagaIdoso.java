@@ -25,6 +25,6 @@ public class VagaIdoso extends Vaga implements ITipo{
     
     @Override
    public double calculoValor(double valor){
-       return valor - (valor*DESCONTO_IDOSO);
+       return valor*DESCONTO_IDOSO;
    }
 }

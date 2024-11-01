@@ -29,6 +29,7 @@ view\CadastroVeiculoClienteView$3.class
 view\MenuClienteView$4.class
 view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
+Controllers\PagarCobrancaController$1.class
 dao\CobrancaDAO.class
 view\CadastroVeiculoClienteView$1.class
 view\MenuEstacionamentoView.class

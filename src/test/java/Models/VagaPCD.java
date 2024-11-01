@@ -26,7 +26,7 @@ public class VagaPCD extends Vaga implements ITipo {
     
     @Override
      public double calculoValor(double valor){
-       return valor - (valor*DESCONTO_PCD);
+       return valor *DESCONTO_PCD;
    }
     
 }

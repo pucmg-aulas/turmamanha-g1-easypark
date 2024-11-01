@@ -2,7 +2,7 @@ package Models;
 
 import java.io.*;
 
-public abstract class Vaga {
+public class Vaga {
     private int id;
     protected double tarifaBase;
     private int idEstacionamento;
@@ -25,6 +25,10 @@ public abstract class Vaga {
         this.status = status;
         this.tarifaBase = 10.0;
         this.idEstacionamento = idEstacionamento;
+    }
+    
+    public Vaga(ITipo tipoVaga ){
+        this.tipoVaga = tipoVaga;
     }
 
     public int getId() {
@@ -71,7 +75,18 @@ public abstract class Vaga {
         this.nextId = nextId;
     }
 
-    public abstract String getTipo();
+
+    public ITipo getTipoVaga() {
+    return tipoVaga;
+}
+    
+    public String getTipo(){
+    return "";
+    }
+
+public void setTipo(ITipo tipoVaga) {
+    this.tipoVaga = tipoVaga;
+}
     
     @Override
     public String toString(){

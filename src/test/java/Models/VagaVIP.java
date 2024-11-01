@@ -29,6 +29,6 @@ public class VagaVIP extends Vaga implements ITipo{
     
     @Override
      public double calculoValor(double valor){
-       return valor + (valor*AUMENTO_VIP);
+       return valor*AUMENTO_VIP;
    }
 }

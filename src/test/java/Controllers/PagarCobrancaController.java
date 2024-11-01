@@ -13,12 +13,18 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import view.PagarCobrancaView;
+import Models.ITipo;
+import Models.VagaIdoso;
+import Models.VagaPCD;
+import Models.VagaRegular;
+import Models.VagaVIP;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PagarCobrancaController {
 
     private PagarCobrancaView view;
     private Cobranca modelCobranca;
-    private Vaga modelVaga;
     private JDesktopPane desktopPane;
     private int idEstacionamento;
     private VagaDAO vagas;
@@ -46,7 +52,18 @@ public class PagarCobrancaController {
             carregarVagasOcupadas();
         });
 
+
         carregarVagasOcupadas();
+        
+        view.getVagasTable().addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    mostrarValor();
+                } catch (IOException ex) {
+                    Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     private void sair() {
@@ -71,24 +88,19 @@ public class PagarCobrancaController {
 
     private void confirmarPagamento() {
         try {
-            // Verifica se uma vaga foi selecionada na tabela
-            int selectedRow = view.getVagasTable().getSelectedRow();
-            if (selectedRow == -1) {
-                showMessage("Selecione uma vaga para confirmar o pagamento.");
-                return;
+            Object[] dadosVaga = recuperarDadosVaga();
+            
+             if(dadosVaga == null){
+               showMessage("Dados inválidos.");
+               return;
             }
-
-            // Recupera os dados inseridos nos campos de texto
-            String idVagaText = (String) view.getVagasTable().getValueAt(selectedRow, 0);
-            Integer idVaga = Integer.parseInt(idVagaText);
-            String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
-            String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
+             
+            Integer idVaga = (Integer) dadosVaga[0];
+            String placaText = (String) dadosVaga[1];
+            String tipoVaga = (String) dadosVaga[2];
 
 
-            //////////////////////////modelVaga vaga = new modelVaga(idEstacionamento, idVaga);
-            
-            
-            
+         
             if (idVaga == null || placaText.isEmpty()) {
                 showMessage("Preencha o ID da Vaga e a Placa do Veículo.");
                 return;
@@ -105,8 +117,8 @@ public class PagarCobrancaController {
                 return;
             }
             
-            long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
-           
+            
+            
             // Remove a cobrança e libera a vaga
             boolean removido = cobrancas.removerCobranca(cobranca);
             if (removido) {
@@ -114,14 +126,6 @@ public class PagarCobrancaController {
                 boolean vagaLiberada = vagaDAO.liberarVaga(idVaga); // Muda o status da vaga para desocupada
 
                 if (vagaLiberada) {
-                 //   LocalTime horaEntrada = cobranca.getHoraEntrada();
-                   // LocalTime horaSaida;
-                 //   long diferencaMinutos = Duration.between(horaEntrada, horaSaida).toMinutes();
-                    
-               //     int tempoTotal = cobranca.getHoraEntrada().
-              //      cobranca.setValorTotal(0);
-               //     pagamentoDAO.salvarPagamento(cobranca); 
-                    
                     showMessage("Cobrança paga e vaga liberada com sucesso!");
                     carregarVagasOcupadas();  // Atualiza a tabela
                 } else {
@@ -131,7 +135,6 @@ public class PagarCobrancaController {
                 showMessage("Erro ao remover a cobrança.");
                 
              
-             ///////////////////////////////  view.setValor(modelVaga.calculoValor(calculoValorParcial(calculoFracao(diferencaEmMinuitos))));
             }
         } catch (NumberFormatException ex) {
             showMessage("ID da Vaga deve ser um número válido.");
@@ -139,9 +142,7 @@ public class PagarCobrancaController {
             ex.printStackTrace();
             showMessage("Ocorreu um erro: " + ex.getMessage());
         }
-        
     }
-
 
     private void showMessage(String message) {
         view.showMessage(message);
@@ -159,5 +160,68 @@ public class PagarCobrancaController {
     private long calculoValorParcial(long qtdFracao){
         long valorTotal = qtdFracao*modelCobranca.VALORTEMPO;
         return valorTotal;
+    }
+    
+    private void mostrarValor() throws IOException {
+        Object[] dadosVaga = recuperarDadosVaga();
+        Integer idVaga = (Integer) dadosVaga[0];
+        String placaText = (String) dadosVaga[1];
+        String tipoVaga = (String) dadosVaga[2];
+
+        if (idVaga == null || placaText.isEmpty()) {
+            showMessage("Preencha o ID da Vaga e a Placa do Veículo.");
+            return;
+        }
+
+        // Busca a cobrança correspondente no DAO
+        Cobranca cobranca = cobrancas.lerCobrancas().stream()
+                .filter(c -> c.getIdVaga() == idVaga && c.getPlacaVeiculo().equals(placaText))
+                .findFirst()
+                .orElse(null);
+
+        if (cobranca == null) {
+            showMessage("Cobrança não encontrada para os dados fornecidos.");
+            return;
+        }
+
+        long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
+
+        Vaga vagaEspecifica = null;
+        switch (tipoVaga) {
+            case "PCD":
+                vagaEspecifica = new VagaPCD(idEstacionamento, idVaga);
+                break;
+            case "Idoso":
+                vagaEspecifica = new VagaIdoso(idEstacionamento, idVaga);
+                break;
+            case "Regular":
+                vagaEspecifica = new VagaRegular(idEstacionamento, idVaga);
+                break;
+            case "VIP":
+                vagaEspecifica = new VagaVIP(idEstacionamento, idVaga);
+                break;
+        }
+
+        double valor = vagaEspecifica.calculoValor(calculoValorParcial(calculoFracao(diferencaEmMinutos)));
+        String valorImpresso = String.format("R$ %.2f", valor);
+        view.getValor().setText(valorImpresso);
+
+    }
+    
+    private Object[] recuperarDadosVaga() {
+        // Verifica se uma vaga foi selecionada na tabela
+        int selectedRow = view.getVagasTable().getSelectedRow();
+        if (selectedRow == -1) {
+            showMessage("Selecione uma vaga para confirmar o pagamento.");
+            return null; // Retorna null se não houver linha selecionada
+        }
+
+        // Recupera os dados inseridos nos campos de texto
+        String idVagaText = (String) view.getVagasTable().getValueAt(selectedRow, 0);
+        Integer idVaga = Integer.parseInt(idVagaText);
+        String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
+        String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
+
+        return new Object[]{idVaga, placaText, tipoVaga}; // Retorna um array de Object
     }
 }

@@ -116,8 +116,8 @@ public class PagarCobrancaController {
                 showMessage("Cobrança não encontrada para os dados fornecidos.");
                 return;
             }
-            
-            
+            cobranca.setValorTotal(mostrarValor());
+            pagamentos.salvarPagamento(cobranca);
             
             // Remove a cobrança e libera a vaga
             boolean removido = cobrancas.removerCobranca(cobranca);
@@ -162,7 +162,7 @@ public class PagarCobrancaController {
         return valorTotal;
     }
     
-    private void mostrarValor() throws IOException {
+    private double mostrarValor() throws IOException {
         Object[] dadosVaga = recuperarDadosVaga();
         Integer idVaga = (Integer) dadosVaga[0];
         String placaText = (String) dadosVaga[1];
@@ -170,7 +170,7 @@ public class PagarCobrancaController {
 
         if (idVaga == null || placaText.isEmpty()) {
             showMessage("Preencha o ID da Vaga e a Placa do Veículo.");
-            return;
+            return 0;
         }
 
         // Busca a cobrança correspondente no DAO
@@ -181,31 +181,34 @@ public class PagarCobrancaController {
 
         if (cobranca == null) {
             showMessage("Cobrança não encontrada para os dados fornecidos.");
-            return;
+            return 0;
         }
 
         long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
 
-        Vaga vagaEspecifica = null;
+        Vaga vagaEspecifica = new Vaga(idEstacionamento, idVaga);
+        
+        
         switch (tipoVaga) {
             case "PCD":
-                vagaEspecifica = new VagaPCD(idEstacionamento, idVaga);
+                vagaEspecifica.setTipo(new VagaPCD(idEstacionamento, idVaga));
                 break;
             case "Idoso":
-                vagaEspecifica = new VagaIdoso(idEstacionamento, idVaga);
+                vagaEspecifica.setTipo(new VagaIdoso(idEstacionamento, idVaga));
                 break;
             case "Regular":
-                vagaEspecifica = new VagaRegular(idEstacionamento, idVaga);
+                vagaEspecifica.setTipo(new VagaRegular(idEstacionamento, idVaga));;
                 break;
             case "VIP":
-                vagaEspecifica = new VagaVIP(idEstacionamento, idVaga);
+                vagaEspecifica.setTipo(new VagaVIP(idEstacionamento, idVaga));
                 break;
         }
 
         double valor = vagaEspecifica.calculoValor(calculoValorParcial(calculoFracao(diferencaEmMinutos)));
         String valorImpresso = String.format("R$ %.2f", valor);
         view.getValor().setText(valorImpresso);
-
+        return valor;
+        
     }
     
     private Object[] recuperarDadosVaga() {

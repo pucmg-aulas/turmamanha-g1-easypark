@@ -45,17 +45,21 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel2" alignment="2" min="-2" pref="409" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                          <Component id="BtnDetalhes" alignment="1" min="-2" pref="516" max="-2" attributes="0"/>
-                          <Component id="btnGerarCobranca" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
-                          <Group type="103" alignment="2" groupAlignment="2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="119" pref="119" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="2" attributes="0">
+                              <Component id="jLabel2" alignment="2" min="-2" pref="409" max="-2" attributes="0"/>
+                              <Component id="BtnDetalhes" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                              <Component id="btnListarVagas" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                              <Component id="btnGerarCobranca" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
                               <Component id="btnPagarCobranca" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
                               <Component id="voltarBtn" alignment="2" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btnListarVagas" alignment="2" min="-2" pref="516" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                          <Component id="valorArrecadadoBtn" min="-2" pref="519" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -71,17 +75,19 @@
                   <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="36" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                  <Component id="BtnDetalhes" min="-2" pref="32" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="btnListarVagas" min="-2" pref="32" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="btnGerarCobranca" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="BtnDetalhes" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btnListarVagas" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnGerarCobranca" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnPagarCobranca" min="-2" pref="32" max="-2" attributes="0"/>
-                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="valorArrecadadoBtn" pref="34" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="voltarBtn" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -143,6 +149,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="voltarBtnActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="valorArrecadadoBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Valor Arrecadado"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

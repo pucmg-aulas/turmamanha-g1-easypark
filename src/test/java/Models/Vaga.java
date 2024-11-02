@@ -94,7 +94,7 @@ public void setTipo(ITipo tipoVaga) {
     }
     
     public double calculoValor(double valor){
-        return tipoVaga.calculoValor(valor);
+        return tipoVaga.calculoValor(valor) > 50 ? 50 : tipoVaga.calculoValor(valor);
     }
 }
 

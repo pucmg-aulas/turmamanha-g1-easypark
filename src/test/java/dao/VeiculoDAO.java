@@ -110,14 +110,19 @@ public class VeiculoDAO {
             String linha;
 
             while ((linha = br.readLine()) != null) {
+                linha = linha.trim();
                 String[] dados = linha.split(";");
+                if(dados.length < 4){
+                    continue;
+                }
                 String placaVeiculo = dados[0];
                 String modelo = dados[1];
                 String cpfCliente = dados[2];
                 String nomeCliente = dados[3];
-
+                
                 if(cpfCliente.equals(cliente.getCpf())){
                     veiculos.add(new Veiculo(placaVeiculo, new Cliente(nomeCliente, cpfCliente), modelo));
+                     System.out.println("Veículo adicionado: " + placaVeiculo + " - " + modelo);
                 }
             }
         }catch (IOException ex) {

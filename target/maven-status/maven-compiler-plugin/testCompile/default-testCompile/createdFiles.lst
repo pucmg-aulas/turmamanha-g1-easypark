@@ -37,6 +37,7 @@ view\ListarVagasView$2.class
 view\ReservarVagaView$3.class
 Controllers\ExibirVeiculosClienteController.class
 Models\Cliente.class
+view\ValorArrecadadoView$1.class
 view\PagarCobrancaView$3.class
 view\ReservarVagaView.class
 Controllers\ListarVagasController.class
@@ -52,6 +53,7 @@ Models\HistoricoUso.class
 Models\Estacionamento.class
 view\ReservarVagaView$2.class
 Controllers\PagarCobrancaController.class
+Controllers\ValorArrecadadoController.class
 Controllers\AddClienteController.class
 dao\ClienteDAO.class
 dao\PagamentoDAO.class
@@ -61,6 +63,7 @@ view\GerarCobrancaView.class
 Models\Pagamento.class
 view\MenuClienteView$3.class
 dao\VeiculoDAO.class
+view\ValorArrecadadoView.class
 Models\Vaga.class
 view\SelecionarEstacionamentoView$2.class
 view\PagarCobrancaView$4.class

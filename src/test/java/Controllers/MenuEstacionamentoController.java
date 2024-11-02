@@ -29,6 +29,7 @@ public class MenuEstacionamentoController {
     private ListarVagasController listarVagasController;
     private GerarCobrancaController gerarCobrancaController;
     private PagarCobrancaController pagarCobrancaController;
+    private ValorArrecadadoController valorArrecadadoController;
     private int idEstacionamento;
     private EstacionamentoDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
@@ -81,6 +82,10 @@ public class MenuEstacionamentoController {
             sair();
         });
          
+        this.view.getValorArrecadadoBtn().addActionListener(e ->{
+            this.valorArrecadadoController = new ValorArrecadadoController(desktopPane, idEstacionamento);
+        });
+        
     }
     
     private void sair(){

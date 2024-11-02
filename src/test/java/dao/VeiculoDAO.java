@@ -122,7 +122,6 @@ public class VeiculoDAO {
                 
                 if(cpfCliente.equals(cliente.getCpf())){
                     veiculos.add(new Veiculo(placaVeiculo, new Cliente(nomeCliente, cpfCliente), modelo));
-                     System.out.println("Veículo adicionado: " + placaVeiculo + " - " + modelo);
                 }
             }
         }catch (IOException ex) {

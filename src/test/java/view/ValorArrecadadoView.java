@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +21,7 @@ public class ValorArrecadadoView extends javax.swing.JInternalFrame {
     public ValorArrecadadoView(JDesktopPane desktopPane) {
         initComponents();
         this.desktopPane = desktopPane;
+        this.pack();
     }
 
     @SuppressWarnings("unchecked")
@@ -123,6 +125,10 @@ public class ValorArrecadadoView extends javax.swing.JInternalFrame {
     
     public JButton getVoltarBtn(){
         return voltarBtn;
+    }
+    
+    public void showMessage(String message) {
+    JOptionPane.showMessageDialog(this, message);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

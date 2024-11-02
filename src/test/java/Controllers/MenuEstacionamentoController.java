@@ -83,8 +83,12 @@ public class MenuEstacionamentoController {
             sair();
         });
          
-        this.view.getValorArrecadadoBtn().addActionListener(e ->{
-            this.valorArrecadadoController = new ValorArrecadadoController(desktopPane, idEstacionamento);
+        this.view.getValorArrecadadoBtn().addActionListener(e -> {
+            try {
+                this.valorArrecadadoController = new ValorArrecadadoController(desktopPane, idEstacionamento);
+            } catch (Exception ex) {
+                showMessageDialog(null, "Erro ao abrir a tela de valor arrecadado: " + ex.getMessage());
+            }
         });
         
         this.view.getRankingClientes().addActionListener(e ->{

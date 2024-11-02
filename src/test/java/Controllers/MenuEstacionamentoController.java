@@ -30,6 +30,7 @@ public class MenuEstacionamentoController {
     private GerarCobrancaController gerarCobrancaController;
     private PagarCobrancaController pagarCobrancaController;
     private ValorArrecadadoController valorArrecadadoController;
+    private RankingClientesController rankingClientesController;
     private int idEstacionamento;
     private EstacionamentoDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
@@ -84,6 +85,14 @@ public class MenuEstacionamentoController {
          
         this.view.getValorArrecadadoBtn().addActionListener(e ->{
             this.valorArrecadadoController = new ValorArrecadadoController(desktopPane, idEstacionamento);
+        });
+        
+        this.view.getRankingClientes().addActionListener(e ->{
+            try {
+                this.rankingClientesController = new RankingClientesController(desktopPane);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
     }

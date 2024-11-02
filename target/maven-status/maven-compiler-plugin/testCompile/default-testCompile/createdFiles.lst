@@ -52,9 +52,11 @@ Controllers\SelectClienteController.class
 Models\HistoricoUso.class
 Models\Estacionamento.class
 view\ReservarVagaView$2.class
+view\RankingClientesView$1.class
 Controllers\PagarCobrancaController.class
 Controllers\ValorArrecadadoController.class
 Controllers\AddClienteController.class
+Controllers\RankingClientesController.class
 dao\ClienteDAO.class
 dao\PagamentoDAO.class
 view\CadastroVeiculoClienteView$2.class
@@ -71,6 +73,7 @@ view\PagarCobrancaView$1.class
 view\ExibirDetalhesClienteView$1.class
 view\MenuPrincipalViewJframe$2.class
 view\PagarCobrancaView.class
+view\MenuEstacionamentoView$6.class
 view\MenuEstacionamentoView$3.class
 Models\EncontrarMaior.class
 view\SelecionarEstacionamentoView.class
@@ -91,6 +94,7 @@ view\GerarCobrancaView$1.class
 view\MenuPrincipalViewJframe.class
 view\CadastroClienteView.class
 view\ExibirVeiculosClienteView.class
+view\RankingClientesView.class
 Controllers\AddEstacionamentoController.class
 view\ExibirDetalhesClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$1.class

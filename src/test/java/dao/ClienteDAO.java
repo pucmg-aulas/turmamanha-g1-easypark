@@ -105,4 +105,8 @@ public class ClienteDAO {
            throw new RuntimeException(e);
        }
     }
+    
+     public List<Cliente> getCliente() {
+        return clientes;
+    }
 }

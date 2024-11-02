@@ -42,6 +42,9 @@ public class ClienteDAO {
 
             while((linha = br.readLine()) != null){
                 String[] dados = linha.split(";");
+                if(dados.length < 2){
+                    continue;
+                }
                 String cpfCliente = dados[0];
                 String nomeCliente = dados[1];
 

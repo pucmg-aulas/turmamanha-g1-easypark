@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package view;
 
@@ -10,12 +10,15 @@ import javax.swing.JTable;
 
 /**
  *
- * @author Enzo
+ * @author USER
  */
-public class RankingClientesView extends javax.swing.JPanel {
+public class RankingClientesView extends javax.swing.JInternalFrame {
 
     private final JDesktopPane desktopPane;
-    
+
+    /**
+     * Creates new form RankingClientesView3
+     */
     public RankingClientesView(JDesktopPane desktopPane) {
         initComponents();
         this.desktopPane = desktopPane;
@@ -41,15 +44,23 @@ public class RankingClientesView extends javax.swing.JPanel {
 
         clientesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Nome", "Valor arrecadado"
+                "CPF", "Nome", "Valor"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(clientesTable);
 
         btnVoltar.setText("Voltar");
@@ -59,12 +70,12 @@ public class RankingClientesView extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(152, Short.MAX_VALUE)
+                .addContainerGap(158, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -93,12 +104,15 @@ public class RankingClientesView extends javax.swing.JPanel {
                 .addComponent(btnVoltar)
                 .addGap(86, 86, 86))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVoltarActionPerformed
 
+    
      public JButton getVoltarBtn(){
         return btnVoltar;
     }
@@ -110,7 +124,7 @@ public class RankingClientesView extends javax.swing.JPanel {
     public void setTableClientes(JTable tbClientes){
         this.clientesTable = tbClientes;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVoltar;
     private javax.swing.JTable clientesTable;
@@ -118,8 +132,4 @@ public class RankingClientesView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-
-    public void dispose() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

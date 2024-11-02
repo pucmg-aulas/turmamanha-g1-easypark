@@ -1,18 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controllers;
 
 import Models.Cliente;
+import Models.Pagamento;
 import dao.ClienteDAO;
+import dao.PagamentoDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import view.RankingClientesView;
@@ -26,15 +27,19 @@ import view.RankingClientesView;
     private int idEstacionamento;
     private RankingClientesView view;
     private ClienteDAO clientes;
+    private PagamentoDAO pagamentos;
     
-    public RankingClientesController(JDesktopPane desktopPane) throws IOException{
-         this.desktopPane = desktopPane;
+    public RankingClientesController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
+        this.desktopPane = desktopPane;
         this.view = new RankingClientesView(desktopPane);
+        
         this.clientes = ClienteDAO.getInstance();
-        
+        this.pagamentos = PagamentoDAO.getInstance();
+        this.idEstacionamento = idEstacionamento;
+    
         desktopPane.add(view);
-        this.view.setVisible(true);
-        
+        view.setVisible(true);
+ 
         carregarTabela();
         
         this.view.getVoltarBtn().addActionListener(e -> {
@@ -43,16 +48,34 @@ import view.RankingClientesView;
     }
       
     
-    private void carregarTabela() {
-        Object colunas[] = {"ID", "Tipo"};
+    private void carregarTabela() throws IOException {
+        Object colunas[] = {"CPF", "Nome", "Valor "};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);
-        Iterator<Cliente> it = clientes.getCliente().iterator();
+        
+        List<Pagamento> ListaPagamentos = pagamentos.listarPagamentos();
+        
+        if (ListaPagamentos == null || ListaPagamentos.isEmpty()) {
+             JOptionPane.showMessageDialog(view, "A lista de pagamentos está vazia ou é nula.");
+        return;
+        }
+        
+        Iterator<Pagamento> it = ListaPagamentos.iterator();
         while(it.hasNext()){
-            Cliente c = it.next();
-            String vaga = c.toString();
-            String linha[] = vaga.split("-");
-            tm.addRow(new Object[]{linha[0], linha[1]});
+            Pagamento p = it.next();
+            String cpfCliente = p.getCliente().getCpf();
+            String nomeCliente = p.getCliente().getNome();
+            double somaPagamento = 0;
+            for(Pagamento pagamento : ListaPagamentos){
+                if(pagamento.getIdEstacionamento() == idEstacionamento){
+                    if(pagamento.getCliente().getCpf().equals(cpfCliente)){
+                    somaPagamento += pagamento.getValorPago();
+                }
+                }
+                
+            }
+            
+            tm.addRow(new Object[]{cpfCliente, nomeCliente, somaPagamento});
         }
         view.getTableClientes().setModel(tm);
         

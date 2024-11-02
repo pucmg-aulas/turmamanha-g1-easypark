@@ -87,6 +87,11 @@ public class VeiculoDAO {
 
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
+                
+                if(dados.length < 4){
+                    continue;
+                }
+                
                 String placaVeiculo = dados[0];
                 String modelo = dados[1];
                 String cpfCliente = dados[2];

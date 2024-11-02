@@ -89,7 +89,8 @@ public class MenuEstacionamentoController {
         
         this.view.getRankingClientes().addActionListener(e ->{
             try {
-                this.rankingClientesController = new RankingClientesController(desktopPane);
+                JOptionPane.showMessageDialog(view,"Fui clicado!");
+                this.rankingClientesController = new RankingClientesController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }

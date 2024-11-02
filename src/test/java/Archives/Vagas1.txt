@@ -5,6 +5,6 @@
 5;Regular;Desocupado
 6;Idoso;Desocupado
 7;Idoso;Desocupado
-8;PCD;Desocupado
+8;PCD;Ocupado
 9;PCD;Desocupado
 10;VIP;Desocupado

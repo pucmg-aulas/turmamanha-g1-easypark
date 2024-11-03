@@ -17,7 +17,7 @@ public class MenuClienteController {
     private ExibirVeiculosClienteController veiculosCliente;
     private AddVeiculoController addVeiculo;
     
- //   private ExibirHistoricoUsoController exibirHistoricoUso;
+    private ExibirHistoricoUsoController exibirHistoricoUso;
     
     public MenuClienteController(JDesktopPane desktopPane, String cpf) throws IOException{
         this.view = new MenuClienteView(desktopPane);
@@ -51,12 +51,12 @@ public class MenuClienteController {
             }
         });
         
-//        view.getHistoricoUsoBtn().addActionListener(e -> {
-//           try{
-//               exibirHistoricoUso = new ExibirHistoricoUsoController(desktopPane, cpf); 
-//           } catch (IOException ex) {
-//                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        });
+        view.getHistoricoUsoBtn().addActionListener(e -> {
+           try{
+               exibirHistoricoUso = new ExibirHistoricoUsoController(desktopPane, cpf); 
+           } catch (IOException ex) {
+                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 }

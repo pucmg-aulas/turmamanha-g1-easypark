@@ -5,35 +5,20 @@ import java.time.format.DateTimeFormatter;
 
 public class HistoricoUso {
     private String cpfCliente;
-    private String nomeCliente;
     private int idCobranca;
+    private int idEstacionamento;
     private int idVaga;
     private String placaVeiculo;
-    private boolean status;
     private LocalDateTime dataEntrada;
     private LocalDateTime dataSaida;
 
-    // Construtor para inicializar todos os atributos, sem data de saída
-    public HistoricoUso(String cpfCliente, String nomeCliente, int idCobranca, int idVaga, 
-                        String placaVeiculo, boolean status, LocalDateTime dataEntrada) {
+    public HistoricoUso(String cpfCliente, int idCobranca, int idEstacionamento, int idVaga, 
+                        String placaVeiculo, LocalDateTime dataEntrada, LocalDateTime dataSaida) {
         this.cpfCliente = cpfCliente;
-        this.nomeCliente = nomeCliente;
         this.idCobranca = idCobranca;
+        this.idEstacionamento = idEstacionamento;
         this.idVaga = idVaga;
         this.placaVeiculo = placaVeiculo;
-        this.status = status;
-        this.dataEntrada = dataEntrada;
-    }
-
-    // Construtor completo com data de saída
-    public HistoricoUso(String cpfCliente, String nomeCliente, int idCobranca, int idVaga, 
-                        String placaVeiculo, boolean status, LocalDateTime dataEntrada, LocalDateTime dataSaida) {
-        this.cpfCliente = cpfCliente;
-        this.nomeCliente = nomeCliente;
-        this.idCobranca = idCobranca;
-        this.idVaga = idVaga;
-        this.placaVeiculo = placaVeiculo;
-        this.status = status;
         this.dataEntrada = dataEntrada;
         this.dataSaida = dataSaida;
     }
@@ -47,14 +32,6 @@ public class HistoricoUso {
         this.cpfCliente = cpfCliente;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
-    }
-
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
-    }
-
     public int getIdCobranca() {
         return idCobranca;
     }
@@ -62,6 +39,15 @@ public class HistoricoUso {
     public void setIdCobranca(int idCobranca) {
         this.idCobranca = idCobranca;
     }
+    
+     public int getIdEstacionamento() {
+        return idEstacionamento;
+    }
+
+    public void setIdEstacionamento(int idEstacionamento) {
+        this.idEstacionamento = idEstacionamento;
+    }
+    
 
     public int getIdVaga() {
         return idVaga;
@@ -77,14 +63,6 @@ public class HistoricoUso {
 
     public void setPlacaVeiculo(String placaVeiculo) {
         this.placaVeiculo = placaVeiculo;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public LocalDateTime getDataEntrada() {

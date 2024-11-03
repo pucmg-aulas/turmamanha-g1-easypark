@@ -31,6 +31,10 @@ public class VeiculoDAO {
         return instance;
     }
     
+    public List<Veiculo> getVeiculos() {
+    return veiculos; 
+}
+    
     public boolean cadastrarVeiculoPorCliente(String modelo, String placa, Cliente cliente) throws IOException {
         Veiculo veiculoAtual = new Veiculo(placa, cliente, modelo);
 

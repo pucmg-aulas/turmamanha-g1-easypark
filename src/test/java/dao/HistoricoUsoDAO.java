@@ -31,42 +31,42 @@ public class HistoricoUsoDAO {
         return instance;
     }
    
- public List<HistoricoUso> buscarHistoricoPorPlaca(String placaVeiculo) {
-    List<HistoricoUso> historicoFiltrado = new ArrayList<>();
-    
-    List<Cobranca> cobrancas = CobrancaDAO.getInstance().lerCobrancas();
-    List<Veiculo> veiculos = VeiculoDAO.getInstance().getVeiculos();
-    for (Cobranca cobranca : cobrancas) {
-        // Verifica se a placa da cobrança corresponde à placa desejada
-        if (cobranca.getPlacaVeiculo().equals(placaVeiculo)) {
-            Cliente clienteEncontrado = null;
-            
-            // Busca o veículo correspondente à placa e obtém o cliente
-            for (Veiculo veiculo : veiculos) {
-                if (veiculo.getPlaca().equals(placaVeiculo)) {
-                    clienteEncontrado = veiculo.getCliente();
-                    break;
-                }
-            }
-            
-            if (clienteEncontrado != null) {
-                // Cria um registro de histórico para cada cobrança correspondente
-                HistoricoUso historico = new HistoricoUso(
-                        clienteEncontrado.getCpf(),
-                        pagamento.getIdCobranca(),
-                        pagamento.getIdEstacionamento(),
-                        pagamento.getIdVaga(),
-                        pagamento.getPlacaVeiculo(),
-                        pagamento.getHoraEntrada(),
-                        pagamento.getHoraSaida(),
-                );
-                historicoFiltrado.add(historico);
-            }
-        }
-    }
-
-    return historicoFiltrado;
-}
+// public List<HistoricoUso> buscarHistoricoPorPlaca(String placaVeiculo) {
+//    List<HistoricoUso> historicoFiltrado = new ArrayList<>();
+//    
+//    List<Cobranca> cobrancas = CobrancaDAO.getInstance().lerCobrancas();
+//    List<Veiculo> veiculos = VeiculoDAO.getInstance().getVeiculos();
+//    for (Cobranca cobranca : cobrancas) {
+//        // Verifica se a placa da cobrança corresponde à placa desejada
+//        if (cobranca.getPlacaVeiculo().equals(placaVeiculo)) {
+//            Cliente clienteEncontrado = null;
+//            
+//            // Busca o veículo correspondente à placa e obtém o cliente
+//            for (Veiculo veiculo : veiculos) {
+//                if (veiculo.getPlaca().equals(placaVeiculo)) {
+//                    clienteEncontrado = veiculo.getCliente();
+//                    break;
+//                }
+//            }
+//            
+//            if (clienteEncontrado != null) {
+//                // Cria um registro de histórico para cada cobrança correspondente
+//                HistoricoUso historico = new HistoricoUso(
+//                        clienteEncontrado.getCpf(),
+////                        pagamento.getIdCobranca(),
+////                        pagamento.getIdEstacionamento(),
+////                        pagamento.getIdVaga(),
+////                        pagamento.getPlacaVeiculo(),
+////                        pagamento.getHoraEntrada(),
+////                        pagamento.getHoraSaida()
+//                );
+//                historicoFiltrado.add(historico);
+//            }
+//        }
+//    }
+//
+//    return historicoFiltrado;
+//}
 
     public HistoricoUso buscarHistoricoPorCpf(String cpfCliente) {
         try(BufferedReader br = new BufferedReader(new FileReader(ARQUIVO))) {

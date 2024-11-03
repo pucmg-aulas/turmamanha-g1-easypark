@@ -29,6 +29,7 @@ public class ValorArrecadadoController {
         this.pagamentos = PagamentoDAO.getInstance();
 
         exibirArrecadacaoTotal();
+        exibirValorMedioUtilizacao();
         listarMeses();
         
         this.view.mesesAno().addActionListener(e -> {
@@ -69,7 +70,7 @@ public class ValorArrecadadoController {
         return pagamentosFiltrados; 
     }
     
-    public void exibirArrecadacaoTotal() {
+    public double exibirArrecadacaoTotal() {
         List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
 
         if (pagamentosFiltrados.isEmpty()) {
@@ -83,7 +84,9 @@ public class ValorArrecadadoController {
                     .sum();
 
             view.getValorTotal().setText(String.format("R$ %.2f", totalArrecadado));
+            return totalArrecadado;
         }
+        return 0;
     }
 
     private void showMessage(String message) {
@@ -147,6 +150,24 @@ public class ValorArrecadadoController {
         
         String valorFormatado = String.format("R$%.2f", valorTotalMensal);
         this.view.getValorMensal().setText(valorFormatado);
+    }
+    
+    
+   
+    
+    public void exibirValorMedioUtilizacao(){
+        List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
+        int qntdPagamentos = pagamentosFiltrados.size();
+        
+         if (pagamentosFiltrados.isEmpty()) {
+            view.getValorMedio().setText("Nenhum pagamento encontrado.");
+        } else {
+            double totalArrecadado = exibirArrecadacaoTotal();
+
+            double valorMedio = totalArrecadado / qntdPagamentos;
+                   
+            view.getValorMedio().setText(String.format("R$ %.2f", valorMedio));
+        }
     }
     
 }

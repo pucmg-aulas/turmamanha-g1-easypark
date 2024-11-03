@@ -127,9 +127,11 @@ public class GerarCobrancaController {
             return;
         }
         try {
-            cobrancas.gerarCobranca(novaCobranca);
-            vagas.salvarVagasArquivo(vagas.getVagas(), idEstacionamento);
-            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
+            if(cobrancas.gerarCobranca(novaCobranca)){
+                vagas.salvarVagasArquivo(vagas.getVagas(), idEstacionamento);
+                JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
+            };
+          
         } catch (IOException ex) {
             Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
         }

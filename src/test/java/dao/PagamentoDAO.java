@@ -66,7 +66,6 @@ public class PagamentoDAO {
 
     public List<Pagamento> getPagamentosPorCpf(String cpf) throws IOException {
     List<Pagamento> pagamentos = new ArrayList<>();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO))) {
         String linha;
@@ -77,7 +76,7 @@ public class PagamentoDAO {
                 int idPagamento = Integer.parseInt(dados[0]);
                 int idEstacionamento = Integer.parseInt(dados[1]);
                 double valorTotal = Double.parseDouble(dados[2]);
-                LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], formatter);
+                LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], FORMATTER);
                 String tipoVaga = dados[4];
                 
                 Vaga vagaAtual = new Vaga();
@@ -147,7 +146,7 @@ public class PagamentoDAO {
                     int idPagamento = Integer.parseInt(dados[0]);
                     int idEstacionamento = Integer.parseInt(dados[1]);
                     double valorPago = Double.parseDouble(dados[2]);
-                    LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], FORMATTER);
+                    String dataPagamento = dados[3];
                     String tipoVaga = dados[4];
                     String placaVeiculo = dados[5];
                     int tempoTotal = Integer.parseInt(dados[6]);
@@ -168,7 +167,8 @@ public class PagamentoDAO {
                     pagamento.setIdEstacionamento(idEstacionamento);
                     pagamento.setValorPago(valorPago);
                     pagamento.setIdPagamento(idPagamento);
-                    pagamento.setDataPagamento(dataPagamento);
+                    LocalDateTime dataPagamentoFormatada = LocalDateTime.parse(dataPagamento, FORMATTER);
+                    pagamento.setDataPagamento(dataPagamentoFormatada);
                     pagamento.setTempoTotal(tempoTotal);
                     pagamento.setPlacaVeiculo(placaVeiculo);
                     pagamento.setTipoVaga(vagaAtual.getTipoVaga());

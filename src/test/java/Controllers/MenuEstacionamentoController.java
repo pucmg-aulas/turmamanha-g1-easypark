@@ -8,12 +8,9 @@ import dao.EstacionamentoDAO;
 import dao.PagamentoDAO;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
-import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import view.MenuEstacionamentoView;
 
@@ -93,7 +90,6 @@ public class MenuEstacionamentoController {
         
         this.view.getRankingClientes().addActionListener(e ->{
             try {
-                JOptionPane.showMessageDialog(view,"Fui clicado!");
                 this.rankingClientesController = new RankingClientesController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);

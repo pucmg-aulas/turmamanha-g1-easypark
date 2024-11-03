@@ -15,6 +15,7 @@ public class HistoricoUso {
         this.tipoVaga = tipoVaga;
         this.placaVeiculo = placaVeiculo;
         this.valorPago = valorPago;
+        this.tempoTotal = tempoTotal;
     }
 
     // Getters e Setters para todos os atributos

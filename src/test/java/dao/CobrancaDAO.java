@@ -75,7 +75,7 @@ public class CobrancaDAO {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
                 for (Cobranca c : cobrancas) {
                     String dataEntrada = c.getHoraEntrada().format(formatter);
-                    bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada);
+                    bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada + ";" + c.getTempoTotal());
                     bw.newLine();
                 }
                 return true; // Indica que a operação foi bem-sucedida
@@ -101,7 +101,7 @@ public class CobrancaDAO {
         while ((linha = leitor.readLine()) != null) {
             String[] dados = linha.split(";");
 
-            if (dados.length < 5 || dados[0].isEmpty() || dados[1].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty()) {
+            if (dados.length < 6 || dados[0].isEmpty() || dados[1].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty() || dados[5].isEmpty()) {
                 System.out.println("Linha inválida ou incompleta: " + linha);
                 continue; 
             }
@@ -112,8 +112,10 @@ public class CobrancaDAO {
                 String placaVeiculo = dados[2];
                 int idEstacionamento = Integer.parseInt(dados[3]);
                 LocalDateTime horaEntrada = LocalDateTime.parse(dados[4], formatter);
-
+                int tempoTotal = Integer.parseInt(dados[5]);
+                
                 Cobranca cobrancaAtual = new Cobranca(idCobranca, idVaga, idEstacionamento, placaVeiculo, horaEntrada);
+                cobrancaAtual.setTempoTotal(tempoTotal);
                 cobrancas.add(cobrancaAtual);
 
             } catch (NumberFormatException | DateTimeParseException e) {
@@ -138,6 +140,26 @@ public class CobrancaDAO {
         return false; // Retorna false se a cobrança não foi encontrada na lista
     }
 
-    
+    public boolean atualizarCobranca(Cobranca cobrancaAtualizada) throws IOException {
+    // Procura a cobrança na lista de cobranças pelo ID ou ID da vaga (conforme aplicável)
+    for (int i = 0; i < cobrancas.size(); i++) {
+        Cobranca cobranca = cobrancas.get(i);
+
+        if (cobranca.getIdCobranca() == cobrancaAtualizada.getIdCobranca()) { // Compara pelo ID da cobrança
+            // Atualiza as informações da cobrança encontrada
+            cobranca.setIdVaga(cobrancaAtualizada.getIdVaga());
+            cobranca.setPlacaVeiculo(cobrancaAtualizada.getPlacaVeiculo());
+            cobranca.setIdEstacionamento(cobrancaAtualizada.getIdEstacionamento());
+            cobranca.setHoraEntrada(cobrancaAtualizada.getHoraEntrada());
+            cobranca.setTempoTotal(cobrancaAtualizada.getTempoTotal());
+
+            // Salva as cobranças atualizadas no arquivo
+            return salvarCobrancaArquivo(cobrancas);
+        }
+    }
+
+    System.out.println("Cobrança não encontrada para atualização.");
+    return false; // Retorna false se a cobrança não foi encontrada
+}
     
 }

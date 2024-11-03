@@ -186,7 +186,7 @@ public class PagarCobrancaController {
 
         long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
         cobranca.setTempoTotal((int) diferencaEmMinutos);
-        
+        cobrancas.atualizarCobranca(cobranca);
         
         Vaga vagaEspecifica = new Vaga(idEstacionamento, idVaga);
         

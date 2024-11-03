@@ -84,10 +84,7 @@ Models\VagaPCD.class
 view\GerarCobrancaView$2.class
 Controllers\ExibirDetalhesClienteController.class
 view\MenuClienteView$1.class
-view\RankingClientesView2.class
-view\RankingClientesView3.class
 view\MenuPrincipalViewJframe$1.class
-view\RankingClientesView3$2.class
 view\SelecionarClienteView$2.class
 Controllers\GerarCobrancaController.class
 Controllers\MenuClienteController.class
@@ -105,5 +102,4 @@ view\ExibirDetalhesEstacionamentoView$1.class
 view\MenuPrincipalViewJframe$7.class
 Controllers\MenuEstacionamentoController.class
 view\SelecionarClienteView$1.class
-view\RankingClientesView3$1.class
 view\SelecionarEstacionamentoView$1.class

@@ -40,6 +40,7 @@ public class ValorArrecadadoView extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Valor Arrecadado");
 
+        valorTotalText.setEditable(false);
         valorTotalText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 valorTotalTextActionPerformed(evt);
@@ -51,6 +52,8 @@ public class ValorArrecadadoView extends javax.swing.JInternalFrame {
         mesesAnoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setText("Valor Arrecadado Mensal: ");
+
+        valorMensalText.setEditable(false);
 
         voltarBtn.setText("Voltar");
 

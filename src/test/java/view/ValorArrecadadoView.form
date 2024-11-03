@@ -93,6 +93,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="valorTotalText">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="valorTotalTextActionPerformed"/>
       </Events>
@@ -123,6 +126,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="valorMensalText">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="voltarBtn">
       <Properties>

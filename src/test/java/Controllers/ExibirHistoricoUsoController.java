@@ -1,8 +1,14 @@
 
 package Controllers;
 
-import dao.HistoricoUsoDAO;
+import Models.Estacionamento;
 import Models.HistoricoUso;
+import Models.ITipo;
+import Models.Pagamento;
+import Models.Veiculo;
+import dao.EstacionamentoDAO;
+import dao.PagamentoDAO;
+import dao.VeiculoDAO;
 import view.ExibirHistoricoUsoView;
 
 import java.io.IOException;
@@ -22,12 +28,16 @@ import javax.swing.JScrollPane;
 public class ExibirHistoricoUsoController {
     private ExibirHistoricoUsoView view;
     private JDesktopPane desktopPane;
-    private HistoricoUsoDAO historicoUsoDAO;
+    private PagamentoDAO pagamentos;
     private String clienteCpf;
+    private VeiculoDAO veiculos;
+    private EstacionamentoDAO estacionamentos;
     
     public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException {
         this.view = new ExibirHistoricoUsoView(desktopPane);
-        this.historicoUsoDAO = HistoricoUsoDAO.getInstance();
+        this.pagamentos = PagamentoDAO.getInstance();
+        this.veiculos = VeiculoDAO.getInstance();
+        this.estacionamentos = EstacionamentoDAO.getInstance();
         this.desktopPane = desktopPane;
         this.clienteCpf = cpf;
         
@@ -42,40 +52,37 @@ public class ExibirHistoricoUsoController {
     }
     
       private void carregarHistoricoCliente() {
-        Object colunas[] = { "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saída", "Tempo de Permanência (min)", "Valor(R$)" };
+        Object colunas[] = { "CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Tempo de Permanência (min)", "Valor(R$)" };
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
         try {
             // Lê todos os históricos
-            List<HistoricoUso> todosHistoricos = historicoUsoDAO.lerHistoricos();
-            boolean registrosEncontrados = false;
-
-            // Itera sobre os históricos e verifica se o CPF corresponde
-            for (HistoricoUso historico : todosHistoricos) {
-                if (historico.getCpfCliente().equals(clienteCpf)) {
-                    registrosEncontrados = true;
-
-                    // Monta os dados para a linha da tabela
-                    String[] linha = new String[7];
-                    linha[0] = String.valueOf(historico.getIdCobranca());
-                    linha[1] = String.valueOf(historico.getIdEstacionamento());
-                    linha[2] = String.valueOf(historico.getIdVaga());
-                    linha[3] = historico.getPlacaVeiculo();
-                    linha[4] = historico.getDataEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                    linha[5] = historico.getDataSaida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                    linha[6] = String.valueOf(historico.calcularTempoPermanencia());
-
-                    // Adiciona a linha na tabela
+            List<Pagamento> todosPagamentos = pagamentos.getPagamentosPorCpf(clienteCpf);
+            
+            if (todosPagamentos.isEmpty()) {
+                JOptionPane.showMessageDialog(view, "Nenhum histórico encontrado para o CPF: " + clienteCpf);
+            } else {
+                for (Pagamento pagamento : todosPagamentos) {
+                    String placaVeiculo = pagamento.getPlacaVeiculo();
+                    Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+                    String cpfAtual = veiculoAtual.getCliente().getCpf();
+                    Estacionamento estacionamentoAtual = estacionamentos.getEstacionamentoPorId(pagamento.getIdEstacionamento());
+                    String estacionamentoNome = estacionamentoAtual.getNome();
+                    ITipo vaga = pagamento.getTipoVaga();
+                    String tipoVaga = vaga.getTipo();
+                    int tempoTotal = pagamento.getTempoTotal();
+                    double valorTotal = pagamento.getValorPago();
+                    
+                    String[] linha = new String[6];
+                    linha[0] = cpfAtual;
+                    linha[1] = estacionamentoNome;
+                    linha[2] = tipoVaga;
+                    linha[3] = placaVeiculo;
+                    linha[4] = String.valueOf(tempoTotal);
+                    linha[5] = String.valueOf(valorTotal);
                     tm.addRow(linha);
                 }
             }
-
-            // Verifica se existem registros
-            if (!registrosEncontrados) {
-                JOptionPane.showMessageDialog(view, "Nenhum histórico encontrado para o CPF: " + clienteCpf);
-            }
-
-            // Atualiza a tabela com os dados
             view.getTableHistorico().setModel(tm);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(view, "Erro ao carregar histórico: " + e.getMessage());

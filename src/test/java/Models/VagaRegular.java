@@ -12,6 +12,9 @@ public class VagaRegular extends Vaga implements ITipo{
         super(idEstacionamento, status, id);
     }
 
+    public VagaRegular() throws IOException{
+    }
+    
     @Override
     public String getTipo(){
         return "Regular";

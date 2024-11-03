@@ -3,11 +3,16 @@ package dao;
 import Models.Cliente;
 import Models.Cobranca;
 import Models.Estacionamento;
+import Models.HistoricoUso;
+import Models.ITipo;
 import Models.Pagamento;
+import Models.Vaga;
+import Models.VagaIdoso;
+import Models.VagaPCD;
+import Models.VagaRegular;
+import Models.VagaVIP;
 import Models.Veiculo;
-import dao.VeiculoDAO;
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.format.DateTimeFormatter;
@@ -21,10 +26,14 @@ public class PagamentoDAO {
     private static PagamentoDAO instance;
     private VeiculoDAO veiculos;
     private ClienteDAO clientes;
+    private EstacionamentoDAO estacionamentos;
+    private VagaDAO vagas;
     
     private PagamentoDAO() throws IOException{
         this.clientes = ClienteDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
+        this.estacionamentos = EstacionamentoDAO.getInstance();
+
         pagamentos = listarPagamentos();
         if(pagamentos == null){
             pagamentos = new ArrayList<>();
@@ -41,15 +50,17 @@ public class PagamentoDAO {
     public void salvarPagamento(Cobranca cobranca) throws IOException {
         Pagamento pagamento = new Pagamento();
         int idEstacionamento = cobranca.getIdEstacionamento();
+        this.vagas = VagaDAO.getInstance(idEstacionamento);
         double valorTotal = cobranca.getValorTotal();
         String placaVeiculo = cobranca.getPlacaVeiculo();
-        Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
-        Cliente clienteAtual = veiculoAtual.getCliente();
-        String cpfCliente = clienteAtual.getCpf();
+        int idVaga = cobranca.getIdVaga();
+        Vaga vagaAtual= vagas.getVagaPorId(idVaga);
+        String tipoVaga = vagaAtual.getTipo();
+        int tempoTotal = cobranca.getTempoTotal();
         
         // Salvar no arquivo
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO, true))) {
-            writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + ";" + pagamento.getDataPagamento().format(FORMATTER) + ";" + cpfCliente + "\n");
+            writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + ";" + pagamento.getDataPagamento().format(FORMATTER) + ";" + tipoVaga + ";" + placaVeiculo + ";" + tempoTotal + "\n");
         }
     }
 
@@ -67,17 +78,35 @@ public class PagamentoDAO {
                 int idEstacionamento = Integer.parseInt(dados[1]);
                 double valorTotal = Double.parseDouble(dados[2]);
                 LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], formatter);
-                String cpfCliente = dados[4];
-                Cliente clienteAtual = clientes.buscarClientePorCpf(cpfCliente);
-
-                // Verifica se o CPF do pagamento corresponde ao CPF desejado
-                if (cpfCliente.equals(cpf)) {
+                String tipoVaga = dados[4];
+                
+                Vaga vagaAtual = new Vaga();
+                vagaAtual.setIdEstacionamento(idEstacionamento);
+                if("Idoso".equals(tipoVaga)){
+                    vagaAtual.setTipo(new VagaIdoso());
+                }else if("PCD".equals(tipoVaga)){
+                   vagaAtual.setTipo(new VagaPCD());
+                }else if("VIP".equals(tipoVaga)){
+                     vagaAtual.setTipo(new VagaVIP());
+                }else if("Regular".equals(tipoVaga)){
+                      vagaAtual.setTipo(new VagaRegular());
+                }
+                
+                String placaVeiculo = dados[5];
+                Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+                Cliente clienteAtual = veiculoAtual.getCliente();
+                
+                int tempoTotal = Integer.parseInt(dados[6]);
+                
+                if (cpf.equals(clienteAtual.getCpf())) {
                     Pagamento pagamento = new Pagamento();
                     pagamento.setIdEstacionamento(idEstacionamento);
                     pagamento.setValorPago(valorTotal);
                     pagamento.setIdPagamento(idPagamento);
                     pagamento.setDataPagamento(dataPagamento);
-                    pagamento.setCliente(clienteAtual);
+                    pagamento.setPlacaVeiculo(placaVeiculo);
+                    pagamento.setTipoVaga(vagaAtual.getTipoVaga());
+                    pagamento.setTempoTotal(tempoTotal);
                     pagamentos.add(pagamento);
                 }
 
@@ -109,7 +138,7 @@ public class PagamentoDAO {
                 String[] dados = linha.split(";");
 
                 // Verifica se a linha tem o número correto de dados
-                if (dados.length < 5 || dados[0].isEmpty() || dados[1].isEmpty() || dados[2].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty()) {
+                if (dados.length < 7 || dados[0].isEmpty() || dados[1].isEmpty() || dados[2].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty() || dados[5].isEmpty()) {
                     System.out.println("Linha inválida ou incompleta: " + linha);
                     continue;
                 }
@@ -119,15 +148,30 @@ public class PagamentoDAO {
                     int idEstacionamento = Integer.parseInt(dados[1]);
                     double valorPago = Double.parseDouble(dados[2]);
                     LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], FORMATTER);
-                    String cpfCliente = dados[4];
-                    Cliente clienteAtual = clientes.buscarClientePorCpf(cpfCliente);
-
+                    String tipoVaga = dados[4];
+                    String placaVeiculo = dados[5];
+                    int tempoTotal = Integer.parseInt(dados[6]);
+                    
+                    Vaga vagaAtual = new Vaga();
+                    vagaAtual.setIdEstacionamento(idEstacionamento);
+                    if("Idoso".equals(tipoVaga)){
+                        vagaAtual.setTipo(new VagaIdoso());
+                    }else if("PCD".equals(tipoVaga)){
+                        vagaAtual.setTipo(new VagaPCD());
+                    }else if("VIP".equals(tipoVaga)){
+                        vagaAtual.setTipo(new VagaVIP());
+                    }else if("Regular".equals(tipoVaga)){
+                        vagaAtual.setTipo(new VagaRegular());
+                    }
+                    
                     Pagamento pagamento = new Pagamento();
                     pagamento.setIdEstacionamento(idEstacionamento);
                     pagamento.setValorPago(valorPago);
                     pagamento.setIdPagamento(idPagamento);
                     pagamento.setDataPagamento(dataPagamento);
-                    pagamento.setCliente(clienteAtual);
+                    pagamento.setTempoTotal(tempoTotal);
+                    pagamento.setPlacaVeiculo(placaVeiculo);
+                    pagamento.setTipoVaga(vagaAtual.getTipoVaga());
 
                     pagamentos.add(pagamento);
                 } catch (NumberFormatException | DateTimeParseException e) {
@@ -143,5 +187,33 @@ public class PagamentoDAO {
     
     public static String getHoraSaida(){
         return LocalDateTime.now().format(FORMATTER);
+    }
+    
+    public List<HistoricoUso> buscarHistoricoPorCpf(String cpf) throws IOException {
+    List<HistoricoUso> historicoFiltrado = new ArrayList<>();
+    
+    List<Pagamento> ListaPagamentos = listarPagamentos();
+    
+    for(Pagamento pagamento : ListaPagamentos){
+        String placaVeiculo = pagamento.getPlacaVeiculo();
+        Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+        String cpfClienteAtual = veiculoAtual.getCliente().getCpf();
+        
+        if(cpfClienteAtual.equals(cpf)){
+            String cpfAtual = cpf;
+            Estacionamento estacionamentoAtual = estacionamentos.getEstacionamentoPorId(pagamento.getIdEstacionamento());
+            String nomeEstacionamento = estacionamentoAtual.getNome();
+            String placaAtual = pagamento.getPlacaVeiculo();
+            ITipo vaga = pagamento.getTipoVaga();
+            double valorTotal = pagamento.getValorPago();
+            int tempoTotal = pagamento.getTempoTotal();
+            
+            
+            HistoricoUso historicoAtual = new HistoricoUso(cpfAtual, nomeEstacionamento, vaga, placaAtual, valorTotal,tempoTotal);
+            historicoFiltrado.add(historicoAtual);
+        }
+    }
+
+        return historicoFiltrado;
     }
 }

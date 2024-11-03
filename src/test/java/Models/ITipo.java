@@ -10,4 +10,5 @@ package Models;
  */
 public interface ITipo {
     public abstract double calculoValor(double valor);
+    public String getTipo();
 }

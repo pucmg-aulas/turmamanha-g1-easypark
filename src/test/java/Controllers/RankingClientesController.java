@@ -2,8 +2,10 @@ package Controllers;
 
 import Models.Cliente;
 import Models.Pagamento;
+import Models.Veiculo;
 import dao.ClienteDAO;
 import dao.PagamentoDAO;
+import dao.VeiculoDAO;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -16,11 +18,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import view.RankingClientesView;
@@ -35,6 +35,7 @@ import view.RankingClientesView;
     private RankingClientesView view;
     private ClienteDAO clientes;
     private PagamentoDAO pagamentos;
+    private VeiculoDAO veiculos;
     
     public RankingClientesController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
         this.desktopPane = desktopPane;
@@ -42,6 +43,7 @@ import view.RankingClientesView;
         
         this.clientes = ClienteDAO.getInstance();
         this.pagamentos = PagamentoDAO.getInstance();
+        this.veiculos = VeiculoDAO.getInstance();
         this.idEstacionamento = idEstacionamento;
     
         desktopPane.add(view);
@@ -82,8 +84,11 @@ import view.RankingClientesView;
 
         for (Pagamento pagamento : listaPagamentos) {
             if (pagamento.getIdEstacionamento() == idEstacionamento) {
-                String cpfCliente = pagamento.getCliente().getCpf();
-                String nomeCliente = pagamento.getCliente().getNome();
+                String placaVeiculo = pagamento.getPlacaVeiculo();
+                Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+                
+                String cpfCliente = veiculoAtual.getCliente().getCpf();
+                String nomeCliente = veiculoAtual.getCliente().getNome();
                 double valorPago = pagamento.getValorPago();
 
                 // Adiciona ou soma o valor no mapa
@@ -172,8 +177,12 @@ import view.RankingClientesView;
           
           for (Pagamento pagamento : pagamentosFiltrados) {
             if (pagamento.getIdEstacionamento() == idEstacionamento) {
-                String cpfCliente = pagamento.getCliente().getCpf();
-                String nomeCliente = pagamento.getCliente().getNome();
+                pagamento.getPlacaVeiculo();
+                String placaVeiculo = pagamento.getPlacaVeiculo();
+                Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+                
+                String cpfCliente = veiculoAtual.getCliente().getCpf();
+                String nomeCliente = veiculoAtual.getCliente().getNome();
                 double valorPago = pagamento.getValorPago();
 
                 // Adiciona ou soma o valor no mapa

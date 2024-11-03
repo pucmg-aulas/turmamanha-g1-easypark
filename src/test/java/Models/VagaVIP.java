@@ -15,7 +15,9 @@ public class VagaVIP extends Vaga implements ITipo{
     public VagaVIP(int idEstacionamento, boolean status, int id) throws IOException {
         super(idEstacionamento, status, id);
         this.tarifaBase = getTarifaBase() * AUMENTO_VIP;
-
+    }
+    
+    public VagaVIP() throws IOException{
     }
 
     public static double getAumentoVip() {

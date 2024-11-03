@@ -27,6 +27,9 @@ public class Vaga {
         this.idEstacionamento = idEstacionamento;
     }
     
+    public Vaga() throws IOException {
+    }
+    
     public Vaga(ITipo tipoVaga ){
         this.tipoVaga = tipoVaga;
     }
@@ -81,7 +84,7 @@ public class Vaga {
 }
     
     public String getTipo(){
-    return "";
+    return tipoVaga.getTipo();
     }
 
 public void setTipo(ITipo tipoVaga) {

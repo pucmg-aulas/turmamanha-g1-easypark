@@ -14,6 +14,10 @@ public class VagaIdoso extends Vaga implements ITipo{
         this.tarifaBase = getTarifaBase() * DESCONTO_IDOSO;
     }
 
+    public VagaIdoso() throws IOException{
+    
+    }
+    
     public double getDESCONTO_IDOSO() {
         return DESCONTO_IDOSO;
     }

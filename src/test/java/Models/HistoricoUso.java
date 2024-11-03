@@ -1,26 +1,20 @@
 package Models;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class HistoricoUso {
     private String cpfCliente;
-    private int idCobranca;
-    private int idEstacionamento;
-    private int idVaga;
+    private String NomeEstacionamento;
+    private ITipo tipoVaga;
     private String placaVeiculo;
-    private LocalDateTime dataEntrada;
-    private LocalDateTime dataSaida;
+    private double valorPago;
+    private int tempoTotal;
 
-    public HistoricoUso(String cpfCliente, int idCobranca, int idEstacionamento, int idVaga, 
-                        String placaVeiculo, LocalDateTime dataEntrada, LocalDateTime dataSaida) {
+    public HistoricoUso(String cpfCliente, String NomeEstacionamento, ITipo tipoVaga, 
+                        String placaVeiculo, double valorPago, int tempoTotal) {
         this.cpfCliente = cpfCliente;
-        this.idCobranca = idCobranca;
-        this.idEstacionamento = idEstacionamento;
-        this.idVaga = idVaga;
+        this.NomeEstacionamento = NomeEstacionamento;
+        this.tipoVaga = tipoVaga;
         this.placaVeiculo = placaVeiculo;
-        this.dataEntrada = dataEntrada;
-        this.dataSaida = dataSaida;
+        this.valorPago = valorPago;
     }
 
     // Getters e Setters para todos os atributos
@@ -31,30 +25,22 @@ public class HistoricoUso {
     public void setCpfCliente(String cpfCliente) {
         this.cpfCliente = cpfCliente;
     }
-
-    public int getIdCobranca() {
-        return idCobranca;
-    }
-
-    public void setIdCobranca(int idCobranca) {
-        this.idCobranca = idCobranca;
-    }
     
-     public int getIdEstacionamento() {
-        return idEstacionamento;
+     public String getNomeEstacionamento() {
+        return NomeEstacionamento;
     }
 
-    public void setIdEstacionamento(int idEstacionamento) {
-        this.idEstacionamento = idEstacionamento;
+    public void setNomeEstacionamento(String NomeEstacionamento) {
+        this.NomeEstacionamento = NomeEstacionamento;
     }
     
 
-    public int getIdVaga() {
-        return idVaga;
+    public ITipo getTipoVaga() {
+        return tipoVaga;
     }
 
-    public void setIdVaga(int idVaga) {
-        this.idVaga = idVaga;
+    public void setTipoVaga(ITipo tipoVaga) {
+        this.tipoVaga = tipoVaga;
     }
 
     public String getPlacaVeiculo() {
@@ -65,35 +51,34 @@ public class HistoricoUso {
         this.placaVeiculo = placaVeiculo;
     }
 
-    public LocalDateTime getDataEntrada() {
-        return dataEntrada;
+    public double getValorPago() {
+        return valorPago;
     }
 
-    public void setDataEntrada(LocalDateTime dataEntrada) {
-        this.dataEntrada = dataEntrada;
+    public void setValorPago(double valorPago) {
+        this.valorPago = valorPago;
     }
 
-    public LocalDateTime getDataSaida() {
-        return dataSaida;
+    public int getTempoTotal() {
+        return tempoTotal;
     }
 
-    public void setDataSaida(LocalDateTime dataSaida) {
-        this.dataSaida = dataSaida;
+    public void setTempoTotal(int tempoTotal) {
+        this.tempoTotal = tempoTotal;
     }
+
+    
 
     // Método para calcular o tempo de permanência em minutos
-    public long calcularTempoPermanencia() {
-        if (dataSaida != null) {
-            return java.time.Duration.between(dataEntrada, dataSaida).toMinutes();
-        }
-        return 0;
-    }
+//    public long calcularTempoPermanencia() {
+//        if (dataSaida != null) {
+//            return java.time.Duration.between(dataEntrada, dataSaida).toMinutes();
+//        }
+//        return 0;
+//    }
 
-    @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        return placaVeiculo + ";" + dataEntrada.format(formatter) + ";" + 
-               (dataSaida != null ? dataSaida.format(formatter) : "") + ";" + 
-               calcularTempoPermanencia();
-    }
+//    @Override
+//    public String toString() {
+//        return placaVeiculo + ";" + 
+//    }
 }

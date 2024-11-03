@@ -15,6 +15,10 @@ public class VagaPCD extends Vaga implements ITipo {
         super(idEstacionamento, status, id);
         this.tarifaBase = getTarifaBase() * DESCONTO_PCD;
     }
+    
+    public VagaPCD() throws IOException{
+    }
+    
     public double getDESCONTO_PCD() {
         return DESCONTO_PCD;
     }

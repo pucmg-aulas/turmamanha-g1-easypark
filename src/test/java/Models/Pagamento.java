@@ -7,10 +7,12 @@ import java.time.format.DateTimeFormatter;
 public class Pagamento {
     private int idPagamento;
     private LocalDateTime dataPagamento;
-    private Cliente cliente;
     private int idEstacionamento;
     private double valorPago;
-
+    private String placaVeiculo;
+    private ITipo tipoVaga;
+    private int tempoTotal;
+    
     private static final String Arquivo = "./src/test/java/Archives/Pagamentos.txt";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -60,13 +62,6 @@ public class Pagamento {
         return maiorId;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
 
     public int getIdEstacionamento() {
         return idEstacionamento;
@@ -83,6 +78,32 @@ public class Pagamento {
     public void setValorPago(double valorPago) {
         this.valorPago = valorPago;
     }
+
+    public String getPlacaVeiculo() {
+        return placaVeiculo;
+    }
+
+    public void setPlacaVeiculo(String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo;
+    }
+
+    public ITipo getTipoVaga() {
+        return tipoVaga;
+    }
+
+    public void setTipoVaga(ITipo tipoVaga) {
+        this.tipoVaga = tipoVaga;
+    }
+
+    public int getTempoTotal() {
+        return tempoTotal;
+    }
+
+    public void setTempoTotal(int tempoTotal) {
+        this.tempoTotal = tempoTotal;
+    }
+    
+    
     
     
     

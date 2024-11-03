@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+view\ValorArrecadadoView$3.class
+>>>>>>> 17fd84970fd53f1152add27d26674b251d9cb7fb
 view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class
@@ -98,6 +102,10 @@ view\MenuPrincipalViewJframe.class
 view\CadastroClienteView.class
 view\ExibirVeiculosClienteView.class
 view\RankingClientesView.class
+<<<<<<< HEAD
+=======
+dao\HistoricoUsoDAO.class
+>>>>>>> 17fd84970fd53f1152add27d26674b251d9cb7fb
 Controllers\AddEstacionamentoController.class
 view\ExibirDetalhesClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$1.class

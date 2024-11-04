@@ -31,7 +31,7 @@ public class MenuClienteView extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        cadastrarBtn.setText("Cadatrar Veículo do Cliente");
+        cadastrarBtn.setText("Cadastrar Veículo do Cliente");
         cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadastrarBtnActionPerformed(evt);

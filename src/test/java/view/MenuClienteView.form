@@ -95,7 +95,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="cadastrarBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cadatrar Ve&#xed;culo do Cliente"/>
+            <Property name="text" type="java.lang.String" value="Cadastrar Ve&#xed;culo do Cliente"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarBtnActionPerformed"/>

@@ -3,7 +3,7 @@
 3;Regular;Desocupado
 4;Regular;Desocupado
 5;Regular;Desocupado
-6;Idoso;Ocupado
+6;Idoso;Desocupado
 7;Idoso;Desocupado
 8;PCD;Desocupado
 9;PCD;Desocupado

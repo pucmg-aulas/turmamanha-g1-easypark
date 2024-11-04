@@ -16,3 +16,7 @@ Coloque aqui todas as versões do seu diagrama de classes. Cada versão deve com
 **Modelo 04:**
 
 ![Diagrama de Classe 4 - Estacionamento](/docs/diagramas/DiagramaEstacionamento04.jpg)
+
+**Modelo 05:**
+
+![Diagrama de Classe 5 - Estacionamento](/docs/diagramas/DiagramaEstacionamento05.png)

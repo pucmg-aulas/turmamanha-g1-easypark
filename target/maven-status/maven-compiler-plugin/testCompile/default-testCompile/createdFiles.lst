@@ -45,6 +45,7 @@ view\PagarCobrancaView$3.class
 view\ReservarVagaView.class
 Controllers\ListarVagasController.class
 view\MenuClienteView.class
+view\ExibirHistoricoUsoView$3.class
 view\MenuPrincipalViewJframe$4.class
 view\MenuEstacionamentoView$1.class
 view\GerarCobrancaView$4.class
@@ -74,6 +75,7 @@ view\SelecionarEstacionamentoView$2.class
 view\PagarCobrancaView$4.class
 view\PagarCobrancaView$1.class
 view\ExibirDetalhesClienteView$1.class
+view\ExibirHistoricoUsoView$2.class
 view\MenuPrincipalViewJframe$2.class
 view\PagarCobrancaView.class
 view\MenuEstacionamentoView$6.class
@@ -89,6 +91,7 @@ Controllers\ExibirDetalhesClienteController.class
 view\MenuClienteView$1.class
 view\MenuPrincipalViewJframe$1.class
 view\SelecionarClienteView$2.class
+view\ExibirHistoricoUsoView$1.class
 Controllers\GerarCobrancaController.class
 Controllers\MenuClienteController.class
 view\MenuEstacionamentoView$4.class

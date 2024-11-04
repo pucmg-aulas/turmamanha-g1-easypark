@@ -7,4 +7,4 @@
 7;Idoso;Desocupado
 8;PCD;Desocupado
 9;PCD;Desocupado
-10;VIP;Ocupado
+10;VIP;Desocupado

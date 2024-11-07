@@ -113,48 +113,49 @@ public class ValorArrecadadoController {
     }
 }   
 
-    private int extrairMes(LocalDateTime dataHora){
+    private int extrairMes(LocalDateTime dataHora) {
         return dataHora.getMonthValue();
     }
-    
-    private List<Pagamento> filtrarPagamentosPorMes(List<Pagamento> pagamentos, int mesSelecionado){
+
+    private List<Pagamento> filtrarPagamentosPorMes(List<Pagamento> pagamentos, int mesSelecionado, int idEstacionamento) {
         List<Pagamento> pagamentosFiltrados = new ArrayList<>();
-        
-        for(Pagamento pagamento : pagamentos){
+
+        for (Pagamento pagamento : pagamentos) {
             int mesPagamento = extrairMes(pagamento.getDataPagamento());
-            
-            if(mesPagamento == mesSelecionado){
+
+            if (mesPagamento == mesSelecionado && pagamento.getIdEstacionamento() == idEstacionamento) {
                 pagamentosFiltrados.add(pagamento);
             }
         }
         return pagamentosFiltrados;
     }
 
-    private void exibirArrecadacaoMensal() throws IOException{
+    private void exibirArrecadacaoMensal() throws IOException {
         String mesSelecionado = (String) view.mesesAno().getSelectedItem();
         String[] dadosMes = mesSelecionado.split("-");
         int numeroMes = Integer.parseInt(dadosMes[0].trim());
-        
+
         List<Pagamento> listaPagamentos = pagamentos.listarPagamentos();
         if (listaPagamentos == null || listaPagamentos.isEmpty()) {
             JOptionPane.showMessageDialog(view, "A lista de pagamentos está vazia ou é nula.");
             return;
         }
-        
-        List<Pagamento> pagamentosFiltrados = filtrarPagamentosPorMes(listaPagamentos, numeroMes);
+
+        int idEstacionamento = this.idEstacionamento;
+        List<Pagamento> pagamentosFiltrados = filtrarPagamentosPorMes(listaPagamentos, numeroMes, idEstacionamento);
+
         double valorTotalMensal = 0;
-        
-        for(Pagamento pagamento : pagamentosFiltrados){
+
+        for (Pagamento pagamento : pagamentosFiltrados) {
             valorTotalMensal += pagamento.getValorPago();
         }
-        
+
         String valorFormatado = String.format("R$%.2f", valorTotalMensal);
         this.view.getValorMensal().setText(valorFormatado);
     }
+
     
-    
-   
-    
+     
     public void exibirValorMedioUtilizacao(){
         List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
         int qntdPagamentos = pagamentosFiltrados.size();

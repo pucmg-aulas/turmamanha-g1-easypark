@@ -16,7 +16,7 @@ public class CobrancaDAO {
     private List<Cobranca> cobrancas;
     private static CobrancaDAO instance;
     
-    private CobrancaDAO(){
+    CobrancaDAO(){
         cobrancas = lerCobrancas();
         if(cobrancas == null){
             cobrancas = new ArrayList<>();

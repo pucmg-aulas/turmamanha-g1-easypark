@@ -60,7 +60,7 @@ public class PagamentoDAO {
         
         // Salvar no arquivo
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO, true))) {
-            writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + ";" + pagamento.getDataPagamento().format(FORMATTER) + ";" + tipoVaga + ";" + placaVeiculo + ";" + tempoTotal + "\n");
+            writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + "; Data Entrada:" + cobranca.getHoraEntrada().format(FORMATTER) + "; Data Pagamento: " + pagamento.getDataPagamento().format(FORMATTER) + ";" + tipoVaga + ";" + placaVeiculo + ";" + tempoTotal + "\n");
         }
     }
 
@@ -137,7 +137,7 @@ public class PagamentoDAO {
                 String[] dados = linha.split(";");
 
                 // Verifica se a linha tem o número correto de dados
-                if (dados.length < 7 || dados[0].isEmpty() || dados[1].isEmpty() || dados[2].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty() || dados[5].isEmpty()) {
+                if (dados.length < 8 || dados[0].isEmpty() || dados[1].isEmpty() || dados[2].isEmpty() || dados[3].isEmpty() || dados[4].isEmpty() || dados[5].isEmpty() || dados[6].isEmpty()|| dados[7].isEmpty()) {
                     System.out.println("Linha inválida ou incompleta: " + linha);
                     continue;
                 }

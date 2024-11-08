@@ -17,7 +17,19 @@ public class Cobranca {
     public static final long FRACAOTEMPO = 15;
     private double valorTotal;
     private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
-private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public Cobranca() {
+        this.idCobranca = 0;
+        this.idVaga = 0;
+        this.placaVeiculo = "";
+        this.idEstacionamento = 0;
+        this.horaEntrada = LocalDateTime.now();
+        this.tempoTotal = 0;
+        this.valorTotal = 0;
+        this.horaSaida = null;
+    }
+
 
     public Cobranca(int idVaga, int idEstacionamento, String placaVeiculo) throws FileNotFoundException{
         this.idCobranca = EncontrarMaior() + 1;
@@ -40,6 +52,7 @@ private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("
         this.valorTotal = 0;
         this.horaSaida = null;
     }
+
 
     public int getIdVaga() {
         return idVaga;

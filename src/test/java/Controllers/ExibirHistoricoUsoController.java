@@ -1,10 +1,12 @@
 package Controllers;
 
+import Models.Cobranca;
 import Models.Estacionamento;
 import Models.HistoricoUso;
 import Models.ITipo;
 import Models.Pagamento;
 import Models.Veiculo;
+import dao.CobrancaDAO;
 import dao.EstacionamentoDAO;
 import dao.PagamentoDAO;
 import dao.VeiculoDAO;
@@ -35,6 +37,7 @@ public class ExibirHistoricoUsoController {
     private VeiculoDAO veiculos;
     private EstacionamentoDAO estacionamentos;
 
+
     public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException {
         this.view = new ExibirHistoricoUsoView(desktopPane);
         this.pagamentos = PagamentoDAO.getInstance();
@@ -60,7 +63,7 @@ public class ExibirHistoricoUsoController {
     }
 
     private void carregarHistoricoCliente() {
-        Object colunas[] = {"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Tempo de Permanência (min)", "Valor(R$)"};
+        Object colunas[] = {"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saida", "Valor(R$)"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
         try {
@@ -78,8 +81,9 @@ public class ExibirHistoricoUsoController {
             JOptionPane.showMessageDialog(view, "Erro ao carregar histórico: " + e.getMessage());
         }
     }
-
+        
     private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws FileNotFoundException {
+        Cobranca cobranca = new Cobranca();
         String placaVeiculo = pagamento.getPlacaVeiculo();
         Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
         String cpfAtual = veiculoAtual.getCliente().getCpf();
@@ -87,16 +91,18 @@ public class ExibirHistoricoUsoController {
         String estacionamentoNome = estacionamentoAtual.getNome();
         ITipo vaga = pagamento.getTipoVaga();
         String tipoVaga = vaga.getTipo();
-        int tempoTotal = pagamento.getTempoTotal();
         double valorTotal = pagamento.getValorPago();
+        String dataEntrada = cobranca.getHoraEntrada().format(DateTimeFormatter.ISO_DATE);
+        String dataSaida = pagamento.getDataPagamento().format(DateTimeFormatter.ISO_DATE);
 
-        String[] linha = new String[6];
+        String[] linha = new String[7];
         linha[0] = cpfAtual;
         linha[1] = estacionamentoNome;
         linha[2] = tipoVaga;
         linha[3] = placaVeiculo;
-        linha[4] = String.valueOf(tempoTotal);
-        linha[5] = String.valueOf(valorTotal);
+        linha[4] = dataSaida;
+        linha[5] = dataEntrada;
+        linha[6] = String.valueOf(valorTotal);
         tm.addRow(linha);
     }
 

@@ -19,6 +19,7 @@ import view.GerarCobrancaView;
 
 public class GerarCobrancaController {
    private GerarCobrancaView view;
+   private AddClienteController cadastroCliente;
    private int idEstacionamento;
    private JDesktopPane desktopPane;
    private VagaDAO vagas;
@@ -50,6 +51,14 @@ public class GerarCobrancaController {
         
         view.getVoltarBtn().addActionListener(e -> {
             sair();
+        });
+        
+        view.getCadastrarBtn().addActionListener(e -> {
+            try {
+                cadastroCliente = new AddClienteController(desktopPane);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
     }

@@ -25,6 +25,7 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         voltarBtn = new javax.swing.JButton();
+        verHistoricoBtn = new javax.swing.JButton();
 
         nomeText.setEditable(false);
         nomeText.addActionListener(new java.awt.event.ActionListener() {
@@ -54,6 +55,13 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
             }
         });
 
+        verHistoricoBtn.setText("Histórico");
+        verHistoricoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verHistoricoBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -72,14 +80,16 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jSeparator1)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(verHistoricoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(voltarBtn)
+                .addGap(32, 32, 32))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(267, 267, 267)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(voltarBtn)
-                .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,8 +106,10 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(voltarBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(voltarBtn)
+                    .addComponent(verHistoricoBtn))
                 .addGap(32, 32, 32))
         );
 
@@ -114,7 +126,7 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
+            .addGap(0, 322, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -138,6 +150,10 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_nomeTextActionPerformed
 
+    private void verHistoricoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verHistoricoBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_verHistoricoBtnActionPerformed
+
     public JTextField getCpf(){
         return cpfText;
     }
@@ -149,6 +165,10 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
     public JButton getVoltarBtn(){
         return voltarBtn;
     }
+    
+    public JButton getVerHistoricoBtn(){
+        return verHistoricoBtn;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cpfText;
@@ -158,6 +178,7 @@ public class ExibirDetalhesClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField nomeText;
+    private javax.swing.JButton verHistoricoBtn;
     private javax.swing.JButton voltarBtn;
     // End of variables declaration//GEN-END:variables
 }

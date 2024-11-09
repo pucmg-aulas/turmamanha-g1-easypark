@@ -37,7 +37,6 @@ public class ExibirHistoricoUsoController {
     private VeiculoDAO veiculos;
     private EstacionamentoDAO estacionamentos;
 
-
     public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException {
         this.view = new ExibirHistoricoUsoView(desktopPane);
         this.pagamentos = PagamentoDAO.getInstance();
@@ -50,9 +49,9 @@ public class ExibirHistoricoUsoController {
         this.view.setVisible(true);
 
         carregarHistoricoCliente();
-        
+
         this.view.getFiltrarBtn().addActionListener(e -> {
-            String dataInicio = view.getDataInicio(); 
+            String dataInicio = view.getDataInicio();
             String dataFim = view.getDataFim();
             filtrarHistoricoPorData(dataInicio, dataFim);
         });
@@ -66,6 +65,8 @@ public class ExibirHistoricoUsoController {
         Object colunas[] = {"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saida", "Valor(R$)"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
+            
+       
         try {
             List<Pagamento> todosPagamentos = pagamentos.getPagamentosPorCpf(clienteCpf);
 
@@ -81,7 +82,7 @@ public class ExibirHistoricoUsoController {
             JOptionPane.showMessageDialog(view, "Erro ao carregar histórico: " + e.getMessage());
         }
     }
-        
+
     private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws FileNotFoundException {
         Cobranca cobranca = new Cobranca();
         String placaVeiculo = pagamento.getPlacaVeiculo();
@@ -92,16 +93,16 @@ public class ExibirHistoricoUsoController {
         ITipo vaga = pagamento.getTipoVaga();
         String tipoVaga = vaga.getTipo();
         double valorTotal = pagamento.getValorPago();
-        String dataEntrada = cobranca.getHoraEntrada().format(DateTimeFormatter.ISO_DATE);
-        String dataSaida = pagamento.getDataPagamento().format(DateTimeFormatter.ISO_DATE);
+        String dataEntrada = pagamento.getDataEntrada() != null ? pagamento.getDataEntrada().format(DateTimeFormatter.ISO_DATE) : "Data não disponível";
+        String dataSaida = pagamento.getDataPagamento() != null ? pagamento.getDataPagamento().format(DateTimeFormatter.ISO_DATE) : "Data não disponível";
 
         String[] linha = new String[7];
         linha[0] = cpfAtual;
         linha[1] = estacionamentoNome;
         linha[2] = tipoVaga;
         linha[3] = placaVeiculo;
-        linha[4] = dataSaida;
-        linha[5] = dataEntrada;
+        linha[4] = dataEntrada;
+        linha[5] = dataSaida;
         linha[6] = String.valueOf(valorTotal);
         tm.addRow(linha);
     }
@@ -159,5 +160,8 @@ public class ExibirHistoricoUsoController {
         }
     }
 
+    boolean isVisible() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

@@ -7,13 +7,17 @@ package Controllers;
 import Models.Cliente;
 import dao.ClienteDAO;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import view.ExibirDetalhesClienteView;
 import view.MenuClienteView;
 
 public class ExibirDetalhesClienteController {
      
     private ExibirDetalhesClienteView view;
+    private ExibirHistoricoUsoController historicoCliente;
     private ClienteDAO clientes;
     private final JDesktopPane desktopPane;
     private String cpf;
@@ -26,9 +30,25 @@ public class ExibirDetalhesClienteController {
         
         desktopPane.add(view);
         this.view.setVisible(true);
-        
+ 
         carregarCliente();
+        
+        this.view.getVerHistoricoBtn().addActionListener(e -> abrirHistoricoCliente());
+        }
+    
+    private void abrirHistoricoCliente() {
+        try {
+            if (historicoCliente == null || !historicoCliente.isVisible()) {
+                historicoCliente = new ExibirHistoricoUsoController(desktopPane, cpf);
+            } else {
+                JOptionPane.showMessageDialog(view, "A tela de histórico já está aberta.");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(view, "Erro ao abrir o histórico: " + ex.getMessage());
+        }
     }
+   
     
     
     private void carregarCliente(){

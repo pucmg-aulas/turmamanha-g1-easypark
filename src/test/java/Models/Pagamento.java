@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 public class Pagamento {
     private int idPagamento;
     private LocalDateTime dataPagamento;
+    private LocalDateTime dataEntrada;
     private int idEstacionamento;
     private double valorPago;
     private String placaVeiculo;
@@ -19,6 +20,14 @@ public class Pagamento {
     public Pagamento() throws IOException {
         this.idPagamento = encontrarMaiorId() + 1;
         this.dataPagamento = LocalDateTime.now();
+    }
+    
+    public LocalDateTime getDataEntrada(){
+        return dataEntrada;
+    }
+    
+    public void setDataEntrada(LocalDateTime dataEntrada){
+        this.dataEntrada = dataEntrada;
     }
 
     public int getIdPagamento() {

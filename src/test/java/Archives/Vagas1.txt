@@ -1,4 +1,4 @@
-1;Regular;Desocupado
+1;Regular;Ocupado
 2;Regular;Desocupado
 3;Regular;Desocupado
 4;Regular;Desocupado

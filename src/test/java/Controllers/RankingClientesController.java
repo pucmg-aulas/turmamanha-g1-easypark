@@ -6,6 +6,9 @@ import Models.Veiculo;
 import dao.ClienteDAO;
 import dao.PagamentoDAO;
 import dao.VeiculoDAO;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -63,12 +66,27 @@ import view.RankingClientesView;
         this.view.getVoltarBtn().addActionListener(e -> {
             sair();
         });
+        
+         
+    view.getTableClientes().addMouseListener(new MouseAdapter() {
+    
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) { 
+                abrirDetalhesCliente();
+            }
+        }
+    });
     }
       
     
     private void carregarTabela() throws IOException {
         Object colunas[] = {"CPF", "Nome", "Valor "};
-        DefaultTableModel tm = new DefaultTableModel(colunas, 0);
+        DefaultTableModel tm = new DefaultTableModel(colunas, 0){
+        @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tm.setNumRows(0);
         
         List<Pagamento> listaPagamentos = pagamentos.listarPagamentos();
@@ -203,4 +221,27 @@ import view.RankingClientesView;
            sorter.setSortKeys(sortKeys);
            sorter.sort();
     }
+    
+    
+private void abrirDetalhesCliente() {
+    
+    if (view.getTableClientes().getRowCount() > 0) {
+        int selectedRow = view.getTableClientes().getSelectedRow();
+        
+        if (selectedRow != -1) {
+            String cpf = (String) view.getTableClientes().getValueAt(selectedRow, 0);
+
+            try {
+                new ExibirDetalhesClienteController(desktopPane, cpf);
+            } catch (IOException ex) {
+                Logger.getLogger(RankingClientesController.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(view, "Erro ao abrir os detalhes do cliente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(view, "Selecione um cliente para ver os detalhes.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(view, "Não há clientes na tabela para exibir os detalhes.");
+    }
+}
 }

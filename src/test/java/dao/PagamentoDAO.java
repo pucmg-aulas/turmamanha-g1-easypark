@@ -48,21 +48,23 @@ public class PagamentoDAO {
     }
     
     public void salvarPagamento(Cobranca cobranca) throws IOException {
-        Pagamento pagamento = new Pagamento();
-        int idEstacionamento = cobranca.getIdEstacionamento();
-        this.vagas = VagaDAO.getInstance(idEstacionamento);
-        double valorTotal = cobranca.getValorTotal();
-        String placaVeiculo = cobranca.getPlacaVeiculo();
-        int idVaga = cobranca.getIdVaga();
-        Vaga vagaAtual= vagas.getVagaPorId(idVaga);
-        String tipoVaga = vagaAtual.getTipo();
-        int tempoTotal = cobranca.getTempoTotal();
-        
-        // Salvar no arquivo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO, true))) {
-            writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + "; Data Entrada:" + cobranca.getHoraEntrada().format(FORMATTER) + "; Data Pagamento: " + pagamento.getDataPagamento().format(FORMATTER) + ";" + tipoVaga + ";" + placaVeiculo + ";" + tempoTotal + "\n");
-        }
+    Pagamento pagamento = new Pagamento();
+    int idEstacionamento = cobranca.getIdEstacionamento();
+    this.vagas = VagaDAO.getInstance(idEstacionamento);
+    double valorTotal = cobranca.getValorTotal();
+    String placaVeiculo = cobranca.getPlacaVeiculo();
+    int idVaga = cobranca.getIdVaga();
+    Vaga vagaAtual = vagas.getVagaPorId(idVaga);
+    String tipoVaga = vagaAtual.getTipo();
+    int tempoTotal = cobranca.getTempoTotal();
+
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO, true))) {
+        writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + ";"
+                + tipoVaga + ";" + placaVeiculo + ";" + tempoTotal + ";" 
+                + cobranca.getHoraEntrada().format(FORMATTER) + ";"
+                + pagamento.getDataPagamento().format(FORMATTER) + "\n");
     }
+}
 
     public List<Pagamento> getPagamentosPorCpf(String cpf) throws IOException {
     List<Pagamento> pagamentos = new ArrayList<>();
@@ -76,8 +78,8 @@ public class PagamentoDAO {
                 int idPagamento = Integer.parseInt(dados[0]);
                 int idEstacionamento = Integer.parseInt(dados[1]);
                 double valorTotal = Double.parseDouble(dados[2]);
-                LocalDateTime dataPagamento = LocalDateTime.parse(dados[3], FORMATTER);
-                String tipoVaga = dados[4];
+                
+                String tipoVaga = dados[3];
                 
                 Vaga vagaAtual = new Vaga();
                 vagaAtual.setIdEstacionamento(idEstacionamento);
@@ -91,18 +93,24 @@ public class PagamentoDAO {
                       vagaAtual.setTipo(new VagaRegular());
                 }
                 
-                String placaVeiculo = dados[5];
+                String placaVeiculo = dados[4];
+                int tempoTotal = Integer.parseInt(dados[5]);
+                
                 Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
                 Cliente clienteAtual = veiculoAtual.getCliente();
                 
-                int tempoTotal = Integer.parseInt(dados[6]);
+                LocalDateTime dataEntrada = LocalDateTime.parse(dados[6], FORMATTER);
+                LocalDateTime dataSaida = LocalDateTime.parse(dados[7], FORMATTER);
+                
+                
                 
                 if (cpf.equals(clienteAtual.getCpf())) {
                     Pagamento pagamento = new Pagamento();
                     pagamento.setIdEstacionamento(idEstacionamento);
                     pagamento.setValorPago(valorTotal);
                     pagamento.setIdPagamento(idPagamento);
-                    pagamento.setDataPagamento(dataPagamento);
+                    pagamento.setDataPagamento(dataSaida);
+                    pagamento.setDataEntrada(dataEntrada);
                     pagamento.setPlacaVeiculo(placaVeiculo);
                     pagamento.setTipoVaga(vagaAtual.getTipoVaga());
                     pagamento.setTempoTotal(tempoTotal);
@@ -146,10 +154,11 @@ public class PagamentoDAO {
                     int idPagamento = Integer.parseInt(dados[0]);
                     int idEstacionamento = Integer.parseInt(dados[1]);
                     double valorPago = Double.parseDouble(dados[2]);
-                    String dataPagamento = dados[3];
-                    String tipoVaga = dados[4];
-                    String placaVeiculo = dados[5];
-                    int tempoTotal = Integer.parseInt(dados[6]);
+                    String tipoVaga = dados[3];
+                    String placaVeiculo = dados[4];
+                    int tempoTotal = Integer.parseInt(dados[5]);
+                    String dataEntrada = dados[6];
+                    String dataSaida = dados[7];
                     
                     Vaga vagaAtual = new Vaga();
                     vagaAtual.setIdEstacionamento(idEstacionamento);
@@ -167,8 +176,13 @@ public class PagamentoDAO {
                     pagamento.setIdEstacionamento(idEstacionamento);
                     pagamento.setValorPago(valorPago);
                     pagamento.setIdPagamento(idPagamento);
-                    LocalDateTime dataPagamentoFormatada = LocalDateTime.parse(dataPagamento, FORMATTER);
+                    
+                    LocalDateTime dataPagamentoFormatada = LocalDateTime.parse(dataSaida, FORMATTER);
                     pagamento.setDataPagamento(dataPagamentoFormatada);
+                    
+                    LocalDateTime dataEntradaFormatada = LocalDateTime.parse(dataEntrada, FORMATTER);
+                    pagamento.setDataEntrada(dataEntradaFormatada);
+                    
                     pagamento.setTempoTotal(tempoTotal);
                     pagamento.setPlacaVeiculo(placaVeiculo);
                     pagamento.setTipoVaga(vagaAtual.getTipoVaga());

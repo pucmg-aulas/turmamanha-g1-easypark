@@ -3,11 +3,12 @@ package Models;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+    import javax.swing.JOptionPane;
 
 public class Cobranca {
     private int idCobranca;
     private int idVaga;
-    private String placaVeiculo;
+    private Veiculo veiculo;
     private int idEstacionamento;
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSaida;
@@ -22,7 +23,7 @@ public class Cobranca {
     public Cobranca() {
         this.idCobranca = 0;
         this.idVaga = 0;
-        this.placaVeiculo = "";
+        this.veiculo = null;
         this.idEstacionamento = 0;
         this.horaEntrada = LocalDateTime.now();
         this.tempoTotal = 0;
@@ -31,10 +32,11 @@ public class Cobranca {
     }
 
 
-    public Cobranca(int idVaga, int idEstacionamento, String placaVeiculo) throws FileNotFoundException{
+    public Cobranca(int idVaga, int idEstacionamento, Veiculo veiculo) throws FileNotFoundException{
+       
         this.idCobranca = EncontrarMaior() + 1;
         this.idVaga = idVaga;
-        this.placaVeiculo = placaVeiculo;
+        this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;
         this.horaEntrada = LocalDateTime.now();
         this.tempoTotal = 0;
@@ -42,10 +44,10 @@ public class Cobranca {
         this.horaSaida = null;
     }
     
-    public Cobranca(int idCobranca, int idVaga, int idEstacionamento, String placaVeiculo, LocalDateTime horaEntrada){
+    public Cobranca(int idCobranca, int idVaga, int idEstacionamento,  Veiculo veiculo, LocalDateTime horaEntrada){
         this.idCobranca = idCobranca;
         this.idVaga = idVaga;
-        this.placaVeiculo = placaVeiculo;
+        this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;
         this.horaEntrada = horaEntrada;
         this.tempoTotal = 0;
@@ -62,14 +64,15 @@ public class Cobranca {
         this.idVaga = idVaga;
     }
 
-    public String getPlacaVeiculo() {
-        return placaVeiculo;
+    public Veiculo getVeiculo() {
+        return veiculo;
     }
 
-    public void setPlacaVeiculo( String placaVeiculo) {
-        this.placaVeiculo = placaVeiculo;
+    public void setVeiculo( Veiculo veiculo) {
+        this.veiculo = veiculo;
     }
 
+ 
     public LocalDateTime getHoraEntrada() {
         return horaEntrada;
     }

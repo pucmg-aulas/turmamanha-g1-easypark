@@ -87,11 +87,12 @@ public class GerarCobrancaController {
     int selectedRow = view.getVagasTable().getSelectedRow();
     String idVaga = (String) view.getVagasTable().getValueAt(selectedRow, 0);
     String placaVeiculo = view.getPlaca().getText().trim();
+    Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
 
     int idVagaNumber = Integer.parseInt(idVaga);
     
     if (validarCampos(idVaga, placaVeiculo)) {
-        Cobranca c = new Cobranca(idVagaNumber, idEstacionamento, placaVeiculo);
+        Cobranca c = new Cobranca(idVagaNumber, idEstacionamento, automovel);
         return c;  
     } else {
         JOptionPane.showMessageDialog(view, "Preencha todos os campos!");
@@ -115,7 +116,7 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");
             return;
         }
-        Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getPlacaVeiculo());
+        Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
         if(veiculoAtual == null){
              JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
              return;

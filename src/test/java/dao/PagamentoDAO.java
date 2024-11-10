@@ -52,7 +52,7 @@ public class PagamentoDAO {
     int idEstacionamento = cobranca.getIdEstacionamento();
     this.vagas = VagaDAO.getInstance(idEstacionamento);
     double valorTotal = cobranca.getValorTotal();
-    String placaVeiculo = cobranca.getPlacaVeiculo();
+    String placaVeiculo = cobranca.getVeiculo().getPlaca();
     int idVaga = cobranca.getIdVaga();
     Vaga vagaAtual = vagas.getVagaPorId(idVaga);
     String tipoVaga = vagaAtual.getTipo();

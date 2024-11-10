@@ -18,6 +18,8 @@ import Models.VagaIdoso;
 import Models.VagaPCD;
 import Models.VagaRegular;
 import Models.VagaVIP;
+import Models.Veiculo;
+import dao.VeiculoDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,13 +75,15 @@ public class PagarCobrancaController {
     private void carregarVagasOcupadas() {
         Object[] colunas = {"ID", "Tipo", "Status", "Placa"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
+        
 
         Iterator<Vaga> it = vagas.getVagasOcupadas().iterator();
         while (it.hasNext()) {
             Vaga v = it.next();
             String[] linha = v.toString().split("-");
             linha[2] = "Ocupado";  // Força o status como "Ocupado"
-            String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getPlacaVeiculo();
+            String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getVeiculo().getPlaca();
+            
             tm.addRow(new Object[]{linha[0], linha[1], linha[2], placa});
         }
 
@@ -108,7 +112,7 @@ public class PagarCobrancaController {
 
             // Busca a cobrança correspondente no DAO
             Cobranca cobranca = cobrancas.lerCobrancas().stream()
-                .filter(c -> c.getIdVaga() == idVaga && c.getPlacaVeiculo().equals(placaText))
+                .filter(c -> c.getIdVaga() == idVaga && c.getVeiculo().getPlaca().equals(placaText))
                 .findFirst()
                 .orElse(null);
 
@@ -175,7 +179,7 @@ public class PagarCobrancaController {
 
         // Busca a cobrança correspondente no DAO
         Cobranca cobranca = cobrancas.lerCobrancas().stream()
-                .filter(c -> c.getIdVaga() == idVaga && c.getPlacaVeiculo().equals(placaText))
+                .filter(c -> c.getIdVaga() == idVaga && c.getVeiculo().getPlaca().equals(placaText))
                 .findFirst()
                 .orElse(null);
 

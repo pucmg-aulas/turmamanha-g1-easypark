@@ -2,12 +2,14 @@ package dao;
 
 import Models.Cliente;
 import Models.Cobranca;
+import Models.Veiculo;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class CobrancaDAO {
 
@@ -15,8 +17,10 @@ public class CobrancaDAO {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private List<Cobranca> cobrancas;
     private static CobrancaDAO instance;
+    private VeiculoDAO veiculos;
     
     CobrancaDAO(){
+        this.veiculos = VeiculoDAO.getInstance();
         cobrancas = lerCobrancas();
         if(cobrancas == null){
             cobrancas = new ArrayList<>();
@@ -34,15 +38,21 @@ public class CobrancaDAO {
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(Arquivo))) {
             String linha;
+            
             while ((linha = leitor.readLine()) != null) {
+               
                 String[] dados = linha.split(";");
                 int idCobranca = Integer.parseInt(dados[0]);
                 int idVagaAtual = Integer.parseInt(dados[1]);
                 String placaVeiculo = dados[2];
                 int idEstacionamento = Integer.parseInt(dados[3]);
                 LocalDateTime dataEntrada = LocalDateTime.parse(dados[4], formatter);
+                Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+                 
                 if(idVagaAtual == idVaga){
-                    return new Cobranca(idCobranca, idVagaAtual, idEstacionamento, placaVeiculo, dataEntrada);
+                    
+                    return new Cobranca(idCobranca, idVagaAtual, idEstacionamento, automovel, dataEntrada);
+                   
                 }
             }
         } catch (IOException e) {
@@ -75,7 +85,7 @@ public class CobrancaDAO {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
                 for (Cobranca c : cobrancas) {
                     String dataEntrada = c.getHoraEntrada().format(formatter);
-                    bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getPlacaVeiculo() + ";" + c.getIdEstacionamento() + ";" + dataEntrada + ";" + c.getTempoTotal());
+                    bw.write(c.getIdCobranca() + ";" + c.getIdVaga() + ";" + c.getVeiculo().getPlaca() + ";" + c.getIdEstacionamento() + ";" + dataEntrada + ";" + c.getTempoTotal());
                     bw.newLine();
                 }
                 return true; // Indica que a operação foi bem-sucedida
@@ -113,8 +123,9 @@ public class CobrancaDAO {
                 int idEstacionamento = Integer.parseInt(dados[3]);
                 LocalDateTime horaEntrada = LocalDateTime.parse(dados[4], formatter);
                 int tempoTotal = Integer.parseInt(dados[5]);
+                Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
                 
-                Cobranca cobrancaAtual = new Cobranca(idCobranca, idVaga, idEstacionamento, placaVeiculo, horaEntrada);
+                Cobranca cobrancaAtual = new Cobranca(idCobranca, idVaga, idEstacionamento, automovel, horaEntrada);
                 cobrancaAtual.setTempoTotal(tempoTotal);
                 cobrancas.add(cobrancaAtual);
 
@@ -148,7 +159,7 @@ public class CobrancaDAO {
         if (cobranca.getIdCobranca() == cobrancaAtualizada.getIdCobranca()) { // Compara pelo ID da cobrança
             // Atualiza as informações da cobrança encontrada
             cobranca.setIdVaga(cobrancaAtualizada.getIdVaga());
-            cobranca.setPlacaVeiculo(cobrancaAtualizada.getPlacaVeiculo());
+            cobranca.setVeiculo(cobrancaAtualizada.getVeiculo());
             cobranca.setIdEstacionamento(cobrancaAtualizada.getIdEstacionamento());
             cobranca.setHoraEntrada(cobrancaAtualizada.getHoraEntrada());
             cobranca.setTempoTotal(cobrancaAtualizada.getTempoTotal());

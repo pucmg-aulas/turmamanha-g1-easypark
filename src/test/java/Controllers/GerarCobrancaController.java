@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import Models.Cliente;
 import Models.Cobranca;
 import Models.Vaga;
 import Models.Veiculo;
@@ -46,6 +47,8 @@ public class GerarCobrancaController {
                 carregarVagasDisponiveis();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         
@@ -83,12 +86,16 @@ public class GerarCobrancaController {
          this.view.dispose();
      }
 
-    private Cobranca getAtributos() throws FileNotFoundException {
+    private Cobranca getAtributos() throws FileNotFoundException, IOException {
     int selectedRow = view.getVagasTable().getSelectedRow();
     String idVaga = (String) view.getVagasTable().getValueAt(selectedRow, 0);
     String placaVeiculo = view.getPlaca().getText().trim();
     Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
-
+    if(automovel == null){
+        automovel = new Veiculo(placaVeiculo, new Cliente("Anônimo", "Anônimo"), "Aleatório");
+        veiculos.cadastrarVeiculoPorCliente(automovel);
+    }
+    
     int idVagaNumber = Integer.parseInt(idVaga);
     
     if (validarCampos(idVaga, placaVeiculo)) {
@@ -110,7 +117,7 @@ public class GerarCobrancaController {
         return veiculoEncontrado != null ? veiculoEncontrado : null;
     }
      
-     private void createCobranca() throws FileNotFoundException{
+     private void createCobranca() throws FileNotFoundException, IOException{
         Cobranca novaCobranca = getAtributos();
         if(novaCobranca == null){
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");

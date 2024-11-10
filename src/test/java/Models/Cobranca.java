@@ -55,7 +55,7 @@ public class Cobranca {
         this.horaSaida = null;
     }
 
-
+    
     public int getIdVaga() {
         return idVaga;
     }

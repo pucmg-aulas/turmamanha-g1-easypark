@@ -83,6 +83,7 @@ view\MenuPrincipalViewJframe$2.class
 Controllers\RankingClientesController$1.class
 view\PagarCobrancaView.class
 view\MenuEstacionamentoView$6.class
+dao\BancoDados.class
 view\MenuEstacionamentoView$3.class
 view\ValorArrecadadoView$2.class
 Models\EncontrarMaior.class

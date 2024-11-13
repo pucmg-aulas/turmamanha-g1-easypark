@@ -8,27 +8,27 @@ import java.util.logging.Logger;
 
 
 public class BancoDados {
-    private static String banco = "dbEasyPark";
-    private static String usuario = "root";
-    private static String senha = "";
-    private static String url = "";
+    private static String banco = "easyPark";
+    private static String usuario = "postgres.lgxszdtbintlycfivosh";
+    private static String senha = "PmEasyPark%";
+    private static String url = "jdbc:postgresql://aws-0-us-east-2.pooler.supabase.com:6543/postgres";
     private static BancoDados instancia = null;
     private static Connection conexao = null;
     
     private BancoDados(){}
     
-    public static void conectar(){
-        try {
-            conexao = DriverManager.getConnection(url, usuario, senha);
-        } catch (SQLException ex) {
-            Logger.getLogger(BancoDados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void conectar() throws SQLException{
+        conexao = DriverManager.getConnection(url, usuario, senha);
     }
     
-    private static BancoDados getInstancia(){
+    public static BancoDados getInstancia() {
         if(instancia == null){
             instancia = new BancoDados();
-            conectar();
+            try {
+                conectar();
+            } catch (SQLException ex) {
+                Logger.getLogger(BancoDados.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         return instancia;
@@ -47,5 +47,4 @@ public class BancoDados {
         }
     }
     
-   
 }

@@ -2,44 +2,39 @@ package Controllers;
 
 import Models.Cobranca;
 import Models.Estacionamento;
-import Models.HistoricoUso;
 import Models.ITipo;
 import Models.Pagamento;
 import Models.Veiculo;
-import dao.CobrancaDAO;
 import dao.EstacionamentoDAO;
-import dao.PagamentoDAO;
+import dao.PagamentobdDAO;
 import dao.VeiculoDAO;
 import java.time.LocalDate;
-import java.io.FileNotFoundException;
-import view.ExibirHistoricoUsoView;
-
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Iterator;
-
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
+import view.ExibirHistoricoUsoView;
 
 public class ExibirHistoricoUsoController {
 
     private ExibirHistoricoUsoView view;
     private JDesktopPane desktopPane;
-    private PagamentoDAO pagamentos;
+    private PagamentobdDAO pagamentos;
     private String clienteCpf;
     private VeiculoDAO veiculos;
     private EstacionamentoDAO estacionamentos;
 
-    public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException {
+    public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException, SQLException {
         this.view = new ExibirHistoricoUsoView(desktopPane);
-        this.pagamentos = PagamentoDAO.getInstance();
+        this.pagamentos = PagamentobdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.estacionamentos = EstacionamentoDAO.getInstance();
         this.desktopPane = desktopPane;
@@ -53,7 +48,11 @@ public class ExibirHistoricoUsoController {
         this.view.getFiltrarBtn().addActionListener(e -> {
             String dataInicio = view.getDataInicio();
             String dataFim = view.getDataFim();
-            filtrarHistoricoPorData(dataInicio, dataFim);
+            try {
+                filtrarHistoricoPorData(dataInicio, dataFim);
+            } catch (SQLException ex) {
+                Logger.getLogger(ExibirHistoricoUsoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
@@ -61,12 +60,10 @@ public class ExibirHistoricoUsoController {
         return view.getScrollPane();
     }
 
-    private void carregarHistoricoCliente() {
-        Object colunas[] = {"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saida", "Valor(R$)"};
+    private void carregarHistoricoCliente() throws SQLException {
+        Object colunas[] = {"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saída", "Valor(R$)"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
-            
-       
         try {
             List<Pagamento> todosPagamentos = pagamentos.getPagamentosPorCpf(clienteCpf);
 
@@ -83,8 +80,7 @@ public class ExibirHistoricoUsoController {
         }
     }
 
-    private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws FileNotFoundException {
-        Cobranca cobranca = new Cobranca();
+    private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws IOException {
         String placaVeiculo = pagamento.getPlacaVeiculo();
         Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
         String cpfAtual = veiculoAtual.getCliente().getCpf();
@@ -107,7 +103,7 @@ public class ExibirHistoricoUsoController {
         tm.addRow(linha);
     }
 
-    public void filtrarHistoricoPorData(String dataInicioStr, String dataFimStr) {
+    public void filtrarHistoricoPorData(String dataInicioStr, String dataFimStr) throws SQLException {
         try {
             LocalDate dataInicio = null;
             LocalDate dataFim = null;
@@ -143,7 +139,7 @@ public class ExibirHistoricoUsoController {
                     })
                     .toList();
 
-            DefaultTableModel tm = new DefaultTableModel(new Object[]{"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Tempo de Permanência (min)", "Valor(R$)"}, 0);
+            DefaultTableModel tm = new DefaultTableModel(new Object[]{"CPF", "Nome Estacionamento", "Tipo Vaga", "Placa Veículo", "Data Entrada", "Data Saída", "Valor(R$)"}, 0);
             if (pagamentosFiltrados.isEmpty()) {
                 JOptionPane.showMessageDialog(view, "Nenhum histórico encontrado para o intervalo de datas.");
             } else {
@@ -163,5 +159,4 @@ public class ExibirHistoricoUsoController {
     boolean isVisible() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

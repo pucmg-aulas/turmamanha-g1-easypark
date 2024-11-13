@@ -56,7 +56,7 @@ public class PagamentoDAO {
     int idVaga = cobranca.getIdVaga();
     Vaga vagaAtual = vagas.getVagaPorId(idVaga);
     String tipoVaga = vagaAtual.getTipo();
-    int tempoTotal = cobranca.getTempoTotal();
+    int tempoTotal = (int) cobranca.getTempoTotal();
 
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO, true))) {
         writer.write(pagamento.getIdPagamento() + ";" + idEstacionamento + ";" + valorTotal + ";"

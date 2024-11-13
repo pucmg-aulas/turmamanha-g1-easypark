@@ -6,10 +6,12 @@ import Models.Cobranca;
 import Models.Vaga;
 import Models.Veiculo;
 import dao.CobrancaDAO;
+import dao.CobrancabdDAO;
 import dao.VagaDAO;
 import dao.VeiculoDAO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,15 +26,15 @@ public class GerarCobrancaController {
    private int idEstacionamento;
    private JDesktopPane desktopPane;
    private VagaDAO vagas;
-   private CobrancaDAO cobrancas;
+   private CobrancabdDAO cobrancas;
    private VeiculoDAO veiculos;
 
-    public GerarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException {
+    public GerarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException {
         this.view = new GerarCobrancaView(desktopPane);
         this.idEstacionamento = idEstacionamento;
         this.desktopPane = desktopPane;
         this.vagas = VagaDAO.getInstance(idEstacionamento);
-        this.cobrancas = CobrancaDAO.getInstance();
+        this.cobrancas = CobrancabdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         
         desktopPane.add(view);
@@ -48,6 +50,8 @@ public class GerarCobrancaController {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
+                Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -117,7 +121,7 @@ public class GerarCobrancaController {
         return veiculoEncontrado != null ? veiculoEncontrado : null;
     }
      
-     private void createCobranca() throws FileNotFoundException, IOException{
+     private void createCobranca() throws FileNotFoundException, IOException, SQLException{
         Cobranca novaCobranca = getAtributos();
         if(novaCobranca == null){
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");

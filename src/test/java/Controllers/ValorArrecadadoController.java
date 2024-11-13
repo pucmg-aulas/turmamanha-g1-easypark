@@ -3,9 +3,11 @@ package Controllers;
 
 import Models.Pagamento;
 import dao.PagamentoDAO;
+import dao.PagamentobdDAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +22,13 @@ public class ValorArrecadadoController {
     private JDesktopPane desktopPane;
     private int idEstacionamento;
     private ValorArrecadadoView view;
-    private PagamentoDAO pagamentos;
+    private PagamentobdDAO pagamentos;
 
-    public ValorArrecadadoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException {
+    public ValorArrecadadoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException {
         this.view = new ValorArrecadadoView(desktopPane);
         this.desktopPane = desktopPane;
         this.idEstacionamento = idEstacionamento;
-        this.pagamentos = PagamentoDAO.getInstance();
+        this.pagamentos = PagamentobdDAO.getInstance();
 
         exibirArrecadacaoTotal();
         exibirValorMedioUtilizacao();
@@ -36,6 +38,8 @@ public class ValorArrecadadoController {
             try {
                 exibirArrecadacaoMensal();
             } catch (IOException ex) {
+                Logger.getLogger(ValorArrecadadoController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(ValorArrecadadoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -130,7 +134,7 @@ public class ValorArrecadadoController {
         return pagamentosFiltrados;
     }
 
-    private void exibirArrecadacaoMensal() throws IOException {
+    private void exibirArrecadacaoMensal() throws IOException, SQLException {
         String mesSelecionado = (String) view.mesesAno().getSelectedItem();
         String[] dadosMes = mesSelecionado.split("-");
         int numeroMes = Integer.parseInt(dadosMes[0].trim());

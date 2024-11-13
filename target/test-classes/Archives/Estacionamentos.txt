@@ -1,4 +1,0 @@
-1;Central;Central;Centro;201;10
-2;Buritas;Mario Werneck;Buritis;201;20
-3;Teste3;Teste3;Teste3;3124;10
-4;Vespa;Rua do Felipe;Caieras;201;50

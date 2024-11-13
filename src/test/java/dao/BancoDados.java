@@ -13,7 +13,7 @@ public class BancoDados {
     private static String senha = "PmEasyPark%";
     private static String url = "jdbc:postgresql://aws-0-us-east-2.pooler.supabase.com:6543/postgres";
     private static BancoDados instancia = null;
-    private static Connection conexao = null;
+    private static Connection conexao;
     
     private BancoDados(){}
     

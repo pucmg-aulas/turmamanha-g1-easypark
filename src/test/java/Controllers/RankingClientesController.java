@@ -5,11 +5,13 @@ import Models.Pagamento;
 import Models.Veiculo;
 import dao.ClienteDAO;
 import dao.PagamentoDAO;
+import dao.PagamentobdDAO;
 import dao.VeiculoDAO;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -37,15 +39,15 @@ import view.RankingClientesView;
     private int idEstacionamento;
     private RankingClientesView view;
     private ClienteDAO clientes;
-    private PagamentoDAO pagamentos;
+    private PagamentobdDAO pagamentos;
     private VeiculoDAO veiculos;
     
-    public RankingClientesController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
+    public RankingClientesController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException{
         this.desktopPane = desktopPane;
         this.view = new RankingClientesView(desktopPane);
         
         this.clientes = ClienteDAO.getInstance();
-        this.pagamentos = PagamentoDAO.getInstance();
+        this.pagamentos = PagamentobdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.idEstacionamento = idEstacionamento;
     
@@ -59,6 +61,8 @@ import view.RankingClientesView;
             try {
                 carregarTabelaFiltrada();
             } catch (IOException ex) {
+                Logger.getLogger(RankingClientesController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(RankingClientesController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -79,7 +83,7 @@ import view.RankingClientesView;
     }
       
     
-    private void carregarTabela() throws IOException {
+    private void carregarTabela() throws IOException, SQLException {
         Object colunas[] = {"CPF", "Nome", "Valor "};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0){
         @Override
@@ -173,7 +177,7 @@ import view.RankingClientesView;
     }
     
     
-    private void carregarTabelaFiltrada() throws IOException{
+    private void carregarTabelaFiltrada() throws IOException, SQLException{
         String mesSelecionado = (String) view.getMesesBox().getSelectedItem();
         String[] dadosMes = mesSelecionado.split("-");
         int numeroMes = Integer.parseInt(dadosMes[0].trim());

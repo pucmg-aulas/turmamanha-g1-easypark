@@ -7,6 +7,7 @@ package Controllers;
 import Models.Cliente;
 import dao.ClienteDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -33,10 +34,16 @@ public class ExibirDetalhesClienteController {
  
         carregarCliente();
         
-        this.view.getVerHistoricoBtn().addActionListener(e -> abrirHistoricoCliente());
+        this.view.getVerHistoricoBtn().addActionListener(e -> {
+            try {
+                abrirHistoricoCliente();
+            } catch (SQLException ex) {
+                Logger.getLogger(ExibirDetalhesClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         }
     
-    private void abrirHistoricoCliente() {
+    private void abrirHistoricoCliente() throws SQLException {
         try {
             if (historicoCliente == null || !historicoCliente.isVisible()) {
                 historicoCliente = new ExibirHistoricoUsoController(desktopPane, cpf);

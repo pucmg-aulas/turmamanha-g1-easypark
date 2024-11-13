@@ -10,6 +10,7 @@ import Models.Estacionamento;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,8 @@ public class SelectEstacionamentoController {
             try {
                 MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
             } catch (IOException ex) {
+                Logger.getLogger(SelectEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(SelectEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
             sair();

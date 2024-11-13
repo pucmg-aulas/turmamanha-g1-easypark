@@ -27,6 +27,7 @@ import java.util.List;
 
 public class PagamentobdDAO {
     
+    private BancoDados bd;
     private VagaDAO vagas;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static PagamentobdDAO instance;
@@ -39,13 +40,14 @@ public class PagamentobdDAO {
         this.clientes = ClienteDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.estacionamentos = EstacionamentoDAO.getInstance();
-
+        
+        this.bd = BancoDados.getInstancia();
         pagamentos = listarPagamentos();
         if (pagamentos == null) {
-            pagamentos = new ArrayList<>();
+            pagamentos = new ArrayList<>(); 
         }
     }
-
+    
     public static PagamentobdDAO getInstance() throws SQLException, IOException {
         if (instance == null) {
             instance = new PagamentobdDAO();
@@ -68,7 +70,7 @@ public class PagamentobdDAO {
     int idVaga = cobranca.getIdVaga();
     Vaga vagaAtual = vagas.getVagaPorId(idVaga);
     String tipoVaga = vagaAtual.getTipo();
-    int tempoTotal = cobranca.getTempoTotal();
+    int tempoTotal = (int) cobranca.getTempoTotal();
     int idPagamento = pagamento.getIdPagamento();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

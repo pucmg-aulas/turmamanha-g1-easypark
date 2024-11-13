@@ -20,7 +20,7 @@ public class Cobranca {
     private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Cobranca() {
+    public Cobranca(int id, int idVaga1, int idEstacionamento1, Veiculo automovel, LocalDateTime horaEntrada1, LocalDateTime horaSaida1, double tempoTotal1, double valorTotal1) {
         this.idCobranca = 0;
         this.idVaga = 0;
         this.veiculo = null;

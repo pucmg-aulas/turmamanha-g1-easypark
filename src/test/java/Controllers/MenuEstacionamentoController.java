@@ -6,7 +6,9 @@ package Controllers;
 
 import dao.EstacionamentoDAO;
 import dao.PagamentoDAO;
+import dao.PagamentobdDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,12 +33,12 @@ public class MenuEstacionamentoController {
     private int idEstacionamento;
     private EstacionamentoDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
-    private PagamentoDAO pagamentos;
+    private PagamentobdDAO pagamentos;
     
-    public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException{
+    public MenuEstacionamentoController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException{
         this.view = new MenuEstacionamentoView(desktopPane);
         this.idEstacionamento = idEstacionamento;
-        this.pagamentos = PagamentoDAO.getInstance();
+        this.pagamentos = PagamentobdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -63,6 +65,8 @@ public class MenuEstacionamentoController {
                 this.gerarCobrancaController = new GerarCobrancaController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 showMessageDialog(null, "Ocorreu um erro ao iniciar tela de geraçao da cobrança");
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         
@@ -73,6 +77,8 @@ public class MenuEstacionamentoController {
                 this.pagarCobrancaController = new PagarCobrancaController(desktopPane, idEstacionamento, dataSaida2);
             } catch (IOException ex) {
                 showMessageDialog(null, "Ocorreu um erro ao iniciar tela de pagamento da cobrança");
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         
@@ -92,6 +98,8 @@ public class MenuEstacionamentoController {
             try {
                 this.rankingClientesController = new RankingClientesController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });

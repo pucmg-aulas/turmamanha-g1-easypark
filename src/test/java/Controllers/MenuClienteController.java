@@ -2,6 +2,7 @@ package Controllers;
 
 import dao.ClienteDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -55,6 +56,8 @@ public class MenuClienteController {
            try{
                exibirHistoricoUso = new ExibirHistoricoUsoController(desktopPane, cpf); 
            } catch (IOException ex) {
+                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });

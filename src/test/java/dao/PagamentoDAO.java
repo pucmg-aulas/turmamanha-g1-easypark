@@ -29,23 +29,23 @@ public class PagamentoDAO {
     private EstacionamentoDAO estacionamentos;
     private VagaDAO vagas;
     
-    private PagamentoDAO() throws IOException{
-        this.clientes = ClienteDAO.getInstance();
-        this.veiculos = VeiculoDAO.getInstance();
-        this.estacionamentos = EstacionamentoDAO.getInstance();
+        private PagamentoDAO() throws IOException{
+            this.clientes = ClienteDAO.getInstance();
+            this.veiculos = VeiculoDAO.getInstance();
+            this.estacionamentos = EstacionamentoDAO.getInstance();
 
-        pagamentos = listarPagamentos();
-        if(pagamentos == null){
-            pagamentos = new ArrayList<>();
+            pagamentos = listarPagamentos();
+            if(pagamentos == null){
+                pagamentos = new ArrayList<>();
+            }
         }
-    }
-    
-    public static PagamentoDAO getInstance() throws IOException{
-        if(instance == null){
-            instance = new PagamentoDAO();
+
+        public static PagamentoDAO getInstance() throws IOException{
+            if(instance == null){
+                instance = new PagamentoDAO();
+            }
+            return instance;
         }
-        return instance;
-    }
     
     public void salvarPagamento(Cobranca cobranca) throws IOException {
     Pagamento pagamento = new Pagamento();

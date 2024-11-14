@@ -24,7 +24,6 @@ public class MenuClienteController {
     public MenuClienteController(JDesktopPane desktopPane, String cpf) throws IOException{
         this.view = new MenuClienteView(desktopPane);
         this. desktopPane = desktopPane;
-        JOptionPane.showMessageDialog(view, cpf);
         
         desktopPane.add(view);
         this.view.setVisible(true);

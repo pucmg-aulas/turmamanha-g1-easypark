@@ -60,9 +60,7 @@ public class ExibirDetalhesClienteController {
     
     
     private void carregarCliente(){
-        JOptionPane.showMessageDialog(view, cpf);
         Cliente clienteAtual = clientes.buscarClientePorCpf(cpf);
-        JOptionPane.showMessageDialog(view, clienteAtual.getCpf() + clienteAtual.getNome());
         String nome = clienteAtual.getNome();
         String cpf = clienteAtual.getCpf();
         view.getNome().setText(nome);

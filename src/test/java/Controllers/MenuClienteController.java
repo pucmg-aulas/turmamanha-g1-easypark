@@ -1,17 +1,18 @@
 package Controllers;
 
 import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import view.MenuClienteView;
 
 public class MenuClienteController {
     
     private MenuClienteView view;
-    private ClienteDAO clientes;
     private JDesktopPane desktopPane;
     private MenuClienteController menuCliente;
     private ExibirDetalhesClienteController detalhesCliente;
@@ -22,8 +23,8 @@ public class MenuClienteController {
     
     public MenuClienteController(JDesktopPane desktopPane, String cpf) throws IOException{
         this.view = new MenuClienteView(desktopPane);
-        clientes = ClienteDAO.getInstance();
         this. desktopPane = desktopPane;
+        JOptionPane.showMessageDialog(view, cpf);
         
         desktopPane.add(view);
         this.view.setVisible(true);

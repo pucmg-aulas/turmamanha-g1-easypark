@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.Cliente;
 import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -19,13 +20,13 @@ public class ExibirDetalhesClienteController {
      
     private ExibirDetalhesClienteView view;
     private ExibirHistoricoUsoController historicoCliente;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private final JDesktopPane desktopPane;
     private String cpf;
     
     public ExibirDetalhesClienteController(JDesktopPane desktopPane, String cpf) throws IOException{
         this.view = new ExibirDetalhesClienteView(desktopPane);
-        clientes = ClienteDAO.getInstance();
+        clientes = ClientebdDAO.getInstance();
         this.desktopPane = desktopPane;
         this.cpf = cpf;
         
@@ -59,7 +60,9 @@ public class ExibirDetalhesClienteController {
     
     
     private void carregarCliente(){
+        JOptionPane.showMessageDialog(view, cpf);
         Cliente clienteAtual = clientes.buscarClientePorCpf(cpf);
+        JOptionPane.showMessageDialog(view, clienteAtual.getCpf() + clienteAtual.getNome());
         String nome = clienteAtual.getNome();
         String cpf = clienteAtual.getCpf();
         view.getNome().setText(nome);

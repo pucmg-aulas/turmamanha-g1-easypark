@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Cliente;
 import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,12 +12,12 @@ import view.CadastroClienteView;
 
 public class AddClienteController {
     private CadastroClienteView view;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     
     public AddClienteController(JDesktopPane desktopPane) throws IOException{
         
         this.view = new CadastroClienteView();
-        this.clientes = ClienteDAO.getInstance();
+        this.clientes = ClientebdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -45,12 +46,8 @@ public class AddClienteController {
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");
             return;
         }
-        try {
-            clientes.cadastrarCliente(novoCliente);
-            JOptionPane.showMessageDialog(view, "Cliente Cadastrado com sucesso!");
-        } catch (IOException ex) {
-            Logger.getLogger(AddClienteController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        clientes.cadastrarCliente(novoCliente);
+        JOptionPane.showMessageDialog(view, "Cliente Cadastrado com sucesso!");
     }
     
      private void limparCampos(){

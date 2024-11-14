@@ -17,18 +17,18 @@ public class BancoDados {
     
     private BancoDados(){}
     
-    public static void conectar() throws SQLException{
-        conexao = DriverManager.getConnection(url, usuario, senha);
+    public static void conectar(){
+        try {
+            conexao = DriverManager.getConnection(url, usuario, senha);
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static BancoDados getInstancia() {
         if(instancia == null){
             instancia = new BancoDados();
-            try {
-                conectar();
-            } catch (SQLException ex) {
-                Logger.getLogger(BancoDados.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            conectar();
         }
         
         return instancia;

@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Cliente;
 import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,14 +14,14 @@ import view.SelecionarClienteView;
 
 public class SelectClienteController {
     private SelecionarClienteView view;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private JDesktopPane desktopPane;
     private MenuClienteController menuCliente;
      
     
     public SelectClienteController(JDesktopPane desktopPane) throws IOException{
         this.view = new SelecionarClienteView(desktopPane);
-        clientes = ClienteDAO.getInstance();
+        clientes = ClientebdDAO.getInstance();
        this.desktopPane = desktopPane;
        
         desktopPane.add(view);

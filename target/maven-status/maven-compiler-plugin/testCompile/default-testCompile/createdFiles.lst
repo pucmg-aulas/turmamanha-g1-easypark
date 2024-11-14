@@ -21,6 +21,7 @@ view\ReservarVagaView$1.class
 view\GerarCobrancaView$3.class
 view\ExibirHistoricoUsoView.class
 Controllers\ExibirDetalhesEstacionamentoController.class
+dao\ClientebdDAO.class
 view\MenuClienteView$2.class
 view\CadastroEstacionamentoView$1.class
 view\SelecionarClienteView.class

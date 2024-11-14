@@ -113,4 +113,8 @@ public class ListarVagasView extends javax.swing.JInternalFrame {
     private javax.swing.JTable listaVagasTable;
     private javax.swing.JButton voltarBtn;
     // End of variables declaration//GEN-END:variables
+
+    public Object getVagasTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

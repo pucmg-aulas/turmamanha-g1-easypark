@@ -35,7 +35,16 @@ public class BancoDados {
     }
     
     public static Connection getConexao(){
-        return conexao;
+         try {
+         
+            if (conexao == null || conexao.isClosed()) {
+                conectar();  
+            }
+            return conexao;
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDados.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     public void desconectar(){

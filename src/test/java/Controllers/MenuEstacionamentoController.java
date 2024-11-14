@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import dao.EstacionamentoDAO;
+import dao.EstacionamentobdDAO;
 import dao.PagamentoDAO;
 import dao.PagamentobdDAO;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class MenuEstacionamentoController {
     private ValorArrecadadoController valorArrecadadoController;
     private RankingClientesController rankingClientesController;
     private int idEstacionamento;
-    private EstacionamentoDAO estacionamentoDAO;
+    private EstacionamentobdDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
     private PagamentobdDAO pagamentos;
     

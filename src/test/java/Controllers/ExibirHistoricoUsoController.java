@@ -6,6 +6,7 @@ import Models.ITipo;
 import Models.Pagamento;
 import Models.Veiculo;
 import dao.EstacionamentoDAO;
+import dao.EstacionamentobdDAO;
 import dao.PagamentobdDAO;
 import dao.VeiculoDAO;
 import java.time.LocalDate;
@@ -30,13 +31,13 @@ public class ExibirHistoricoUsoController {
     private PagamentobdDAO pagamentos;
     private String clienteCpf;
     private VeiculoDAO veiculos;
-    private EstacionamentoDAO estacionamentos;
+    private EstacionamentobdDAO estacionamentos;
 
     public ExibirHistoricoUsoController(JDesktopPane desktopPane, String cpf) throws IOException, SQLException {
         this.view = new ExibirHistoricoUsoView(desktopPane);
         this.pagamentos = PagamentobdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
-        this.estacionamentos = EstacionamentoDAO.getInstance();
+        this.estacionamentos = EstacionamentobdDAO.getInstance();
         this.desktopPane = desktopPane;
         this.clienteCpf = cpf;
 
@@ -80,7 +81,7 @@ public class ExibirHistoricoUsoController {
         }
     }
 
-    private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws IOException {
+    private void adicionarHistoricoNaTabela(DefaultTableModel tm, Pagamento pagamento) throws IOException, SQLException {
         String placaVeiculo = pagamento.getPlacaVeiculo();
         Veiculo veiculoAtual = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
         String cpfAtual = veiculoAtual.getCliente().getCpf();

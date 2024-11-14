@@ -3,6 +3,7 @@ package Controllers;
 import dao.EstacionamentoDAO;
 import view.CadastroEstacionamentoView;
 import Models.Estacionamento;
+import dao.EstacionamentobdDAO;
 import java.io.IOException;
 import dao.VagaDAO;
 
@@ -11,13 +12,13 @@ import javax.swing.*;
 public class AddEstacionamentoController  {
 
     private CadastroEstacionamentoView view;
-    private EstacionamentoDAO estacionamentos;
+    private EstacionamentobdDAO estacionamentos;
 
 
     public AddEstacionamentoController(JDesktopPane desktopPane) throws IOException {
         
         this.view = new CadastroEstacionamentoView();
-        this.estacionamentos = EstacionamentoDAO.getInstance();
+        this.estacionamentos = EstacionamentobdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);

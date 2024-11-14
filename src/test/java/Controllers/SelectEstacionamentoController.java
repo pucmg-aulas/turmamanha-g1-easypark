@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import dao.EstacionamentoDAO;
+import dao.EstacionamentobdDAO;
 import view.SelecionarEstacionamentoView;
 import Models.Estacionamento;
 
@@ -18,12 +18,12 @@ import java.util.logging.Logger;
 
 public class SelectEstacionamentoController {
     private SelecionarEstacionamentoView view;
-    private EstacionamentoDAO estacionamentoDAO;
+    private EstacionamentobdDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
 
     public SelectEstacionamentoController(JDesktopPane desktopPane) throws IOException {
         this.view = new SelecionarEstacionamentoView(desktopPane);
-        this.estacionamentoDAO = EstacionamentoDAO.getInstance();
+        this.estacionamentoDAO = EstacionamentobdDAO.getInstance();
         this.desktopPane = desktopPane;
         
         desktopPane.add(view);
@@ -50,7 +50,7 @@ public class SelectEstacionamentoController {
     public void listarEstacionamentos() {
         try {
          
-            List<Estacionamento> estacionamentos = estacionamentoDAO.lerEstacionamentos();
+            List<Estacionamento> estacionamentos = estacionamentoDAO.listarEstacionamentos();
 
             view.getListaEstacionamento().removeAllItems();
 

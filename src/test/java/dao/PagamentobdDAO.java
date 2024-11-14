@@ -40,8 +40,8 @@ public class PagamentobdDAO {
         this.clientes = ClienteDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.estacionamentos = EstacionamentoDAO.getInstance();
-        
         this.bd = BancoDados.getInstancia();
+        
         pagamentos = listarPagamentos();
         if (pagamentos == null) {
             pagamentos = new ArrayList<>(); 
@@ -58,33 +58,35 @@ public class PagamentobdDAO {
     
     public void salvarPagamento(Cobranca cobranca) throws SQLException, IOException {
     String sql = """
-        INSERT INTO Pagamento (idPagamento, idEstacionamento, valorTotal, tipoVaga, placaVeiculo, tempoTotal, horaEntrada, horaSaida)
+        INSERT INTO Pagamento (id, dataPagamento, dataEntrada, idEstacionamento, valorPago, tipoVaga, placaVeiculo, tempoTotal )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
     Pagamento pagamento = new Pagamento();
     int idEstacionamento = cobranca.getIdEstacionamento();
     this.vagas = VagaDAO.getInstance(idEstacionamento);
-    double valorTotal = cobranca.getValorTotal();
+    double valorPago = cobranca.getValorTotal();
     String placaVeiculo = cobranca.getVeiculo().getPlaca();
     int idVaga = cobranca.getIdVaga();
     Vaga vagaAtual = vagas.getVagaPorId(idVaga);
     String tipoVaga = vagaAtual.getTipo();
     int tempoTotal = (int) cobranca.getTempoTotal();
-    int idPagamento = pagamento.getIdPagamento();
+    int id = pagamento.getIdPagamento();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     try (Connection conn = BancoDados.getConexao();
          PreparedStatement ps = conn.prepareStatement(sql)) {
         
-        ps.setInt(1, idPagamento);
-        ps.setInt(2, idEstacionamento);
-        ps.setDouble(3, valorTotal);
-        ps.setString(4, tipoVaga);
-        ps.setString(5, placaVeiculo);
-        ps.setInt(6, tempoTotal);
-        ps.setString(7, cobranca.getHoraEntrada().format(formatter));
-        ps.setString(8, pagamento.getDataPagamento().format(formatter));
+        ps.setInt(1, id);
+        ps.setString(2, pagamento.getDataPagamento().format(formatter));
+        ps.setString(3, cobranca.getHoraEntrada().format(formatter));
+        ps.setInt(4, idEstacionamento);
+        ps.setDouble(5, valorPago);
+        ps.setString(6, tipoVaga);
+        ps.setString(7, placaVeiculo);
+        ps.setInt(8, tempoTotal);
+        
+        
         
         ps.executeUpdate(); 
     } catch (SQLException e) { 
@@ -95,8 +97,8 @@ public class PagamentobdDAO {
     public List<Pagamento> getPagamentosPorCpf(String cpf) throws SQLException, IOException {
         List<Pagamento> pagamentos = new ArrayList<>();
 
-        String sql = "SELECT p.idPagamento, p.idEstacionamento, p.valorTotal, p.tipoVaga, "
-                   + "p.placaVeiculo, p.tempoTotal, p.dataEntrada, p.dataSaida "
+        String sql = "SELECT p.id, p.idEstacionamento, p.valorPago, p.tipoVaga, "
+                   + "p.placaVeiculo, p.tempoTotal, p.dataEntrada, p.dataPagamento "
                    + "FROM Pagamento p "
                    + "JOIN Veiculo v ON p.placaVeiculo = v.placa "
                    + "JOIN Cliente c ON v.cpfCliente = c.cpf "
@@ -109,14 +111,14 @@ public class PagamentobdDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    int idPagamento = rs.getInt("idPagamento");
+                    int idPagamento = rs.getInt("id");
                     int idEstacionamento = rs.getInt("idEstacionamento");
-                    double valorTotal = rs.getDouble("valorTotal");
+                    double valorPago = rs.getDouble("valorPago");
                     String tipoVaga = rs.getString("tipoVaga");
                     String placaVeiculo = rs.getString("placaVeiculo");
                     int tempoTotal = rs.getInt("tempoTotal");
                     LocalDateTime dataEntrada = rs.getTimestamp("dataEntrada").toLocalDateTime();
-                    LocalDateTime dataSaida = rs.getTimestamp("dataSaida").toLocalDateTime();
+                    LocalDateTime dataPagamento = rs.getTimestamp("dataPagamento").toLocalDateTime();
 
                     Vaga vagaAtual = new Vaga();
                     vagaAtual.setIdEstacionamento(idEstacionamento);
@@ -139,12 +141,12 @@ public class PagamentobdDAO {
                     Pagamento pagamento = new Pagamento();
                     pagamento.setIdPagamento(idPagamento);
                     pagamento.setIdEstacionamento(idEstacionamento);
-                    pagamento.setValorPago(valorTotal);
+                    pagamento.setValorPago(valorPago);
                     pagamento.setTipoVaga(vagaAtual.getTipoVaga());
                     pagamento.setPlacaVeiculo(placaVeiculo);
                     pagamento.setTempoTotal(tempoTotal);
                     pagamento.setDataEntrada(dataEntrada);
-                    pagamento.setDataPagamento(dataSaida);
+                    pagamento.setDataPagamento(dataPagamento);
 
                     pagamentos.add(pagamento);
                 }
@@ -159,8 +161,8 @@ public class PagamentobdDAO {
     public List<Pagamento> listarPagamentos() throws SQLException, IOException {
         List<Pagamento> pagamentos = new ArrayList<>();
 
-        String sql = "SELECT idPagamento, idEstacionamento, valorTotal, tipoVaga, placaVeiculo, "
-                   + "tempoTotal, dataEntrada, dataSaida FROM Pagamento";
+        String sql = "SELECT id, idestacionamento, valorpago, tipovaga, placaveiculo, "
+                   + "tempototal, dataentrada, datapagamento FROM Pagamento";
 
         Connection conn = BancoDados.getConexao();
 
@@ -168,14 +170,14 @@ public class PagamentobdDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                int idPagamento = rs.getInt("idPagamento");
+                int id = rs.getInt("id");
                 int idEstacionamento = rs.getInt("idEstacionamento");
-                double valorPago = rs.getDouble("valorTotal");
+                double valorPago = rs.getDouble("valorPago");
                 String tipoVaga = rs.getString("tipoVaga");
                 String placaVeiculo = rs.getString("placaVeiculo");
                 int tempoTotal = rs.getInt("tempoTotal");
                 LocalDateTime dataEntrada = rs.getTimestamp("dataEntrada").toLocalDateTime();
-                LocalDateTime dataSaida = rs.getTimestamp("dataSaida").toLocalDateTime();
+                LocalDateTime dataPagamento = rs.getTimestamp("dataPagamento").toLocalDateTime();
 
                 Vaga vagaAtual = new Vaga();
                 vagaAtual.setIdEstacionamento(idEstacionamento);
@@ -196,14 +198,14 @@ public class PagamentobdDAO {
                 }
 
                 Pagamento pagamento = new Pagamento();
-                pagamento.setIdPagamento(idPagamento);
+                pagamento.setIdPagamento(id);
                 pagamento.setIdEstacionamento(idEstacionamento);
                 pagamento.setValorPago(valorPago);
                 pagamento.setTipoVaga(vagaAtual.getTipoVaga());
                 pagamento.setPlacaVeiculo(placaVeiculo);
                 pagamento.setTempoTotal(tempoTotal);
                 pagamento.setDataEntrada(dataEntrada);
-                pagamento.setDataPagamento(dataSaida);
+                pagamento.setDataPagamento(dataPagamento);
 
                 pagamentos.add(pagamento);
             }
@@ -223,7 +225,7 @@ public class PagamentobdDAO {
     List<HistoricoUso> historicoFiltrado = new ArrayList<>();
     
     String sql = """
-        SELECT p.placaVeiculo, p.valorTotal, p.tempoTotal, p.tipoVaga, e.nome AS nomeEstacionamento
+        SELECT p.placaVeiculo, p.valorPago, p.tempoTotal, p.tipoVaga, e.nome AS nomeEstacionamento
         FROM Pagamento p
         INNER JOIN Veiculo v ON p.placaVeiculo = v.placa
         INNER JOIN Cliente c ON v.cpfCliente = c.cpf
@@ -239,7 +241,7 @@ public class PagamentobdDAO {
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 String placaAtual = rs.getString("placaVeiculo");
-                double valorTotal = rs.getDouble("valorTotal");
+                double valorPago = rs.getDouble("valorPago");
                 int tempoTotal = rs.getInt("tempoTotal");
                 String tipoVaga = rs.getString("tipoVaga");
                 String nomeEstacionamento = rs.getString("nomeEstacionamento");
@@ -253,7 +255,7 @@ public class PagamentobdDAO {
                     default -> vaga = new VagaRegular();
                 }
 
-                HistoricoUso historicoAtual = new HistoricoUso(cpf, nomeEstacionamento, vaga, placaAtual, valorTotal, tempoTotal);
+                HistoricoUso historicoAtual = new HistoricoUso(cpf, nomeEstacionamento, vaga, placaAtual, valorPago, tempoTotal);
                 historicoFiltrado.add(historicoAtual);
             }
         }

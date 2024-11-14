@@ -33,7 +33,7 @@ public class CobrancabdDAO {
 
     public Cobranca getCobranca(int idVaga) throws SQLException, FileNotFoundException {
         String sql = """
-            SELECT id, idVaga, placaVeiculo, idEstacionamento, horaEntrada, horaSaida, tempoTotal, valorTotal 
+            SELECT id, idvaga, placaveiculo, idestacionamento, horaentrada, horasaida, tempototal, valortotal 
             FROM cobranca WHERE idVaga = ?
         """;
 

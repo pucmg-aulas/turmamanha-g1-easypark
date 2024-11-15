@@ -5,7 +5,7 @@ import view.CadastroEstacionamentoView;
 import Models.Estacionamento;
 import dao.EstacionamentobdDAO;
 import java.io.IOException;
-import dao.VagaDAO;
+import dao.VagabdDAO;
 
 import javax.swing.*;
 
@@ -13,12 +13,13 @@ public class AddEstacionamentoController  {
 
     private CadastroEstacionamentoView view;
     private EstacionamentobdDAO estacionamentos;
-
+    private VagabdDAO vagas;
 
     public AddEstacionamentoController(JDesktopPane desktopPane) throws IOException {
         
         this.view = new CadastroEstacionamentoView();
         this.estacionamentos = EstacionamentobdDAO.getInstance();
+        this.vagas = VagabdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -59,8 +60,7 @@ public class AddEstacionamentoController  {
                 JOptionPane.showMessageDialog(view, "Estacionamento cadastrado com sucesso!");
                 int idEstacionamento = e.getId();
 
-                VagaDAO vagaDAO = VagaDAO.getInstance(idEstacionamento);
-                vagaDAO.instanciarVagas(numeroVagas, idEstacionamento);
+                vagas.instanciarVagas(numeroVagas, idEstacionamento);
             }else{
                  JOptionPane.showMessageDialog(view, "Erro ao cadastar estacionamento!");
             }

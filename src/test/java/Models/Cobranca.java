@@ -1,9 +1,9 @@
 package Models;
 
-import java.io.*;
+import dao.CobrancabdDAO;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-    import javax.swing.JOptionPane;
 
 public class Cobranca {
     private int idCobranca;
@@ -17,24 +17,11 @@ public class Cobranca {
     public static final double LIMITEPRECO = 50;
     public static final long FRACAOTEMPO = 15;
     private double valorTotal;
-    private static final String Arquivo = "./src/test/java/Archives/Cobrancas.txt";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Cobranca(int id, int idVaga1, int idEstacionamento1, Veiculo automovel, LocalDateTime horaEntrada1, LocalDateTime horaSaida1, double tempoTotal1, double valorTotal1) {
-        this.idCobranca = 0;
-        this.idVaga = 0;
-        this.veiculo = null;
-        this.idEstacionamento = 0;
-        this.horaEntrada = LocalDateTime.now();
-        this.tempoTotal = 0;
-        this.valorTotal = 0;
-        this.horaSaida = null;
-    }
-
-
-    public Cobranca(int idVaga, int idEstacionamento, Veiculo veiculo) throws FileNotFoundException{
-       
-        this.idCobranca = EncontrarMaior() + 1;
+    // Construtor que utiliza o maior ID do banco de dados
+    public Cobranca(int idVaga, int idEstacionamento, Veiculo veiculo) throws SQLException {
+        this.idCobranca = CobrancabdDAO.getInstance().obterMaiorIdCobranca() + 1; // Obtém o maior ID do banco e incrementa
         this.idVaga = idVaga;
         this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;
@@ -43,19 +30,19 @@ public class Cobranca {
         this.valorTotal = 0;
         this.horaSaida = null;
     }
-    
-    public Cobranca(int idCobranca, int idVaga, int idEstacionamento,  Veiculo veiculo, LocalDateTime horaEntrada){
+
+    // Construtor completo para criação a partir de dados existentes
+    public Cobranca(int idCobranca, int idVaga, int idEstacionamento, Veiculo veiculo, LocalDateTime horaEntrada, LocalDateTime horaSaida, double tempoTotal, double valorTotal) {
         this.idCobranca = idCobranca;
         this.idVaga = idVaga;
         this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;
         this.horaEntrada = horaEntrada;
-        this.tempoTotal = 0;
-        this.valorTotal = 0;
-        this.horaSaida = null;
+        this.horaSaida = horaSaida;
+        this.tempoTotal = (int) tempoTotal;
+        this.valorTotal = valorTotal;
     }
 
-    
     public int getIdVaga() {
         return idVaga;
     }
@@ -68,11 +55,10 @@ public class Cobranca {
         return veiculo;
     }
 
-    public void setVeiculo( Veiculo veiculo) {
+    public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
     }
 
- 
     public LocalDateTime getHoraEntrada() {
         return horaEntrada;
     }
@@ -120,43 +106,17 @@ public class Cobranca {
     public void setIdEstacionamento(int idEstacionamento) {
         this.idEstacionamento = idEstacionamento;
     }
-    
-     public int EncontrarMaior() throws FileNotFoundException {
-        File arquivo = new File(Arquivo);
-        int maiorId = 0;
 
-        if(!arquivo.exists()){
-            return maiorId;
-        }
-        
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
-            String linha;
-            while ((linha = leitor.readLine()) != null) {
-                if (linha.trim().isEmpty()) continue;
-                String[] dados = linha.split(";");
-                int idAtual = Integer.parseInt(dados[0]);
-                
-                if(idAtual > maiorId){
-                    maiorId = idAtual;
-                } 
-               }
-            }catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
-        
-        }
-        return maiorId;
-    }
-     
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Cobranca cobranca = (Cobranca) obj;
-        return idCobranca == cobranca.idCobranca; // Compara pelo idCobranca
+        return idCobranca == cobranca.idCobranca;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(idCobranca); // Deve corresponder ao equals
+        return Integer.hashCode(idCobranca);
     }
 }

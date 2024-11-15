@@ -84,7 +84,7 @@ public class GerarCobrancaController {
          this.view.dispose();
     }
 
-    private Cobranca getAtributos() throws FileNotFoundException, IOException {
+    private Cobranca getAtributos() throws FileNotFoundException, IOException, SQLException {
         int selectedRow = view.getVagasTable().getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(view, "Selecione uma vaga.");

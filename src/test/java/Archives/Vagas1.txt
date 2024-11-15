@@ -1,5 +1,5 @@
 1;Regular;Ocupado
-2;Regular;Desocupado
+2;Regular;Ocupado
 3;Regular;Desocupado
 4;Regular;Desocupado
 5;Regular;Desocupado

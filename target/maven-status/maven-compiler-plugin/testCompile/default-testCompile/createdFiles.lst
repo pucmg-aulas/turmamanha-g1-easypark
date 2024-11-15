@@ -35,7 +35,6 @@ view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
 Controllers\PagarCobrancaController$1.class
 Controllers\RankingClientesController$2.class
-dao\CobrancaDAO.class
 view\CadastroVeiculoClienteView$1.class
 view\MenuEstacionamentoView.class
 view\ListarVagasView$2.class

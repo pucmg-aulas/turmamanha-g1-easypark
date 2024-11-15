@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Cobranca {
-    private int idCobranca;
+    private int idCobranca = 0 ;
     private int idVaga;
     private Veiculo veiculo;
     private int idEstacionamento;
@@ -32,8 +32,8 @@ public class Cobranca {
     }
 
     // Construtor completo para criação a partir de dados existentes
-    public Cobranca(int idCobranca, int idVaga, int idEstacionamento, Veiculo veiculo, LocalDateTime horaEntrada, LocalDateTime horaSaida, double tempoTotal, double valorTotal) {
-        this.idCobranca = idCobranca;
+    public Cobranca(int idCobranca, int idVaga, int idEstacionamento, Veiculo veiculo, LocalDateTime horaEntrada, LocalDateTime horaSaida, double tempoTotal, double valorTotal) throws SQLException {
+        this.idCobranca = CobrancabdDAO.getInstance().obterMaiorIdCobranca() + 1;
         this.idVaga = idVaga;
         this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;

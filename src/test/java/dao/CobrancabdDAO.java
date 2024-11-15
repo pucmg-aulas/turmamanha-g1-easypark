@@ -32,19 +32,20 @@ public class CobrancabdDAO {
 
     // Método para obter o maior idCobranca no banco de dados
     public int obterMaiorIdCobranca() throws SQLException {
-        String sql = "SELECT MAX(id) AS max_id FROM cobranca";
-        int maiorId = 0;
+    String sql = "SELECT COALESCE(MAX(id), 0) AS max_id FROM cobranca"; 
+    int maiorId = 0;
 
-        try (Connection conn = BancoDados.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+    try (Connection conn = BancoDados.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
 
-            if (rs.next()) {
-                maiorId = rs.getInt("max_id");
-            }
+        if (rs.next()) {
+            maiorId = rs.getInt("max_id");
         }
-        return maiorId;
     }
+    return maiorId;
+}
+
 
     // Método para verificar se idVaga existe na tabela vaga
     public boolean verificarVagaExiste(int idVaga) throws SQLException {

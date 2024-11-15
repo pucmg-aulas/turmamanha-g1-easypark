@@ -6,10 +6,9 @@ import dao.CobrancabdDAO;
 import dao.VagaDAO;
 import dao.PagamentobdDAO;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Duration;
-import java.util.stream.*;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.*;
 
 public class PagarCobrancaController {
 
@@ -78,19 +76,22 @@ public class PagarCobrancaController {
     }
 
     private void carregarVagasOcupadas() throws SQLException, FileNotFoundException {
-        Object[] colunas = {"ID", "Tipo", "Status", "Placa"};
+        Object[] colunas = {"ID", "Tipo", "Status", "Placa", "Entrada", "Tempo Total", "Valor Total"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
-        
-        Iterator<Vaga> it = vagas.getVagasOcupadas().iterator();
-        while (it.hasNext()) {
-            Vaga v = it.next();
-            String[] linha = v.toString().split("-");
-            linha[2] = "Ocupado";  // Força o status como "Ocupado"
-            String placa = cobrancas.getCobranca(Integer.parseInt(linha[0])).getVeiculo().getPlaca();
-            
-            tm.addRow(new Object[]{linha[0], linha[1], linha[2], placa});
-        }
 
+        // Itera sobre as cobranças ocupadas e busca as informações da cobrança no banco de dados
+        for (Cobranca cobranca : cobrancas.lerCobrancas()) {
+            if (cobranca.getVeiculo() != null && cobranca.getHoraSaida() == null) { // Considera vagas ocupadas sem hora de saída
+                Vaga vaga = vagas.getVagaPorId(cobranca.getIdVaga());
+                String tipoVaga = vaga != null ? vaga.getTipo() : "Desconhecido";
+                String placa = cobranca.getVeiculo().getPlaca();
+                LocalDateTime entrada = cobranca.getHoraEntrada();
+                int tempoTotal = cobranca.getTempoTotal();
+                double valorTotal = cobranca.getValorTotal();
+
+                tm.addRow(new Object[]{cobranca.getIdVaga(), tipoVaga, "Ocupado", placa, entrada, tempoTotal, valorTotal});
+            }
+        }
         view.getVagasTable().setModel(tm);
     }
 
@@ -110,18 +111,18 @@ public class PagarCobrancaController {
             return;
         }
 
-        Cobranca cobranca = cobrancas.lerCobrancas().stream()
-                .filter(c -> c.getIdVaga() == idVaga && c.getVeiculo().getPlaca().equals(placaText))
-                .findFirst()
-                .orElse(null);
+        Cobranca cobranca = cobrancas.getCobranca(idVaga);
 
-        if (cobranca == null) {
+        if (cobranca == null || !placaText.equals(cobranca.getVeiculo().getPlaca())) {
             showMessage("Cobrança não encontrada para os dados fornecidos.");
             return;
         }
 
-        cobranca.setValorTotal(mostrarValor());
-        pagamentos.salvarPagamento(cobranca);
+        // Definindo a data de pagamento como Timestamp
+        Timestamp dataPagamento = Timestamp.valueOf(dataSaida);
+        
+        // Salvando pagamento com data correta
+        pagamentos.salvarPagamento(cobranca, dataPagamento);
         
         boolean removido = cobrancas.removerCobranca(cobranca);
         if (removido) {
@@ -159,21 +160,15 @@ public class PagarCobrancaController {
         Object[] dadosVaga = recuperarDadosVaga();
         Integer idVaga = (Integer) dadosVaga[0];
         String placaText = (String) dadosVaga[1];
-        String tipoVaga = (String) dadosVaga[2];
 
         if (idVaga == null || placaText.isEmpty()) {
             showMessage("Preencha o ID da Vaga e a Placa do Veículo.");
             return 0;
         }
 
-        Cobranca cobranca;
-        cobranca = cobrancas.lerCobrancas().stream()
-                .filter(c -> c.getIdVaga() == idVaga && c.getVeiculo() != null && placaText.equals(c.getVeiculo().getPlaca()))
-                .findFirst()
-                .orElse(null);
+        Cobranca cobranca = cobrancas.getCobranca(idVaga);
 
-
-        if (cobranca == null) {
+        if (cobranca == null || cobranca.getVeiculo() == null || !placaText.equals(cobranca.getVeiculo().getPlaca())) {
             showMessage("Cobrança não encontrada para os dados fornecidos.");
             return 0;
         }
@@ -181,25 +176,9 @@ public class PagarCobrancaController {
         long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
         cobranca.setTempoTotal((int) diferencaEmMinutos);
         cobrancas.atualizarCobranca(cobranca);
-        
-        Vaga vagaEspecifica = new Vaga(idEstacionamento, idVaga);
-        
-        switch (tipoVaga) {
-            case "PCD":
-                vagaEspecifica.setTipo(new VagaPCD(idEstacionamento, idVaga));
-                break;
-            case "Idoso":
-                vagaEspecifica.setTipo(new VagaIdoso(idEstacionamento, idVaga));
-                break;
-            case "Regular":
-                vagaEspecifica.setTipo(new VagaRegular(idEstacionamento, idVaga));
-                break;
-            case "VIP":
-                vagaEspecifica.setTipo(new VagaVIP(idEstacionamento, idVaga));
-                break;
-        }
 
-        double valor = vagaEspecifica.calculoValor(calculoValorParcial(calculoFracao(diferencaEmMinutos)));
+        double valor = calculoValorParcial(calculoFracao(diferencaEmMinutos));
+        cobranca.setValorTotal(valor);
         view.getValor().setText(String.format("R$ %.2f", valor));
         return valor;
     }
@@ -211,10 +190,11 @@ public class PagarCobrancaController {
             return null;
         }
 
-        String idVagaText = (String) view.getVagasTable().getValueAt(selectedRow, 0);
-        Integer idVaga = Integer.parseInt(idVagaText);
-        String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3);
-        String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1);
+        // Recupera os dados da tabela com o tipo correto de cada coluna
+        Integer idVaga = (Integer) view.getVagasTable().getValueAt(selectedRow, 0); // Coluna ID como Integer
+        String tipoVaga = (String) view.getVagasTable().getValueAt(selectedRow, 1); // Coluna Tipo
+        String status = (String) view.getVagasTable().getValueAt(selectedRow, 2);   // Coluna Status
+        String placaText = (String) view.getVagasTable().getValueAt(selectedRow, 3); // Coluna Placa
 
         return new Object[]{idVaga, placaText, tipoVaga};
     }

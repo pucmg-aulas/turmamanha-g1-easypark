@@ -1,10 +1,10 @@
 1;Regular;Ocupado
-2;Regular;Ocupado
-3;Regular;Ocupado
-4;Regular;Ocupado
-5;Regular;Ocupado
-6;Idoso;Ocupado
-7;Idoso;Ocupado
+2;Regular;Desocupado
+3;Regular;Desocupado
+4;Regular;Desocupado
+5;Regular;Desocupado
+6;Idoso;Desocupado
+7;Idoso;Desocupado
 8;PCD;Desocupado
 9;PCD;Desocupado
 10;VIP;Desocupado

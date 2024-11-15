@@ -192,7 +192,7 @@ public class VagaDAO {
     }
 
 
-    public Estacionamento lerEstacionamentoPorId(int idEstacionamento) throws FileNotFoundException, IOException {
+    /*public Estacionamento lerEstacionamentoPorId(int idEstacionamento) throws FileNotFoundException, IOException {
         Estacionamento estacionamentoAtual;
         try (BufferedReader br = new BufferedReader(new FileReader(Estacionamento.getArquivoPath()))) {
             String linha;
@@ -217,4 +217,5 @@ public class VagaDAO {
             throw new RuntimeException(e);
         }
     }
+}*/
 }

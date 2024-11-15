@@ -49,6 +49,8 @@ public class MenuEstacionamentoController {
                 this.exibirDetalhesController = new ExibirDetalhesEstacionamentoController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         

@@ -109,5 +109,21 @@ public class EstacionamentobdDAO {
         return estacionamentos;
     }
 
-    
+    public int obterMaiorId() throws SQLException {
+        String sql = "SELECT MAX(id) AS max_id FROM Estacionamento";
+        int maiorId = 0;
+
+        try (Connection conn = bd.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                maiorId = rs.getInt("max_id");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao obter o maior ID: " + e.getMessage());
+        }
+
+        return maiorId;
+    }
 }

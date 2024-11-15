@@ -33,13 +33,13 @@ public class PagamentobdDAO {
     private static PagamentobdDAO instance;
     private ClienteDAO clientes;
     private VeiculoDAO veiculos;
-    private EstacionamentoDAO estacionamentos;
+    private EstacionamentobdDAO estacionamentos;
     private List<Pagamento> pagamentos;
 
     private PagamentobdDAO() throws SQLException, IOException {
         this.clientes = ClienteDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
-        this.estacionamentos = EstacionamentoDAO.getInstance();
+        this.estacionamentos = EstacionamentobdDAO.getInstance();
         this.bd = BancoDados.getInstancia();
         
         pagamentos = listarPagamentos();

@@ -1,10 +1,11 @@
 package Models;
 
-import java.io.*;
+import dao.EstacionamentobdDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estacionamento{
+public class Estacionamento {
     private int id;
     private String nome;
     private String rua;
@@ -12,10 +13,10 @@ public class Estacionamento{
     private String bairro;
     private List<Vaga> vagas;
     private int qntdVagas;
-    private static final String ARQUIVO = "./src/test/java/Archives/Estacionamentos.txt";
 
-    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) throws FileNotFoundException {
-        this.id = EncontrarMaiorId() + 1;
+    public Estacionamento(String nome, String rua, String bairro, int numero, int qntdVagas) throws SQLException {
+        EstacionamentobdDAO dao = EstacionamentobdDAO.getInstance();
+        this.id = dao.obterMaiorId() + 1;  // Pega o maior ID do banco de dados e incrementa
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -34,34 +35,9 @@ public class Estacionamento{
         this.qntdVagas = qntdVagas;
     }
 
+    
     public int getQntdVagas(){
         return qntdVagas;
-    }
-
-
-    public int EncontrarMaiorId() throws FileNotFoundException {
-        File arquivo = new File(ARQUIVO);
-        int maiorId = 0;
-
-        if(!arquivo.exists()){
-            return maiorId;
-        }
-        
-        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
-            String linha;
-            while ((linha = leitor.readLine()) != null) {
-                String[] dados = linha.split(";");
-                int idAtual = Integer.parseInt(dados[0]);
-                
-                if(idAtual > maiorId){
-                    maiorId = idAtual;
-                } 
-               }
-            }catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo para obter o maior ID: " + e.getMessage());
-        
-        }
-        return maiorId;
     }
 
     public int getId() {
@@ -111,9 +87,4 @@ public class Estacionamento{
     public void setVagas(List<Vaga> vagas) {
         this.vagas = vagas;
     }
-    
-    public static String getArquivoPath(){
-        return ARQUIVO;
-    }
-    
 }

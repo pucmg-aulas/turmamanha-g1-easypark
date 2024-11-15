@@ -13,6 +13,7 @@ import Models.VagaRegular;
 import Models.VagaVIP;
 import Models.Veiculo;
 import java.io.*;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.format.DateTimeFormatter;
@@ -26,13 +27,13 @@ public class PagamentoDAO {
     private static PagamentoDAO instance;
     private VeiculoDAO veiculos;
     private ClienteDAO clientes;
-    private EstacionamentoDAO estacionamentos;
+    private EstacionamentobdDAO estacionamentos;
     private VagaDAO vagas;
     
         private PagamentoDAO() throws IOException{
             this.clientes = ClienteDAO.getInstance();
             this.veiculos = VeiculoDAO.getInstance();
-            this.estacionamentos = EstacionamentoDAO.getInstance();
+            this.estacionamentos = EstacionamentobdDAO.getInstance();
 
             pagamentos = listarPagamentos();
             if(pagamentos == null){
@@ -203,7 +204,7 @@ public class PagamentoDAO {
         return LocalDateTime.now().format(FORMATTER);
     }
     
-    public List<HistoricoUso> buscarHistoricoPorCpf(String cpf) throws IOException {
+    public List<HistoricoUso> buscarHistoricoPorCpf(String cpf) throws IOException, SQLException {
     List<HistoricoUso> historicoFiltrado = new ArrayList<>();
     
     List<Pagamento> ListaPagamentos = listarPagamentos();

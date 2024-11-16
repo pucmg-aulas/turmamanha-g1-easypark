@@ -6,6 +6,7 @@ import Models.Estacionamento;
 import dao.EstacionamentobdDAO;
 import java.io.IOException;
 import dao.VagabdDAO;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
@@ -15,7 +16,7 @@ public class AddEstacionamentoController  {
     private EstacionamentobdDAO estacionamentos;
     private VagabdDAO vagas;
 
-    public AddEstacionamentoController(JDesktopPane desktopPane) throws IOException {
+    public AddEstacionamentoController(JDesktopPane desktopPane) throws IOException, SQLException {
         
         this.view = new CadastroEstacionamentoView();
         this.estacionamentos = EstacionamentobdDAO.getInstance();

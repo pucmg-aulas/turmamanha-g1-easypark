@@ -2,6 +2,7 @@ package view;
 
 import Controllers.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -143,6 +144,8 @@ public class MenuPrincipalViewJframe extends javax.swing.JFrame {
             AddEstacionamentoController addEstacionamentoController = new AddEstacionamentoController(jDesktopPane1);
         } catch (IOException ex) {
             Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipalViewJframe.class.getName()).log(Level.SEVERE, "Erro de SQL", ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

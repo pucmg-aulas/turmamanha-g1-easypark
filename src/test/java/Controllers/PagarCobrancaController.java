@@ -17,6 +17,7 @@ import Models.VagaIdoso;
 import Models.VagaPCD;
 import Models.VagaRegular;
 import Models.VagaVIP;
+import dao.VagabdDAO;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public class PagarCobrancaController {
     private PagarCobrancaView view;
     private JDesktopPane desktopPane;
     private int idEstacionamento;
-    private VagaDAO vagas;
+    private VagabdDAO vagas;
     private CobrancabdDAO cobrancas;
     private PagamentobdDAO pagamentos;
     private LocalDateTime dataSaida;
@@ -36,7 +37,7 @@ public class PagarCobrancaController {
         this.view = new PagarCobrancaView(desktopPane);
         this.desktopPane = desktopPane;
         this.idEstacionamento = idEstacionamento;
-        this.vagas = VagaDAO.getInstance(idEstacionamento);
+        this.vagas = VagabdDAO.getInstance(idEstacionamento);
         this.cobrancas = CobrancabdDAO.getInstance();
         this.pagamentos = PagamentobdDAO.getInstance();
         this.dataSaida = dataSaida;

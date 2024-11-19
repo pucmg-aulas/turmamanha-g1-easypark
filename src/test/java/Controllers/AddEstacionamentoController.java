@@ -20,7 +20,6 @@ public class AddEstacionamentoController  {
         
         this.view = new CadastroEstacionamentoView();
         this.estacionamentos = EstacionamentobdDAO.getInstance();
-        this.vagas = VagabdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -60,8 +59,9 @@ public class AddEstacionamentoController  {
             if(salvar){
                 JOptionPane.showMessageDialog(view, "Estacionamento cadastrado com sucesso!");
                 int idEstacionamento = e.getId();
-
-                vagas.instanciarVagas(numeroVagas, idEstacionamento);
+                
+                vagas = VagabdDAO.getInstance(idEstacionamento);
+                vagas.instanciarVagas(numeroVagas);
             }else{
                  JOptionPane.showMessageDialog(view, "Erro ao cadastar estacionamento!");
             }

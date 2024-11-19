@@ -22,14 +22,18 @@ public class VagabdDAO {
     private List<Vaga> vagas;
     private int idEstacionamento;
     
-    private VagabdDAO() throws SQLException, IOException {
-        this.vagas = new ArrayList<>();
+    private VagabdDAO(int idEstacionamento) throws SQLException, IOException {
+        this.idEstacionamento = idEstacionamento;
+        this.vagas = lerVagas();
+        if(vagas == null){
+            this.vagas = new ArrayList<>();
+        }
         this.bd = BancoDados.getInstancia();
     }
     
-    public static VagabdDAO getInstance() throws SQLException, IOException{
-        if(instance == null){
-            instance = new VagabdDAO();
+    public static VagabdDAO getInstance(int idEstacionamento) throws SQLException, IOException{
+        if(instance == null || instance.idEstacionamento != idEstacionamento){
+            instance = new VagabdDAO(idEstacionamento);
         }
         return instance;
     }
@@ -38,7 +42,7 @@ public class VagabdDAO {
         this.idEstacionamento = idEstacionamento;
     }
     
-    public void instanciarVagas(int qntdVagas, int idEstacionamento) throws IOException, SQLException{
+    public void instanciarVagas(int qntdVagas) throws IOException, SQLException{
         String sql = "INSERT INTO vaga (tipo, idestacionamento, status) VALUES (?,?,?)";
         
         int vagasRegulares = (int) (qntdVagas * 0.5);
@@ -105,11 +109,12 @@ public class VagabdDAO {
           
     }
     
-    private void lerVagas(int idEstacionamento) throws SQLException, IOException {
+    private List<Vaga> lerVagas() throws SQLException, IOException {
         String sql = "SELECT * FROM vaga WHERE idestacionamento = ?";
-
+        List<Vaga> listaVagas = new ArrayList<>();
+        
         try (Connection conn = BancoDados.getConexao(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idEstacionamento);
+            ps.setInt(1, this.idEstacionamento);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -117,16 +122,16 @@ public class VagabdDAO {
                     Vaga vaga = null;
 
                     switch (tipo) {
-                        case "regular":
+                        case "Regular":
                             vaga = new VagaRegular();
                             break;
-                        case "idoso":
+                        case "Idoso":
                             vaga = new VagaIdoso();
                             break;
-                        case "pcd":
+                        case "PCD":
                             vaga = new VagaPCD();
                             break;
-                        case "vip":
+                        case "VIP":
                             vaga = new VagaVIP();
                             break;
                         default:
@@ -137,16 +142,19 @@ public class VagabdDAO {
                         vaga.setId(rs.getInt("id"));
                         vaga.setStatus(rs.getBoolean("status"));
                         vaga.setIdEstacionamento(rs.getInt("idestacionamento"));
-                        this.vagas.add(vaga);
+                        listaVagas.add(vaga);
                     }
                 }
             }
+            return listaVagas;
         } catch (SQLException e) {
             Logger.getLogger(VagabdDAO.class.getName()).log(Level.SEVERE, "Erro ao ler vagas", e);
         }
+        
+        return null;
     }
     
-    public boolean cadastrarVaga(Vaga vaga, int idEstacionamento) throws SQLException {
+    public boolean cadastrarVaga(Vaga vaga) throws SQLException {
         String sql = "INSERT INTO vaga (tipo, idestacionamento, status) VALUES (?,?,?)";
         try (Connection conn = BancoDados.getConexao(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, vaga.getTipo());
@@ -160,7 +168,7 @@ public class VagabdDAO {
         }
     }
     
-    private Vaga getVagaPorId(int idVaga, int idEstacionamento) {
+    public Vaga getVagaPorId(int idVaga) {
         for (Vaga vaga : this.vagas) {
             if (vaga.getId() == idVaga && vaga.getIdEstacionamento() == idEstacionamento) {
                 return vaga;
@@ -173,7 +181,7 @@ public class VagabdDAO {
         return vagas;
     }
 
-    public List<Vaga> getVagasDisponiveis(int idEstacionamento) throws SQLException {
+    public List<Vaga> getVagasDisponiveis() throws SQLException {
         List<Vaga> vagasDisponiveis = new ArrayList<>();
         String sql = "SELECT * FROM vaga WHERE idestacionamento = ? AND status = true";
 
@@ -186,7 +194,7 @@ public class VagabdDAO {
                     boolean status = rs.getBoolean("status");
                     int idEstacionamentoDb = rs.getInt("idestacionamento");
 
-                    Vaga vaga = getVagaPorId(id, idEstacionamentoDb);
+                    Vaga vaga = getVagaPorId(id);
 
                     if (vaga != null && vaga.getStatus()) {
                         vagasDisponiveis.add(vaga);
@@ -201,7 +209,7 @@ public class VagabdDAO {
         return vagasDisponiveis;
     }
     
-    public List<Vaga> getVagasOcupadas(int idEstacionamento) throws SQLException {
+    public List<Vaga> getVagasOcupadas() throws SQLException {
         List<Vaga> vagasOcupadas = new ArrayList<>();
         String sql = "SELECT * FROM vaga WHERE idestacionamento = ? AND status = false";
 
@@ -212,9 +220,8 @@ public class VagabdDAO {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     boolean status = rs.getBoolean("status");
-                    int idEstacionamentoDb = rs.getInt("idestacionamento");
 
-                    Vaga vaga = getVagaPorId(id, idEstacionamentoDb);
+                    Vaga vaga = getVagaPorId(id);
 
                     if (vaga != null && !vaga.getStatus()) {
                         vagasOcupadas.add(vaga);
@@ -238,6 +245,19 @@ public class VagabdDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             Logger.getLogger(VagabdDAO.class.getName()).log(Level.SEVERE, "Erro ao liberar vaga", e);
+            return false;
+        }
+    }
+    
+    public boolean ocuparVaga(int idVaga) throws SQLException {
+        String sql = "UPDATE vaga SET status = false WHERE id = ?";
+
+        try (Connection conn = BancoDados.getConexao(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idVaga);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(VagabdDAO.class.getName()).log(Level.SEVERE, "Erro ao ocupar vaga", e);
             return false;
         }
     }

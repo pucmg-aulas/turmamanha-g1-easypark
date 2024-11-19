@@ -9,19 +9,27 @@ import view.*;
 import java.util.Iterator;
 import javax.swing.JDesktopPane;
 import dao.VagaDAO;
+import dao.VagabdDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ListarVagasController {
 
     private ListarVagasView view;
     private int idEstacionamento;
     private JDesktopPane desktopPane;
-    private VagaDAO vagas;
+    private VagabdDAO vagas;
 
     public ListarVagasController(JDesktopPane desktopPane, int idEstacionamento) throws IOException {
         this.idEstacionamento = idEstacionamento;
         this.view = new ListarVagasView(desktopPane);
         this.desktopPane = desktopPane;
-        this.vagas = VagaDAO.getInstance(idEstacionamento);
+        try {
+            this.vagas = VagabdDAO.getInstance(idEstacionamento);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListarVagasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -47,17 +55,19 @@ public class ListarVagasController {
         Iterator<Vaga> it = vagas.getVagas().iterator();
         while(it.hasNext()){
             Vaga v = it.next();
-            String vaga = v.toString();
-            String[] linha = vaga.split("-");
-            linha[2] = "true".equals(linha[2]) ? "Desocupado" : "Ocupado";
-            tm.addRow(new Object[]{linha[0], linha[1], linha[2]});
+            if(v.getIdEstacionamento() == this.idEstacionamento){
+                String vaga = v.toString();
+                String[] linha = vaga.split("-");
+                linha[2] = "true".equals(linha[2]) ? "Desocupado" : "Ocupado";
+                tm.addRow(new Object[]{linha[0], linha[1], linha[2]});
+            }
         }
         
         view.getTableVagas().setModel(tm);
     }
 
     // Carrega apenas vagas disponíveis
-    public void carregarVagasDisponiveis() {
+    public void carregarVagasDisponiveis() throws SQLException {
         Object[] colunas = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);
@@ -75,7 +85,7 @@ public class ListarVagasController {
     }
 
     // Carrega apenas vagas ocupadas
-    public void carregarVagasOcupadas() {
+    public void carregarVagasOcupadas() throws SQLException {
         Object[] colunas = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);

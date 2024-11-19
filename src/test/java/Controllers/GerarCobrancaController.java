@@ -6,6 +6,7 @@ import Models.Vaga;
 import Models.Veiculo;
 import dao.CobrancabdDAO;
 import dao.VagaDAO;
+import dao.VagabdDAO;
 import dao.VeiculoDAO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class GerarCobrancaController {
    private AddClienteController cadastroCliente;
    private int idEstacionamento;
    private JDesktopPane desktopPane;
-   private VagaDAO vagas;
+   private VagabdDAO vagas;
    private CobrancabdDAO cobrancas;
    private VeiculoDAO veiculos;
 
@@ -31,7 +32,7 @@ public class GerarCobrancaController {
         this.view = new GerarCobrancaView(desktopPane);
         this.idEstacionamento = idEstacionamento;
         this.desktopPane = desktopPane;
-        this.vagas = VagaDAO.getInstance(idEstacionamento);
+        this.vagas = VagabdDAO.getInstance(idEstacionamento);
         this.cobrancas = CobrancabdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         
@@ -47,9 +48,7 @@ public class GerarCobrancaController {
                 carregarVagasDisponiveis();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
+            } catch (IOException | SQLException ex) {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -65,7 +64,7 @@ public class GerarCobrancaController {
         });
     }
 
-    private void carregarVagasDisponiveis() {
+    private void carregarVagasDisponiveis() throws SQLException {
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);
@@ -146,15 +145,9 @@ public class GerarCobrancaController {
             return;
         }
         
-        vaga.setStatus(false);
-        
-        try {
-            if(cobrancas.gerarCobranca(novaCobranca)) {
-                vagas.salvarVagasArquivo(vagas.getVagas(), idEstacionamento);
-                JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+        if(cobrancas.gerarCobranca(novaCobranca)) {
+            vagas.ocuparVaga(novaCobranca.getIdVaga());
+            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
         }
     }
 

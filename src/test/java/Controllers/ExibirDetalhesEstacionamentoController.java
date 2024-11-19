@@ -12,7 +12,6 @@ public class ExibirDetalhesEstacionamentoController {
 
     private ExibirDetalhesEstacionamentoView view;
     private int idEstacionamento;
-    private EstacionamentobdDAO EstacionamentobdDAO;
     private JDesktopPane desktopPane;
     private final EstacionamentobdDAO estacionamentobdDAO;
 

@@ -242,6 +242,8 @@ public class VagabdDAO {
         try (Connection conn = BancoDados.getConexao(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idVaga);
             int rowsAffected = ps.executeUpdate();
+            Vaga vagaAtual = getVagaPorId(idVaga);
+            vagaAtual.setStatus(true);
             return rowsAffected > 0;
         } catch (SQLException e) {
             Logger.getLogger(VagabdDAO.class.getName()).log(Level.SEVERE, "Erro ao liberar vaga", e);

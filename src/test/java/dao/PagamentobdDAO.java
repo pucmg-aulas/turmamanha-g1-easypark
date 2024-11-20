@@ -55,8 +55,8 @@ public class PagamentobdDAO {
     
    public void salvarPagamento(Cobranca cobranca, Timestamp dataPagamento) throws SQLException, IOException {
         String sql = """
-            INSERT INTO Pagamento (id, dataPagamento, dataEntrada, idEstacionamento, valorPago, tipoVaga, placaVeiculo, idVaga, tempoTotal)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Pagamento (dataPagamento, dataEntrada, idEstacionamento, valorPago, tipoVaga, placaVeiculo, idVaga, tempoTotal)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
         int idEstacionamento = cobranca.getIdEstacionamento();
@@ -67,22 +67,20 @@ public class PagamentobdDAO {
         Vaga vagaAtual = vagas.getVagaPorId(idVaga);
         String tipoVaga = vagaAtual.getTipo();
         int tempoTotal = (int) cobranca.getTempoTotal();
-        int id = new Pagamento().getIdPagamento(); // Obter o ID do pagamento
 
         Timestamp dataEntrada = Timestamp.valueOf(cobranca.getHoraEntrada());
 
         try (Connection conn = BancoDados.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setInt(1, id);
-            ps.setTimestamp(2, dataPagamento);  // Usar o Timestamp passado como parâmetro
-            ps.setTimestamp(3, dataEntrada);    // Usar Timestamp para dataEntrada
-            ps.setInt(4, idEstacionamento);
-            ps.setDouble(5, valorPago);
-            ps.setString(6, tipoVaga);
-            ps.setString(7, placaVeiculo);
-            ps.setInt(8, idVaga);
-            ps.setInt(9, tempoTotal);
+            ps.setTimestamp(1, dataPagamento);  // Usar o Timestamp passado como parâmetro
+            ps.setTimestamp(2, dataEntrada);    // Usar Timestamp para dataEntrada
+            ps.setInt(3, idEstacionamento);
+            ps.setDouble(4, valorPago);
+            ps.setString(5, tipoVaga);
+            ps.setString(6, placaVeiculo);
+            ps.setInt(7, idVaga);
+            ps.setInt(8, tempoTotal);
             
             ps.executeUpdate(); 
         } catch (SQLException e) { 
@@ -259,4 +257,61 @@ public class PagamentobdDAO {
         
         return historicoFiltrado;
     }
+    
+    public List<Pagamento> getPagamentosPorEstacionamento(int idEstacionamento) throws SQLException, IOException{
+        List<Pagamento> pagamentosFiltrados = new ArrayList<>();
+        String sql = "SELECT id, idestacionamento, valorpago, tipovaga, placaveiculo, "
+                   + "tempototal, dataentrada, datapagamento FROM Pagamento WHERE idestacionamento = ?";
+        
+        try{
+            Connection conn = BancoDados.getConexao();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idEstacionamento);
+            
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                double valorPago = rs.getDouble("valorPago");
+                String tipoVaga = rs.getString("tipoVaga");
+                String placaVeiculo = rs.getString("placaVeiculo");
+                int tempoTotal = rs.getInt("tempoTotal");
+                LocalDateTime dataEntrada = rs.getTimestamp("dataEntrada").toLocalDateTime();
+                LocalDateTime dataPagamento = rs.getTimestamp("dataPagamento").toLocalDateTime();
+
+                Vaga vagaAtual = new Vaga();
+                vagaAtual.setIdEstacionamento(idEstacionamento);
+
+                switch (tipoVaga) {
+                    case "Idoso":
+                        vagaAtual.setTipo(new VagaIdoso());
+                        break;
+                    case "PCD":
+                        vagaAtual.setTipo(new VagaPCD());
+                        break;
+                    case "VIP":
+                        vagaAtual.setTipo(new VagaVIP());
+                        break;
+                    case "Regular":
+                        vagaAtual.setTipo(new VagaRegular());
+                        break;
+                }
+
+                Pagamento pagamento = new Pagamento();
+                pagamento.setIdPagamento(id);
+                pagamento.setIdEstacionamento(idEstacionamento);
+                pagamento.setValorPago(valorPago);
+                pagamento.setTipoVaga(vagaAtual.getTipoVaga());
+                pagamento.setPlacaVeiculo(placaVeiculo);
+                pagamento.setTempoTotal(tempoTotal);
+                pagamento.setDataEntrada(dataEntrada);
+                pagamento.setDataPagamento(dataPagamento);
+
+                pagamentosFiltrados.add(pagamento);
+            }
+            return pagamentosFiltrados;
+        }catch(SQLException e){
+             throw new SQLException("Erro ao listar pagamentos: " + e.getMessage());
+        }
+    }
+
 }

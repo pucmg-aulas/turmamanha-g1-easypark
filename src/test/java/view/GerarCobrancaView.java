@@ -190,8 +190,7 @@ public class GerarCobrancaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_placaTextActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Cobrança Gerada!");
+
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
     private void voltarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarBtnActionPerformed

@@ -31,7 +31,7 @@ public class ValorArrecadadoController {
         this.pagamentos = PagamentobdDAO.getInstance();
 
         exibirArrecadacaoTotal();
-        exibirValorMedioUtilizacao();
+       // exibirValorMedioUtilizacao();
         listarMeses();
         
         this.view.mesesAno().addActionListener(e -> {
@@ -52,46 +52,27 @@ public class ValorArrecadadoController {
         });
     }
     
-
-    
-    public List<String> lerPagamentosPorEstacionamento(int idEstacionamento) {
-        List<String> pagamentosFiltrados = new ArrayList<>();
-        String linha;
-
-        try (BufferedReader br = new BufferedReader(new FileReader("./src/test/java/Archives/Pagamentos.txt"))) {
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(";"); 
-                int idEstacionamentoArquivo = Integer.parseInt(dados[1]); // ID do estacionamento
-
-                if (idEstacionamentoArquivo == idEstacionamento) {
-                    pagamentosFiltrados.add(linha);
-                }
-            }
-        } catch (IOException e) {
-            showMessage("Erro ao ler o arquivo de pagamentos: " + e.getMessage());
-        }
-
-        return pagamentosFiltrados; 
-    }
-    
     public double exibirArrecadacaoTotal() {
-        List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
+    try {
+        List<Pagamento> pagamentosFiltrados = pagamentos.getPagamentosPorEstacionamento(idEstacionamento);
 
         if (pagamentosFiltrados.isEmpty()) {
             view.getValorTotal().setText("Nenhum pagamento encontrado.");
         } else {
+            // Soma os valores pagos diretamente do objeto Pagamento
             double totalArrecadado = pagamentosFiltrados.stream()
-                    .mapToDouble(pagamento -> {
-                        String[] dados = pagamento.split(";");
-                        return Double.parseDouble(dados[2]); // Valor pago
-                    })
+                    .mapToDouble(Pagamento::getValorPago) // Acessa o valorPago de cada Pagamento
                     .sum();
 
             view.getValorTotal().setText(String.format("R$ %.2f", totalArrecadado));
             return totalArrecadado;
         }
-        return 0;
+    } catch (SQLException | IOException e) {
+        view.getValorTotal().setText("Erro ao calcular arrecadação.");
+        e.printStackTrace();
     }
+    return 0;
+}
 
     private void showMessage(String message) {
         view.showMessage(message);
@@ -160,19 +141,19 @@ public class ValorArrecadadoController {
 
     
      
-    public void exibirValorMedioUtilizacao(){
-        List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
-        int qntdPagamentos = pagamentosFiltrados.size();
-        
-         if (pagamentosFiltrados.isEmpty()) {
-            view.getValorMedio().setText("Nenhum pagamento encontrado.");
-        } else {
-            double totalArrecadado = exibirArrecadacaoTotal();
-
-            double valorMedio = totalArrecadado / qntdPagamentos;
-                   
-            view.getValorMedio().setText(String.format("R$ %.2f", valorMedio));
-        }
-    }
-    
+//    public void exibirValorMedioUtilizacao(){
+//        List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
+//        int qntdPagamentos = pagamentosFiltrados.size();
+//        
+//         if (pagamentosFiltrados.isEmpty()) {
+//            view.getValorMedio().setText("Nenhum pagamento encontrado.");
+//        } else {
+//            double totalArrecadado = exibirArrecadacaoTotal();
+//
+//            double valorMedio = totalArrecadado / qntdPagamentos;
+//                   
+//            view.getValorMedio().setText(String.format("R$ %.2f", valorMedio));
+//        }
+//    }
+//    
 }

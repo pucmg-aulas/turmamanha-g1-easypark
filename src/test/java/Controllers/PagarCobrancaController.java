@@ -176,10 +176,11 @@ public class PagarCobrancaController {
 
         long diferencaEmMinutos = Duration.between(cobranca.getHoraEntrada(), dataSaida).toMinutes();
         cobranca.setTempoTotal((int) diferencaEmMinutos);
-        cobrancas.atualizarCobranca(cobranca);
 
         double valor = calculoValorParcial(calculoFracao(diferencaEmMinutos));
+        valor = valor > 50 ? 50 : valor;
         cobranca.setValorTotal(valor);
+        cobrancas.atualizarCobranca(cobranca);
         view.getValor().setText(String.format("R$ %.2f", valor));
         return valor;
     }

@@ -33,7 +33,7 @@ public class Cobranca {
 
     // Construtor completo para criação a partir de dados existentes
     public Cobranca(int idCobranca, int idVaga, int idEstacionamento, Veiculo veiculo, LocalDateTime horaEntrada, LocalDateTime horaSaida, double tempoTotal, double valorTotal) throws SQLException {
-        this.idCobranca = CobrancabdDAO.getInstance().obterMaiorIdCobranca() + 1;
+        this.idCobranca = idCobranca;
         this.idVaga = idVaga;
         this.veiculo = veiculo;
         this.idEstacionamento = idEstacionamento;

@@ -26,7 +26,7 @@ import java.util.List;
 public class PagamentobdDAO {
     
     private BancoDados bd;
-    private VagaDAO vagas;
+    private VagabdDAO vagas;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static PagamentobdDAO instance;
     private ClienteDAO clientes;
@@ -55,12 +55,12 @@ public class PagamentobdDAO {
     
    public void salvarPagamento(Cobranca cobranca, Timestamp dataPagamento) throws SQLException, IOException {
         String sql = """
-            INSERT INTO Pagamento (id, dataPagamento, dataEntrada, idEstacionamento, valorPago, tipoVaga, placaVeiculo, tempoTotal)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Pagamento (id, dataPagamento, dataEntrada, idEstacionamento, valorPago, tipoVaga, placaVeiculo, idVaga, tempoTotal)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
         int idEstacionamento = cobranca.getIdEstacionamento();
-        this.vagas = VagaDAO.getInstance(idEstacionamento);
+        this.vagas = VagabdDAO.getInstance(idEstacionamento);
         double valorPago = cobranca.getValorTotal();
         String placaVeiculo = cobranca.getVeiculo().getPlaca();
         int idVaga = cobranca.getIdVaga();
@@ -81,7 +81,8 @@ public class PagamentobdDAO {
             ps.setDouble(5, valorPago);
             ps.setString(6, tipoVaga);
             ps.setString(7, placaVeiculo);
-            ps.setInt(8, tempoTotal);
+            ps.setInt(8, idVaga);
+            ps.setInt(9, tempoTotal);
             
             ps.executeUpdate(); 
         } catch (SQLException e) { 

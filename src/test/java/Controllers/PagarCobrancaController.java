@@ -127,8 +127,8 @@ public class PagarCobrancaController {
         
         boolean removido = cobrancas.removerCobranca(cobranca);
         if (removido) {
-            VagaDAO vagaDAO = VagaDAO.getInstance(cobranca.getIdEstacionamento());
-            boolean vagaLiberada = vagaDAO.liberarVaga(idVaga);
+            VagabdDAO vagabdDAO = VagabdDAO.getInstance(cobranca.getIdEstacionamento());
+            boolean vagaLiberada = vagabdDAO.liberarVaga(idVaga);
 
             if (vagaLiberada) {
                 showMessage("Cobrança paga e vaga liberada com sucesso!");

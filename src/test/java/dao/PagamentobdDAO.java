@@ -31,13 +31,13 @@ public class PagamentobdDAO {
     private VagabdDAO vagas;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static PagamentobdDAO instance;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private VeiculoDAO veiculos;
     private EstacionamentobdDAO estacionamentos;
     private List<Pagamento> pagamentos;
 
     private PagamentobdDAO() throws SQLException, IOException {
-        this.clientes = ClienteDAO.getInstance();
+        this.clientes = ClientebdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.estacionamentos = EstacionamentobdDAO.getInstance();
         this.bd = BancoDados.getInstancia();

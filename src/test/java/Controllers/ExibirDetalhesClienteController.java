@@ -5,7 +5,6 @@
 package Controllers;
 
 import Models.Cliente;
-import dao.ClienteDAO;
 import dao.ClientebdDAO;
 import java.io.IOException;
 import java.sql.SQLException;

@@ -68,7 +68,6 @@ Controllers\ValorArrecadadoController.class
 Controllers\AddClienteController.class
 Controllers\RankingClientesController.class
 Controllers\RelatorioArrecadacaoVagaController.class
-dao\ClienteDAO.class
 dao\PagamentoDAO.class
 view\CadastroVeiculoClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$2.class

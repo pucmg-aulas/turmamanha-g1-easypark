@@ -3,7 +3,7 @@ package Controllers;
 import Models.Cliente;
 import Models.Pagamento;
 import Models.Veiculo;
-import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import dao.PagamentoDAO;
 import dao.PagamentobdDAO;
 import dao.VeiculoDAO;
@@ -38,7 +38,7 @@ import view.RankingClientesView;
     private JDesktopPane desktopPane;
     private int idEstacionamento;
     private RankingClientesView view;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private PagamentobdDAO pagamentos;
     private VeiculoDAO veiculos;
     
@@ -46,7 +46,7 @@ import view.RankingClientesView;
         this.desktopPane = desktopPane;
         this.view = new RankingClientesView(desktopPane);
         
-        this.clientes = ClienteDAO.getInstance();
+        this.clientes = ClientebdDAO.getInstance();
         this.pagamentos = PagamentobdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.idEstacionamento = idEstacionamento;

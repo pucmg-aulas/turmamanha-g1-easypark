@@ -2,7 +2,7 @@ package Controllers;
 
 import Models.Cliente;
 import Models.Veiculo;
-import dao.ClienteDAO;
+import dao.ClientebdDAO;
 import dao.VeiculoDAO;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -14,13 +14,13 @@ import view.CadastroVeiculoClienteView;
 public class AddVeiculoController {
     private CadastroVeiculoClienteView view;
     private VeiculoDAO veiculos;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private JDesktopPane desktopPane;
     private String clienteCpf;
     
     public AddVeiculoController(JDesktopPane desktopPane, String cpf) throws IOException{
         view = new CadastroVeiculoClienteView(desktopPane);
-        clientes = ClienteDAO.getInstance();
+        clientes = ClientebdDAO.getInstance();
         veiculos = VeiculoDAO.getInstance();
         this.desktopPane = desktopPane;
         clienteCpf = cpf;

@@ -26,12 +26,12 @@ public class PagamentoDAO {
     private List<Pagamento> pagamentos;
     private static PagamentoDAO instance;
     private VeiculoDAO veiculos;
-    private ClienteDAO clientes;
+    private ClientebdDAO clientes;
     private EstacionamentobdDAO estacionamentos;
     private VagaDAO vagas;
     
         private PagamentoDAO() throws IOException{
-            this.clientes = ClienteDAO.getInstance();
+            this.clientes = ClientebdDAO.getInstance();
             this.veiculos = VeiculoDAO.getInstance();
             this.estacionamentos = EstacionamentobdDAO.getInstance();
 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controllers;
 
 import dao.EstacionamentobdDAO;
@@ -17,15 +13,10 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import view.MenuEstacionamentoView;
 
 
-
-/**
- *
- * @author user
- */
 public class MenuEstacionamentoController {
     private MenuEstacionamentoView view;
     private ExibirDetalhesEstacionamentoController exibirDetalhesController;
-    private RelatorioArrecadacaoVagaController listarVagasController;
+    private ListarVagasController listarVagasController;
     private GerarCobrancaController gerarCobrancaController;
     private PagarCobrancaController pagarCobrancaController;
     private ValorArrecadadoController valorArrecadadoController;
@@ -56,11 +47,7 @@ public class MenuEstacionamentoController {
         
         this.view.addListarVagasBtnActionListener(e -> {
             try {
-                try {
-                    this.listarVagasController = new RelatorioArrecadacaoVagaController(desktopPane, idEstacionamento);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                this.listarVagasController = new ListarVagasController(desktopPane, idEstacionamento);
             } catch (IOException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }

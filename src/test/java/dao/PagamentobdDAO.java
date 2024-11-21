@@ -90,69 +90,70 @@ public class PagamentobdDAO {
         }
     }  
 
-    public List<Pagamento> getPagamentosPorCpf(String cpf) throws SQLException, IOException {
-        List<Pagamento> pagamentos = new ArrayList<>();
+public List<Pagamento> getPagamentosPorCpf(String cpf) throws SQLException, IOException {
+    List<Pagamento> pagamentos = new ArrayList<>();
 
-        String sql = "SELECT p.id, p.idEstacionamento, p.valorPago, p.tipoVaga, "
-                   + "p.placaVeiculo, p.tempoTotal, p.dataEntrada, p.dataPagamento "
-                   + "FROM Pagamento p "
-                   + "JOIN Veiculo v ON p.placaVeiculo = v.placa "
-                   + "JOIN Cliente c ON v.cpfCliente = c.cpf "
-                   + "WHERE c.cpf = ?";
+    String sql = "SELECT p.id, p.idEstacionamento, p.valorPago, p.tipoVaga, "
+               + "p.placaVeiculo, p.tempoTotal, p.dataEntrada, p.dataPagamento "
+               + "FROM Pagamento p "
+               + "JOIN Veiculo v ON p.placaVeiculo = v.placa "
+               + "JOIN Cliente c ON v.cpf_cliente = c.cpf "  // Alterado para cpf_cliente
+               + "WHERE c.cpf = ?";
 
-        Connection conn = BancoDados.getConexao();
+    try (Connection conn = BancoDados.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, cpf);
+        ps.setString(1, cpf);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    int idPagamento = rs.getInt("id");
-                    int idEstacionamento = rs.getInt("idEstacionamento");
-                    double valorPago = rs.getDouble("valorPago");
-                    String tipoVaga = rs.getString("tipoVaga");
-                    String placaVeiculo = rs.getString("placaVeiculo");
-                    int tempoTotal = rs.getInt("tempoTotal");
-                    LocalDateTime dataEntrada = rs.getTimestamp("dataEntrada").toLocalDateTime();
-                    LocalDateTime dataPagamento = rs.getTimestamp("dataPagamento").toLocalDateTime();
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int idPagamento = rs.getInt("id");
+                int idEstacionamento = rs.getInt("idEstacionamento");
+                double valorPago = rs.getDouble("valorPago");
+                String tipoVaga = rs.getString("tipoVaga");
+                String placaVeiculo = rs.getString("placaVeiculo");
+                int tempoTotal = rs.getInt("tempoTotal");
+                LocalDateTime dataEntrada = rs.getTimestamp("dataEntrada").toLocalDateTime();
+                LocalDateTime dataPagamento = rs.getTimestamp("dataPagamento").toLocalDateTime();
 
-                    Vaga vagaAtual = new Vaga();
-                    vagaAtual.setIdEstacionamento(idEstacionamento);
+                Vaga vagaAtual = new Vaga();
+                vagaAtual.setIdEstacionamento(idEstacionamento);
 
-                    switch (tipoVaga) {
-                        case "Idoso":
-                            vagaAtual.setTipo(new VagaIdoso());
-                            break;
-                        case "PCD":
-                            vagaAtual.setTipo(new VagaPCD());
-                            break;
-                        case "VIP":
-                            vagaAtual.setTipo(new VagaVIP());
-                            break;
-                        case "Regular":
-                            vagaAtual.setTipo(new VagaRegular());
-                            break;
-                    }
-
-                    Pagamento pagamento = new Pagamento();
-                    pagamento.setIdPagamento(idPagamento);
-                    pagamento.setIdEstacionamento(idEstacionamento);
-                    pagamento.setValorPago(valorPago);
-                    pagamento.setTipoVaga(vagaAtual.getTipoVaga());
-                    pagamento.setPlacaVeiculo(placaVeiculo);
-                    pagamento.setTempoTotal(tempoTotal);
-                    pagamento.setDataEntrada(dataEntrada);
-                    pagamento.setDataPagamento(dataPagamento);
-
-                    pagamentos.add(pagamento);
+                switch (tipoVaga) {
+                    case "Idoso":
+                        vagaAtual.setTipo(new VagaIdoso());
+                        break;
+                    case "PCD":
+                        vagaAtual.setTipo(new VagaPCD());
+                        break;
+                    case "VIP":
+                        vagaAtual.setTipo(new VagaVIP());
+                        break;
+                    case "Regular":
+                        vagaAtual.setTipo(new VagaRegular());
+                        break;
                 }
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro ao buscar pagamentos por CPF: " + e.getMessage());
-        }
 
-        return pagamentos;
-    }    
+                Pagamento pagamento = new Pagamento();
+                pagamento.setIdPagamento(idPagamento);
+                pagamento.setIdEstacionamento(idEstacionamento);
+                pagamento.setValorPago(valorPago);
+                pagamento.setTipoVaga(vagaAtual.getTipoVaga());
+                pagamento.setPlacaVeiculo(placaVeiculo);
+                pagamento.setTempoTotal(tempoTotal);
+                pagamento.setDataEntrada(dataEntrada);
+                pagamento.setDataPagamento(dataPagamento);
+
+                pagamentos.add(pagamento);
+            }
+        }
+    } catch (SQLException e) {
+        throw new SQLException("Erro ao buscar pagamentos por CPF: " + e.getMessage());
+    }
+
+    return pagamentos;
+}
+ 
     
     public List<Pagamento> listarPagamentos() throws SQLException, IOException {
         List<Pagamento> pagamentos = new ArrayList<>();
@@ -260,18 +261,20 @@ public class PagamentobdDAO {
         return historicoFiltrado;
     }
     
-    public List<Pagamento> getPagamentosPorEstacionamento(int idEstacionamento) throws SQLException, IOException{
-        List<Pagamento> pagamentosFiltrados = new ArrayList<>();
-        String sql = "SELECT id, idestacionamento, valorpago, tipovaga, placaveiculo, "
-                   + "tempototal, dataentrada, datapagamento FROM Pagamento WHERE idestacionamento = ?";
-        
-        try{
-            Connection conn = BancoDados.getConexao();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, idEstacionamento);
-            
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+    public List<Pagamento> getPagamentosPorEstacionamento(int idEstacionamento) throws SQLException, IOException {
+    List<Pagamento> pagamentosFiltrados = new ArrayList<>();
+    String sql = """
+        SELECT id, idestacionamento, valorpago, tipovaga, placaveiculo,
+               tempototal, dataentrada, datapagamento
+        FROM Pagamento WHERE idestacionamento = ?
+    """;
+
+    try (Connection conn = BancoDados.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, idEstacionamento);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
                 int id = rs.getInt("id");
                 double valorPago = rs.getDouble("valorPago");
                 String tipoVaga = rs.getString("tipoVaga");
@@ -310,11 +313,13 @@ public class PagamentobdDAO {
 
                 pagamentosFiltrados.add(pagamento);
             }
-            return pagamentosFiltrados;
-        }catch(SQLException e){
-             throw new SQLException("Erro ao listar pagamentos: " + e.getMessage());
         }
+    } catch (SQLException e) {
+        throw new SQLException("Erro ao listar pagamentos por estacionamento: " + e.getMessage());
     }
+    return pagamentosFiltrados;
+}
+
 
     public Map<String,Double> getArrecadacaoPorTipoVaga(int idEstacionamento) throws SQLException{
         String sql = "SELECT tipovaga, COUNT(*) AS totalVagas, SUM(valorPago) AS totalArrecadado FROM pagamento WHERE idestacionamento = ? GROUP BY tipoVaga";

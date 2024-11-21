@@ -1,11 +1,7 @@
-
 package Controllers;
 
 import Models.Pagamento;
-import dao.PagamentoDAO;
 import dao.PagamentobdDAO;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -30,73 +26,78 @@ public class ValorArrecadadoController {
         this.idEstacionamento = idEstacionamento;
         this.pagamentos = PagamentobdDAO.getInstance();
 
+
+        desktopPane.add(view);
+        ajustarTamanhoEPosicao();
+
+        this.view.setVisible(true);
+
         exibirArrecadacaoTotal();
-       // exibirValorMedioUtilizacao();
+        exibirValorMedioUtilizacao(); 
         listarMeses();
-        
+
         this.view.mesesAno().addActionListener(e -> {
             try {
                 exibirArrecadacaoMensal();
-            } catch (IOException ex) {
-                Logger.getLogger(ValorArrecadadoController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
+            } catch (IOException | SQLException ex) {
                 Logger.getLogger(ValorArrecadadoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
-        desktopPane.add(view);
-        this.view.setVisible(true);
-                          
-        this.view.getVoltarBtn().addActionListener(e -> {
-            sair();
-        });
-    }
-    
-    public double exibirArrecadacaoTotal() {
-    try {
-        List<Pagamento> pagamentosFiltrados = pagamentos.getPagamentosPorEstacionamento(idEstacionamento);
 
+        this.view.getVoltarBtn().addActionListener(e -> sair());
+    }
+
+    private void ajustarTamanhoEPosicao() {
+        this.view.setSize(desktopPane.getWidth() / 2, (int)(desktopPane.getHeight() / 1.5));
+        this.view.setLocation(
+            (desktopPane.getWidth() - this.view.getWidth()) / 2,
+            (desktopPane.getHeight() - this.view.getHeight()) / 2
+        );
+    }
+
+    public double exibirArrecadacaoTotal() throws SQLException, IOException {
+        List<Pagamento> pagamentosFiltrados = pagamentos.getPagamentosPorEstacionamento(idEstacionamento);
         if (pagamentosFiltrados.isEmpty()) {
             view.getValorTotal().setText("Nenhum pagamento encontrado.");
+            return 0;
         } else {
-            // Soma os valores pagos diretamente do objeto Pagamento
             double totalArrecadado = pagamentosFiltrados.stream()
-                    .mapToDouble(Pagamento::getValorPago) // Acessa o valorPago de cada Pagamento
+                    .mapToDouble(Pagamento::getValorPago)
                     .sum();
-
             view.getValorTotal().setText(String.format("R$ %.2f", totalArrecadado));
             return totalArrecadado;
         }
-    } catch (SQLException | IOException e) {
-        view.getValorTotal().setText("Erro ao calcular arrecadação.");
-        e.printStackTrace();
     }
-    return 0;
-}
 
-    private void showMessage(String message) {
-        view.showMessage(message);
+    public void exibirValorMedioUtilizacao() throws SQLException, IOException {
+        List<Pagamento> pagamentosFiltrados = pagamentos.getPagamentosPorEstacionamento(idEstacionamento);
+        if (pagamentosFiltrados.isEmpty()) {
+            view.getValorMedio().setText("Nenhum pagamento encontrado.");
+        } else {
+            double totalArrecadado = pagamentosFiltrados.stream()
+                    .mapToDouble(Pagamento::getValorPago)
+                    .sum();
+            double valorMedio = totalArrecadado / pagamentosFiltrados.size();
+            view.getValorMedio().setText(String.format("R$ %.2f", valorMedio));
+        }
     }
-    
+
     private void sair() {
         this.view.dispose();
     }
-    
+
     private void listarMeses() {
-       view.mesesAno().removeAllItems();
-    
-        // Array com os nomes dos meses em português
+        view.mesesAno().removeAllItems();
         String[] mesesEmPortugues = {
             "", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         };
-    
-        // Loop para adicionar os meses no formato desejado
+
         for (int i = 1; i < mesesEmPortugues.length; i++) {
-            String item = (i) + " - " + mesesEmPortugues[i];
+            String item = i + " - " + mesesEmPortugues[i];
             view.mesesAno().addItem(item);
+        }
     }
-}   
 
     private int extrairMes(LocalDateTime dataHora) {
         return dataHora.getMonthValue();
@@ -107,7 +108,6 @@ public class ValorArrecadadoController {
 
         for (Pagamento pagamento : pagamentos) {
             int mesPagamento = extrairMes(pagamento.getDataPagamento());
-
             if (mesPagamento == mesSelecionado && pagamento.getIdEstacionamento() == idEstacionamento) {
                 pagamentosFiltrados.add(pagamento);
             }
@@ -117,43 +117,26 @@ public class ValorArrecadadoController {
 
     private void exibirArrecadacaoMensal() throws IOException, SQLException {
         String mesSelecionado = (String) view.mesesAno().getSelectedItem();
+        if (mesSelecionado == null || mesSelecionado.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Selecione um mês válido.");
+            return;
+        }
+
         String[] dadosMes = mesSelecionado.split("-");
         int numeroMes = Integer.parseInt(dadosMes[0].trim());
 
         List<Pagamento> listaPagamentos = pagamentos.listarPagamentos();
-        if (listaPagamentos == null || listaPagamentos.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "A lista de pagamentos está vazia ou é nula.");
+        if (listaPagamentos.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "A lista de pagamentos está vazia.");
             return;
         }
 
-        int idEstacionamento = this.idEstacionamento;
         List<Pagamento> pagamentosFiltrados = filtrarPagamentosPorMes(listaPagamentos, numeroMes, idEstacionamento);
+        double valorTotalMensal = pagamentosFiltrados.stream()
+                .mapToDouble(Pagamento::getValorPago)
+                .sum();
 
-        double valorTotalMensal = 0;
-
-        for (Pagamento pagamento : pagamentosFiltrados) {
-            valorTotalMensal += pagamento.getValorPago();
-        }
-
-        String valorFormatado = String.format("R$%.2f", valorTotalMensal);
+        String valorFormatado = String.format("R$ %.2f", valorTotalMensal);
         this.view.getValorMensal().setText(valorFormatado);
     }
-
-    
-     
-//    public void exibirValorMedioUtilizacao(){
-//        List<String> pagamentosFiltrados = lerPagamentosPorEstacionamento(idEstacionamento);
-//        int qntdPagamentos = pagamentosFiltrados.size();
-//        
-//         if (pagamentosFiltrados.isEmpty()) {
-//            view.getValorMedio().setText("Nenhum pagamento encontrado.");
-//        } else {
-//            double totalArrecadado = exibirArrecadacaoTotal();
-//
-//            double valorMedio = totalArrecadado / qntdPagamentos;
-//                   
-//            view.getValorMedio().setText(String.format("R$ %.2f", valorMedio));
-//        }
-//    }
-//    
 }

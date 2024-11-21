@@ -36,7 +36,6 @@ public class BancoDados {
     
     public static Connection getConexao(){
          try {
-         
             if (conexao == null || conexao.isClosed()) {
                 conectar();  
             }

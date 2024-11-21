@@ -1,3 +1,4 @@
+Controllers\RelatoriosController.class
 dao\EstacionamentobdDAO.class
 view\ValorArrecadadoView$3.class
 view\ExibirVeiculosClienteView$1.class
@@ -7,6 +8,7 @@ Models\Veiculo.class
 view\MenuEstacionamentoView$5.class
 view\CadastroEstacionamentoView.class
 Controllers\SelectEstacionamentoController.class
+view\RelatoriosView.class
 view\MenuPrincipalViewJframe$3.class
 view\ExibirDetalhesClienteView.class
 Models\VagaIdoso.class
@@ -74,6 +76,7 @@ view\ExibirDetalhesEstacionamentoView$2.class
 view\GerarCobrancaView.class
 Models\Pagamento.class
 view\MenuClienteView$3.class
+Controllers\RelatorioFrequenciaUsoVagaController.class
 dao\VeiculoDAO.class
 view\ValorArrecadadoView.class
 dao\CobrancabdDAO.class
@@ -86,9 +89,11 @@ view\ExibirDetalhesClienteView$1.class
 view\ExibirHistoricoUsoView$2.class
 view\MenuPrincipalViewJframe$2.class
 Controllers\RankingClientesController$1.class
+view\RelatorioFrequenciaUsoVagaView.class
 view\PagarCobrancaView.class
 view\MenuEstacionamentoView$6.class
 dao\BancoDados.class
+view\RelatoriosView$2.class
 view\MenuEstacionamentoView$3.class
 view\ValorArrecadadoView$2.class
 Models\EncontrarMaior.class
@@ -113,6 +118,7 @@ view\MenuPrincipalViewJframe.class
 view\CadastroClienteView.class
 view\ExibirVeiculosClienteView.class
 view\RankingClientesView.class
+view\RelatoriosView$1.class
 Controllers\AddEstacionamentoController.class
 view\ExibirDetalhesClienteView$2.class
 view\ExibirDetalhesEstacionamentoView$1.class

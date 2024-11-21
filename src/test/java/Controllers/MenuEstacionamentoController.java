@@ -21,6 +21,7 @@ public class MenuEstacionamentoController {
     private PagarCobrancaController pagarCobrancaController;
     private ValorArrecadadoController valorArrecadadoController;
     private RankingClientesController rankingClientesController;
+    private RelatoriosController relatoriosController;
     private int idEstacionamento;
     private EstacionamentobdDAO estacionamentoDAO;
     private JDesktopPane desktopPane;
@@ -99,6 +100,10 @@ public class MenuEstacionamentoController {
             } catch (SQLException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        });
+        
+        this.view.addRelatoriosBtnActionListener(e -> {
+            this.relatoriosController = new RelatoriosController(desktopPane, idEstacionamento);
         });
         
     }

@@ -20,8 +20,8 @@ public class SelectClienteController {
      
     
     public SelectClienteController(JDesktopPane desktopPane) throws IOException{
-        this.view = new SelecionarClienteView(desktopPane);
-        clientes = ClientebdDAO.getInstance();
+       this.view = new SelecionarClienteView(desktopPane);
+       clientes = ClientebdDAO.getInstance();
        this.desktopPane = desktopPane;
        
         desktopPane.add(view);

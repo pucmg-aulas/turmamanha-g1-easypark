@@ -31,6 +31,7 @@ view\ExibirDetalhesEstacionamentoView$3.class
 view\CadastroVeiculoClienteView$3.class
 view\MenuClienteView$4.class
 Controllers\ExibirHistoricoUsoController.class
+view\RelatorioArrecadacaoVagaView$1.class
 view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
 Controllers\PagarCobrancaController$1.class
@@ -49,6 +50,7 @@ view\ReservarVagaView.class
 Controllers\ListarVagasController.class
 view\MenuClienteView.class
 view\ExibirHistoricoUsoView$3.class
+view\RelatorioArrecadacaoVagaView$2.class
 view\MenuPrincipalViewJframe$4.class
 view\MenuEstacionamentoView$1.class
 view\GerarCobrancaView$4.class
@@ -65,6 +67,7 @@ Controllers\PagarCobrancaController.class
 Controllers\ValorArrecadadoController.class
 Controllers\AddClienteController.class
 Controllers\RankingClientesController.class
+Controllers\RelatorioArrecadacaoVagaController.class
 dao\ClienteDAO.class
 dao\PagamentoDAO.class
 view\CadastroVeiculoClienteView$2.class
@@ -97,6 +100,7 @@ Models\VagaPCD.class
 view\GerarCobrancaView$2.class
 Controllers\ExibirDetalhesClienteController.class
 view\MenuClienteView$1.class
+view\RelatorioArrecadacaoVagaView.class
 view\MenuPrincipalViewJframe$1.class
 view\SelecionarClienteView$2.class
 view\ExibirHistoricoUsoView$1.class

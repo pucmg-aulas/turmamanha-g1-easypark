@@ -21,7 +21,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PagamentobdDAO {
     
@@ -314,4 +316,28 @@ public class PagamentobdDAO {
         }
     }
 
+    public Map<String,Double> getArrecadacaoPorTipoVaga(int idEstacionamento) throws SQLException{
+        String sql = "SELECT tipovaga, COUNT(*) AS totalVagas, SUM(valorPago) AS totalArrecadado FROM pagamento WHERE idestacionamento = ? GROUP BY tipoVaga";
+        Map<String, Double> arrecadacaoPorTipo = new HashMap<>();
+        
+        
+        try{
+            Connection conn = BancoDados.getConexao();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            
+            ps.setInt(1, idEstacionamento);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                String tipoVaga = rs.getString("tipovaga");
+                double totalArrecadado = rs.getDouble("totalArrecadado");
+                
+                arrecadacaoPorTipo.put(tipoVaga, totalArrecadado);
+            }
+        }catch(SQLException e){
+            throw new SQLException("Erro ao buscar arrecadação por tipo de vaga: " + e.getMessage());
+        }
+        return arrecadacaoPorTipo;
+    }
+    
 }

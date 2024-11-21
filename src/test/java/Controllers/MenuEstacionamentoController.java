@@ -25,7 +25,7 @@ import view.MenuEstacionamentoView;
 public class MenuEstacionamentoController {
     private MenuEstacionamentoView view;
     private ExibirDetalhesEstacionamentoController exibirDetalhesController;
-    private ListarVagasController listarVagasController;
+    private RelatorioArrecadacaoVagaController listarVagasController;
     private GerarCobrancaController gerarCobrancaController;
     private PagarCobrancaController pagarCobrancaController;
     private ValorArrecadadoController valorArrecadadoController;
@@ -56,7 +56,11 @@ public class MenuEstacionamentoController {
         
         this.view.addListarVagasBtnActionListener(e -> {
             try {
-                this.listarVagasController = new ListarVagasController(desktopPane, idEstacionamento);
+                try {
+                    this.listarVagasController = new RelatorioArrecadacaoVagaController(desktopPane, idEstacionamento);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(MenuEstacionamentoController.class.getName()).log(Level.SEVERE, null, ex);
             }

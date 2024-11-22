@@ -213,8 +213,8 @@ public class PagarCobrancaController {
     try {
         String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
         if ("anonimo".equalsIgnoreCase(nomeCliente)) {
-           JOptionPane.showMessageDialog(desktopPane, placa);
-            veiculos.excluirVeiculoPorPlaca(placa);
+           JOptionPane.showMessageDialog(desktopPane, "Cliente é anonimo!");
+            //veiculos.excluirVeiculoPorPlaca(placa);
         } 
     } catch (Exception ex) {
         Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);

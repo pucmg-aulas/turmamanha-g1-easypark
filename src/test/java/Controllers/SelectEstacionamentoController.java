@@ -34,7 +34,6 @@ public class SelectEstacionamentoController {
             String estacionamentoSelecionado = (String) view.getListaEstacionamento().getSelectedItem();
             String[] dadosEstacionamento = estacionamentoSelecionado.split("-");
             int idEstacionamentoSelecionado = Integer.parseInt(dadosEstacionamento[0]);
-            JOptionPane.showMessageDialog(view,"Estacionamento selecionado: " + idEstacionamentoSelecionado);
             try {
                 MenuEstacionamentoController menuEstacionamentoController = new MenuEstacionamentoController(desktopPane, idEstacionamentoSelecionado);
             } catch (IOException ex) {

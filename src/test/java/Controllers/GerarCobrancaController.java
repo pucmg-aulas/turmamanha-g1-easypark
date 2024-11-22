@@ -1,5 +1,6 @@
 package Controllers;
 
+import Exceptions.VagaIndisponivelException;
 import Models.Cliente;
 import Models.Cobranca;
 import Models.Vaga;
@@ -43,7 +44,11 @@ public class GerarCobrancaController {
         
         view.getConfirmarBtn().addActionListener(e ->{
             try {
-                createCobranca();
+                try {
+                    createCobranca();
+                } catch (VagaIndisponivelException ex) {
+                    Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 limparCampos();
                 carregarVagasDisponiveis();
             } catch (FileNotFoundException ex) {
@@ -118,7 +123,7 @@ public class GerarCobrancaController {
         return veiculoEncontrado != null ? veiculoEncontrado : null;
     }
 
-    private void createCobranca() throws FileNotFoundException, IOException, SQLException {
+    private void createCobranca() throws FileNotFoundException, IOException, SQLException, VagaIndisponivelException {
         Cobranca novaCobranca = getAtributos();
         if(novaCobranca == null) {
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");
@@ -142,7 +147,7 @@ public class GerarCobrancaController {
 
         if (!vaga.getStatus()) {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
-            return;
+            throw new VagaIndisponivelException();
         }
         
         if(cobrancas.gerarCobranca(novaCobranca)) {

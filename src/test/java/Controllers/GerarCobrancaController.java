@@ -5,6 +5,7 @@ import Models.Cliente;
 import Models.Cobranca;
 import Models.Vaga;
 import Models.Veiculo;
+import dao.ClientebdDAO;
 import dao.CobrancabdDAO;
 import dao.VagaDAO;
 import dao.VagabdDAO;
@@ -28,6 +29,7 @@ public class GerarCobrancaController {
    private VagabdDAO vagas;
    private CobrancabdDAO cobrancas;
    private VeiculoDAO veiculos;
+   private ClientebdDAO clientes;
 
     public GerarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException {
         this.view = new GerarCobrancaView(desktopPane);
@@ -36,6 +38,7 @@ public class GerarCobrancaController {
         this.vagas = VagabdDAO.getInstance(idEstacionamento);
         this.cobrancas = CobrancabdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
+        this.clientes = ClientebdDAO.getInstance();
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -133,7 +136,32 @@ public class GerarCobrancaController {
         Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
         if (veiculoAtual == null) {
             JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
-            return;
+            if (veiculoAtual == null) {
+        Object[] opcoes = {"Sim", "Não"};
+        int resposta = JOptionPane.showOptionDialog(
+                view,
+                "Esse veículo não está cadastrado. Deseja cadastrar o veículo?",
+                "Confirmação",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]
+        );
+
+        if (resposta == 0) { 
+            try {
+                cadastroCliente = new AddClienteController(desktopPane);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (resposta == 1) { 
+             Cliente clienteAnonimo = clientes.buscarClientePorCpf("anonimo");
+            veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
+            veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
+            
+        }
+            }
         } else {
             String nomeCliente = veiculoAtual.getCliente().getNome();
             JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);

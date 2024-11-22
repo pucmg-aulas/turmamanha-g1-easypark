@@ -146,4 +146,15 @@ public class VeiculoDAO {
 
         return veiculosLista;
     }
+    
+   public void excluirVeiculoPorPlaca(String placa) throws SQLException {
+    String sql = "DELETE FROM veiculo WHERE placa = ?";
+    try (Connection conn = BancoDados.getConexao(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, placa);
+        int linhasAfetadas = pstmt.executeUpdate();
+        if (linhasAfetadas == 0) {
+            throw new SQLException("Nenhum veículo encontrado com a placa: " + placa);
+        }
+    }
+   }
 }

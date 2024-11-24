@@ -137,7 +137,6 @@ public class PagarCobrancaController {
 
             if (vagaLiberada) {
                 showMessage("Cobrança paga e vaga liberada com sucesso!");
-                testarAnonimo(cobranca, placaText);
                 carregarVagasOcupadas();
                 
             } else {
@@ -209,17 +208,6 @@ public class PagarCobrancaController {
         return new Object[]{idVaga, placaText, tipoVaga};
     }
 
-    private void testarAnonimo(Cobranca cobranca, String placa) {
-    try {
-        String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
-        if ("anonimo".equalsIgnoreCase(nomeCliente)) {
-           JOptionPane.showMessageDialog(desktopPane, "Cliente é anonimo!");
-            //veiculos.excluirVeiculoPorPlaca(placa);
-        } 
-    } catch (Exception ex) {
-        Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
-        showMessage("Erro ao verificar cliente anônimo: " + ex.getMessage());
     }
-}}
 
     

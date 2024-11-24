@@ -24,6 +24,7 @@ import view.GerarCobrancaView;
 public class GerarCobrancaController {
    private GerarCobrancaView view;
    private AddClienteController cadastroCliente;
+   private AddVeiculoController cadastroVeiculo;
    private int idEstacionamento;
    private JDesktopPane desktopPane;
    private VagabdDAO vagas;
@@ -136,7 +137,6 @@ public class GerarCobrancaController {
         Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
         if (veiculoAtual == null) {
             JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
-            if (veiculoAtual == null) {
         Object[] opcoes = {"Sim", "Não"};
         int resposta = JOptionPane.showOptionDialog(
                 view,
@@ -150,21 +150,19 @@ public class GerarCobrancaController {
         );
 
         if (resposta == 0) { 
-            try {
-                cadastroCliente = new AddClienteController(desktopPane);
-            } catch (IOException ex) {
-                Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ", resposta));
         } else if (resposta == 1) { 
              Cliente clienteAnonimo = clientes.buscarClientePorCpf("anonimo");
             veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
             veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
             
         }
-            }
+            
         } else {
             String nomeCliente = veiculoAtual.getCliente().getNome();
             JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);
+            testarAnonimo(novaCobranca);
+            
         }
         
         Vaga vaga = vagas.getVagaPorId(novaCobranca.getIdVaga());
@@ -184,6 +182,34 @@ public class GerarCobrancaController {
         }
     }
 
+    private void testarAnonimo(Cobranca cobranca) {
+    try {
+        String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
+        String placa = cobranca.getVeiculo().getPlaca();
+        if ("anonimo".equalsIgnoreCase(nomeCliente)) {
+           Object[] opcoes = {"Sim", "Não"};
+        int resposta = JOptionPane.showOptionDialog(
+                view,
+                "Esse veículo esta cadastrado como anônimo, deseja alterar o cliente?",
+                "Confirmação",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]
+        );
+
+        if (resposta == 0) { 
+            cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ", resposta));
+        } else if (resposta == 1) { 
+             return;
+        }
+        } 
+    } catch (Exception ex) {
+        Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+    
     private void limparCampos() {
         view.getPlaca().setText("");
     }

@@ -168,6 +168,7 @@ public class GerarCobrancaController {
                     cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
                 } else if (respostaprop == 1) {
                     cadastroCliente = new AddClienteController(desktopPane);
+                    //mesmo problema de cadastrar o cliente primeiro
                     cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
                 }
 
@@ -206,7 +207,6 @@ public class GerarCobrancaController {
         try {
             String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
             String placa = cobranca.getVeiculo().getPlaca();
-            JOptionPane.showMessageDialog(desktopPane, "entrou teste anonimo");
             if ("anonimo".equalsIgnoreCase(nomeCliente)) {
                 Object[] opcoes = {"Sim", "Não"};
                 int resposta = JOptionPane.showOptionDialog(
@@ -232,12 +232,12 @@ public class GerarCobrancaController {
                             opcoes[0]
                     );
                     if (respostaprop1 == 0) {
-                        JOptionPane.showMessageDialog(desktopPane, "cliente cadastrado");
                         atualizaVeiculo = new AtualizaVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "), placa);
                     } else if (respostaprop1 == 1) {
-                        JOptionPane.showMessageDialog(desktopPane, "Cliente sem cadastro");
                         cadastroCliente = new AddClienteController(desktopPane);
-                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, "aa",placa);
+                        
+                        //nao consegui puxar a tela de cadastro de cliente primeiro, para conseguir puxar o cpf do cliente
+                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ") ,placa);
 
                     }
                     

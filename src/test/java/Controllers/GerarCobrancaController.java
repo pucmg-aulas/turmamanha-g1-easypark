@@ -22,15 +22,17 @@ import javax.swing.table.DefaultTableModel;
 import view.GerarCobrancaView;
 
 public class GerarCobrancaController {
-   private GerarCobrancaView view;
-   private AddClienteController cadastroCliente;
-   private AddVeiculoController cadastroVeiculo;
-   private int idEstacionamento;
-   private JDesktopPane desktopPane;
-   private VagabdDAO vagas;
-   private CobrancabdDAO cobrancas;
-   private VeiculoDAO veiculos;
-   private ClientebdDAO clientes;
+
+    private GerarCobrancaView view;
+    private AddClienteController cadastroCliente;
+    private AddVeiculoController cadastroVeiculo;
+    private AtualizaVeiculoController atualizaVeiculo;
+    private int idEstacionamento;
+    private JDesktopPane desktopPane;
+    private VagabdDAO vagas;
+    private CobrancabdDAO cobrancas;
+    private VeiculoDAO veiculos;
+    private ClientebdDAO clientes;
 
     public GerarCobrancaController(JDesktopPane desktopPane, int idEstacionamento) throws IOException, SQLException {
         this.view = new GerarCobrancaView(desktopPane);
@@ -40,13 +42,13 @@ public class GerarCobrancaController {
         this.cobrancas = CobrancabdDAO.getInstance();
         this.veiculos = VeiculoDAO.getInstance();
         this.clientes = ClientebdDAO.getInstance();
-        
+
         desktopPane.add(view);
         this.view.setVisible(true);
-        
+
         carregarVagasDisponiveis();
-        
-        view.getConfirmarBtn().addActionListener(e ->{
+
+        view.getConfirmarBtn().addActionListener(e -> {
             try {
                 try {
                     createCobranca();
@@ -61,9 +63,9 @@ public class GerarCobrancaController {
                 Logger.getLogger(GerarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         view.getVoltarBtn().addActionListener(e -> sair());
-        
+
         view.getCadastrarBtn().addActionListener(e -> {
             try {
                 cadastroCliente = new AddClienteController(desktopPane);
@@ -78,7 +80,7 @@ public class GerarCobrancaController {
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);
         Iterator<Vaga> it = vagas.getVagasDisponiveis().iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             Vaga v = it.next();
             String vaga = v.toString();
             String linha[] = vaga.split("-");
@@ -87,9 +89,9 @@ public class GerarCobrancaController {
         }
         view.getVagasTable().setModel(tm);
     }
-     
-    private void sair(){
-         this.view.dispose();
+
+    private void sair() {
+        this.view.dispose();
     }
 
     private Cobranca getAtributos() throws FileNotFoundException, IOException, SQLException {
@@ -98,7 +100,7 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Selecione uma vaga.");
             return null;
         }
-        
+
         String idVaga = (String) view.getVagasTable().getValueAt(selectedRow, 0);
         String placaVeiculo = view.getPlaca().getText().trim();
 
@@ -107,7 +109,7 @@ public class GerarCobrancaController {
             automovel = new Veiculo(placaVeiculo, new Cliente("Anônimo", "Anônimo"), "Aleatório");
             veiculos.cadastrarVeiculoPorCliente(automovel);
         }
-        
+
         int idVagaNumber = Integer.parseInt(idVaga);
 
         if (validarCampos(idVaga, placaVeiculo)) {
@@ -129,42 +131,59 @@ public class GerarCobrancaController {
 
     private void createCobranca() throws FileNotFoundException, IOException, SQLException, VagaIndisponivelException {
         Cobranca novaCobranca = getAtributos();
-        if(novaCobranca == null) {
+        boolean testeValido = true;
+        if (novaCobranca == null) {
             JOptionPane.showMessageDialog(view, "Preencha todos os campos!");
             return;
         }
-        
+
         Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
         if (veiculoAtual == null) {
             JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
-        Object[] opcoes = {"Sim", "Não"};
-        int resposta = JOptionPane.showOptionDialog(
-                view,
-                "Esse veículo não está cadastrado. Deseja cadastrar o veículo?",
-                "Confirmação",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opcoes,
-                opcoes[0]
-        );
+            Object[] opcoes = {"Sim", "Não"};
+            int resposta = JOptionPane.showOptionDialog(
+                    view,
+                    "Esse veículo não está cadastrado. Deseja cadastrar o veículo?",
+                    "Confirmação",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[0]
+            );
 
-        if (resposta == 0) { 
-            cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ", resposta));
-        } else if (resposta == 1) { 
-             Cliente clienteAnonimo = clientes.buscarClientePorCpf("anonimo");
-            veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
-            veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
-            
-        }
-            
+            if (resposta == 0) {
+                int respostaprop = JOptionPane.showOptionDialog(
+                        view,
+                        "O cliente já é cadastrado?",
+                        "Confirmação",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcoes,
+                        opcoes[0]
+                );
+
+                if (respostaprop == 0) {
+                    cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
+                } else if (respostaprop == 1) {
+                    cadastroCliente = new AddClienteController(desktopPane);
+                    cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
+                }
+
+            } else if (resposta == 1) {
+                Cliente clienteAnonimo = clientes.buscarClientePorCpf("anonimo");
+                veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
+                veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
+
+            }
+
         } else {
             String nomeCliente = veiculoAtual.getCliente().getNome();
+            testeValido = testarAnonimo(novaCobranca);
             JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);
-            testarAnonimo(novaCobranca);
-            
         }
-        
+
         Vaga vaga = vagas.getVagaPorId(novaCobranca.getIdVaga());
         if (vaga == null) {
             JOptionPane.showMessageDialog(view, "A vaga especificada não existe.");
@@ -175,41 +194,64 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
             throw new VagaIndisponivelException();
         }
-        
-        if(cobrancas.gerarCobranca(novaCobranca)) {
-            vagas.ocuparVaga(novaCobranca.getIdVaga());
-            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
+        if (testeValido) {
+            if (cobrancas.gerarCobranca(novaCobranca)) {
+                vagas.ocuparVaga(novaCobranca.getIdVaga());
+                JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
+            }
         }
     }
 
-    private void testarAnonimo(Cobranca cobranca) {
-    try {
-        String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
-        String placa = cobranca.getVeiculo().getPlaca();
-        if ("anonimo".equalsIgnoreCase(nomeCliente)) {
-           Object[] opcoes = {"Sim", "Não"};
-        int resposta = JOptionPane.showOptionDialog(
-                view,
-                "Esse veículo esta cadastrado como anônimo, deseja alterar o cliente?",
-                "Confirmação",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opcoes,
-                opcoes[0]
-        );
+    private boolean testarAnonimo(Cobranca cobranca) {
+        try {
+            String nomeCliente = cobranca.getVeiculo().getCliente().getNome();
+            String placa = cobranca.getVeiculo().getPlaca();
+            JOptionPane.showMessageDialog(desktopPane, "entrou teste anonimo");
+            if ("anonimo".equalsIgnoreCase(nomeCliente)) {
+                Object[] opcoes = {"Sim", "Não"};
+                int resposta = JOptionPane.showOptionDialog(
+                        view,
+                        "Esse veículo esta cadastrado como anônimo, deseja alterar o cliente?",
+                        "Confirmação",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcoes,
+                        opcoes[0]
+                );
 
-        if (resposta == 0) { 
-            cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ", resposta));
-        } else if (resposta == 1) { 
-             return;
+                if (resposta == 0) {
+                    int respostaprop1 = JOptionPane.showOptionDialog(
+                            view,
+                            "O cliente já é cadastrado?",
+                            "Confirmação",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            opcoes,
+                            opcoes[0]
+                    );
+                    if (respostaprop1 == 0) {
+                        JOptionPane.showMessageDialog(desktopPane, "cliente cadastrado");
+                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "), placa);
+                    } else if (respostaprop1 == 1) {
+                        JOptionPane.showMessageDialog(desktopPane, "Cliente sem cadastro");
+                        cadastroCliente = new AddClienteController(desktopPane);
+                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, "aa",placa);
+
+                    }
+                    
+                    return false;
+                } else if (resposta == 1) {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        } 
-    } catch (Exception ex) {
-        Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
+        return false;
     }
-}
-    
+
     private void limparCampos() {
         view.getPlaca().setText("");
     }

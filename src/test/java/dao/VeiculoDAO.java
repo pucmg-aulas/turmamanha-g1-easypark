@@ -77,20 +77,23 @@ public class VeiculoDAO {
         }
     }
     
-    private boolean atualizarProprietario(String placa, String cpf) {
-    String sql = "UPDATE veiculo SET cpf_cliente = ? WHERE placa = ?";
+    public boolean atualizarProprietario(String placa, String cpf, String modelo) {
+    String sql = "UPDATE veiculo SET cpf_cliente = ?, modelo = ? WHERE placa = ?";
 
     try (Connection conn = BancoDados.getConexao(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
         pstmt.setString(1, cpf);
-        pstmt.setString(2, placa);
+        pstmt.setString(2, modelo);
+        pstmt.setString(3, placa);
 
         int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected > 0;
+        return rowsAffected > 0; 
     } catch (SQLException e) {
         Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, e);
         return false;
     }
-    }
+}
+
+
 
     public Veiculo buscarVeiculoPorPlaca(String placa) {
         String sql = "SELECT * FROM veiculo WHERE placa = ?";

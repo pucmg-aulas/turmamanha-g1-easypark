@@ -25,6 +25,8 @@ public class RelatoriosView extends javax.swing.JInternalFrame {
         arrecadacaoBtn = new javax.swing.JButton();
         frequenciaBtn = new javax.swing.JButton();
 
+        setClosable(true);
+
         arrecadacaoBtn.setText("Arrecadação por Vaga");
         arrecadacaoBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

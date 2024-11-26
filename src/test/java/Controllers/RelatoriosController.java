@@ -33,7 +33,13 @@ public class RelatoriosController {
         });
 
         this.view.addFrequenciaBtnActionListener(e -> {
-            this.relatorioFrequencia = new RelatorioFrequenciaUsoVagaController(desktopPane, idEstacionamento);
+            try {
+                this.relatorioFrequencia = new RelatorioFrequenciaUsoVagaController(desktopPane, idEstacionamento);
+            } catch (SQLException ex) {
+                Logger.getLogger(RelatoriosController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(RelatoriosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 }

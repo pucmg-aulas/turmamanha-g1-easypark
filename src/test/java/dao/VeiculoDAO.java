@@ -76,6 +76,24 @@ public class VeiculoDAO {
             return false;
         }
     }
+    
+    public boolean atualizarProprietario(String placa, String cpf, String modelo) {
+    String sql = "UPDATE veiculo SET cpf_cliente = ?, modelo = ? WHERE placa = ?";
+
+    try (Connection conn = BancoDados.getConexao(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, cpf);
+        pstmt.setString(2, modelo);
+        pstmt.setString(3, placa);
+
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected > 0; 
+    } catch (SQLException e) {
+        Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, e);
+        return false;
+    }
+}
+
+
 
     public Veiculo buscarVeiculoPorPlaca(String placa) {
         String sql = "SELECT * FROM veiculo WHERE placa = ?";
@@ -146,4 +164,15 @@ public class VeiculoDAO {
 
         return veiculosLista;
     }
+    
+   public void excluirVeiculoPorPlaca(String placa) throws SQLException {
+    String sql = "DELETE FROM veiculo WHERE placa = ?";
+    try (Connection conn = BancoDados.getConexao(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, placa);
+        int linhasAfetadas = pstmt.executeUpdate();
+        if (linhasAfetadas == 0) {
+            throw new SQLException("Nenhum veículo encontrado com a placa: " + placa);
+        }
+    }
+   }
 }

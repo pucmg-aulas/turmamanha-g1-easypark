@@ -18,6 +18,7 @@ import Models.VagaPCD;
 import Models.VagaRegular;
 import Models.VagaVIP;
 import dao.VagabdDAO;
+import dao.VeiculoDAO;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ public class PagarCobrancaController {
     private CobrancabdDAO cobrancas;
     private PagamentobdDAO pagamentos;
     private LocalDateTime dataSaida;
+    private VeiculoDAO veiculos;
 
     public PagarCobrancaController(JDesktopPane desktopPane, int idEstacionamento, LocalDateTime dataSaida) throws IOException, SQLException {
         this.view = new PagarCobrancaView(desktopPane);
@@ -41,6 +43,8 @@ public class PagarCobrancaController {
         this.cobrancas = CobrancabdDAO.getInstance();
         this.pagamentos = PagamentobdDAO.getInstance();
         this.dataSaida = dataSaida;
+        this.veiculos = VeiculoDAO.getInstance();
+        
         
         desktopPane.add(view);
         this.view.setVisible(true);
@@ -52,6 +56,7 @@ public class PagarCobrancaController {
                 confirmarPagamento();
                 limparCampos();
                 carregarVagasOcupadas();
+                
             } catch (Exception ex) {
                 Logger.getLogger(PagarCobrancaController.class.getName()).log(Level.SEVERE, null, ex);
                 showMessage("Erro ao confirmar pagamento: " + ex.getMessage());
@@ -133,12 +138,14 @@ public class PagarCobrancaController {
             if (vagaLiberada) {
                 showMessage("Cobrança paga e vaga liberada com sucesso!");
                 carregarVagasOcupadas();
+                
             } else {
                 showMessage("Erro ao liberar a vaga.");
             }
         } else {
             showMessage("Erro ao remover a cobrança.");
         }
+        
     }
 
     private void showMessage(String message) {
@@ -200,4 +207,7 @@ public class PagarCobrancaController {
 
         return new Object[]{idVaga, placaText, tipoVaga};
     }
-}
+
+    }
+
+    

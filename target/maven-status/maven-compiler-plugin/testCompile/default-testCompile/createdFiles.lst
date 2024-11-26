@@ -5,6 +5,7 @@ view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class
 Models\Veiculo.class
+view\AtualizaVeiculoView$1.class
 view\MenuEstacionamentoView$5.class
 view\CadastroEstacionamentoView.class
 Controllers\SelectEstacionamentoController.class
@@ -38,6 +39,7 @@ view\CadastroClienteView$3.class
 view\MenuPrincipalViewJframe$5.class
 Controllers\PagarCobrancaController$1.class
 Controllers\RankingClientesController$2.class
+view\AtualizaVeiculoView.class
 view\CadastroVeiculoClienteView$1.class
 view\MenuEstacionamentoView.class
 view\ListarVagasView$2.class
@@ -95,6 +97,7 @@ view\PagarCobrancaView.class
 view\MenuEstacionamentoView$6.class
 dao\BancoDados.class
 view\RelatoriosView$2.class
+view\AtualizaVeiculoView$3.class
 view\MenuEstacionamentoView$3.class
 view\ValorArrecadadoView$2.class
 Models\EncontrarMaior.class
@@ -104,10 +107,12 @@ view\ListarVagasView.class
 Models\VagaPCD.class
 view\GerarCobrancaView$2.class
 Controllers\ExibirDetalhesClienteController.class
+view\AtualizaVeiculoView$2.class
 view\MenuClienteView$1.class
 view\RelatorioArrecadacaoVagaView.class
 view\MenuPrincipalViewJframe$1.class
 view\SelecionarClienteView$2.class
+Controllers\AtualizaVeiculoController.class
 view\ExibirHistoricoUsoView$1.class
 Controllers\GerarCobrancaController.class
 Controllers\MenuClienteController.class

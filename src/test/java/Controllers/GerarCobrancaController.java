@@ -128,7 +128,7 @@ public class GerarCobrancaController {
     private Veiculo isVeiculoCadastrado(String placa) throws VeiculoNaoEncontradoException {
         Veiculo veiculoEncontrado = veiculos.buscarVeiculoPorPlaca(placa);
         if (veiculoEncontrado == null) {
-            throw new VeiculoNaoEncontradoException("Veículo com placa " + placa + " não encontrado.");
+            throw new VeiculoNaoEncontradoException();
         }
         return veiculoEncontrado;
     }

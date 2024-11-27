@@ -20,6 +20,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import view.GerarCobrancaView;
+import Exceptions.VeiculoNaoEncontradoException;
 
 public class GerarCobrancaController {
 
@@ -124,10 +125,14 @@ public class GerarCobrancaController {
         return !(idVaga.isEmpty() || placaVeiculo.isEmpty());
     }
 
-    private Veiculo isVeiculoCadastrado(String placa) throws FileNotFoundException {
+    private Veiculo isVeiculoCadastrado(String placa) throws VeiculoNaoEncontradoException {
         Veiculo veiculoEncontrado = veiculos.buscarVeiculoPorPlaca(placa);
-        return veiculoEncontrado != null ? veiculoEncontrado : null;
+        if (veiculoEncontrado == null) {
+            throw new VeiculoNaoEncontradoException("Veículo com placa " + placa + " não encontrado.");
+        }
+        return veiculoEncontrado;
     }
+
 
     private void createCobranca() throws FileNotFoundException, IOException, SQLException, VagaIndisponivelException {
         Cobranca novaCobranca = getAtributos();
@@ -137,9 +142,11 @@ public class GerarCobrancaController {
             return;
         }
 
-        Veiculo veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
-        if (veiculoAtual == null) {
-            JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
+        Veiculo veiculoAtual = null;
+        try {
+            veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
+        } catch (VeiculoNaoEncontradoException e) {
+            JOptionPane.showMessageDialog(view, e.getMessage());
             Object[] opcoes = {"Sim", "Não"};
             int resposta = JOptionPane.showOptionDialog(
                     view,
@@ -175,10 +182,10 @@ public class GerarCobrancaController {
                 Cliente clienteAnonimo = clientes.buscarClientePorCpf("anonimo");
                 veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
                 veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
-
             }
+        }
 
-        } else {
+        if (veiculoAtual != null) {
             String nomeCliente = veiculoAtual.getCliente().getNome();
             testeValido = testarAnonimo(novaCobranca);
             JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);
@@ -194,6 +201,7 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
             throw new VagaIndisponivelException();
         }
+
         if (testeValido) {
             if (cobrancas.gerarCobranca(novaCobranca)) {
                 vagas.ocuparVaga(novaCobranca.getIdVaga());

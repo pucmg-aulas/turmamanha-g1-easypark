@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Exceptions;
 
-/**
- *
- * @author USER
- */
-public class ClienteNaoEncontradoException {
-    
+public class ClienteNaoEncontradoException extends Exception {
+
+    public ClienteNaoEncontradoException() {
+        super("Cliente não encontrado.");
+    }
+
+    public ClienteNaoEncontradoException(String message) {
+        super(message);
+    }
 }

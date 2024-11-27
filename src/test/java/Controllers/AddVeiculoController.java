@@ -17,28 +17,66 @@ public class AddVeiculoController {
     private ClientebdDAO clientes;
     private JDesktopPane desktopPane;
     private String clienteCpf;
+    private String placaVeiculo;
     
-    public AddVeiculoController(JDesktopPane desktopPane, String cpf) throws IOException{
-        view = new CadastroVeiculoClienteView(desktopPane);
-        clientes = ClientebdDAO.getInstance();
-        veiculos = VeiculoDAO.getInstance();
-        this.desktopPane = desktopPane;
-        clienteCpf = cpf;
-        
-        desktopPane.add(view);
-        this.view.setVisible(true);
-        
-        view.getConfirmarBtn().addActionListener(e -> {
-            try {
-                if(cadastrarVeiculo()){
-                    limparCampos();
-                    view.dispose();
-                };
-            } catch (IOException ex) {
-                Logger.getLogger(AddVeiculoController.class.getName()).log(Level.SEVERE, null, ex);
+    public AddVeiculoController(JDesktopPane desktopPane, String dado, boolean isCpf) throws IOException{
+            view = new CadastroVeiculoClienteView(desktopPane);
+            clientes = ClientebdDAO.getInstance();
+            veiculos = VeiculoDAO.getInstance();
+            this.desktopPane = desktopPane;
+            desktopPane.add(view);
+            this.view.setVisible(true);
+            
+        if(isCpf){
+            clienteCpf = dado;
+        }else{
+            placaVeiculo = dado;
+            view.getPlaca().setText(placaVeiculo);
+            
+            clienteCpf = JOptionPane.showInputDialog(view,
+                    "Digite o CPF do cliente: ",
+                    "CPF Necessário",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            if (clienteCpf == null || clienteCpf.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    view,
+                    "O CPF é obrigatório para continuar.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                view.dispose(); // Fecha a tela se não há CPF
+                return; // Cancela o fluxo de execução
+            }else{
+               Cliente clienteAtual = clientes.buscarClientePorCpf(clienteCpf);
+               if(clienteAtual == null){
+                    JOptionPane.showMessageDialog(
+                         view,
+                         "Esse cliente não está cadastrado",
+                         "Erro",
+                         JOptionPane.ERROR_MESSAGE
+                    );
+                    view.dispose(); 
+                    return; 
+               }
             }
-        });
+            
+           
+            
+        }
+         view.getConfirmarBtn().addActionListener(e -> {
+                try {
+                    if(cadastrarVeiculo()){
+                        limparCampos();
+                        view.dispose();
+                    };
+                } catch (IOException ex) {
+                    Logger.getLogger(AddVeiculoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
     }
+    
     
     private Cliente getCliente(){
         return clientes.buscarClientePorCpf(clienteCpf);

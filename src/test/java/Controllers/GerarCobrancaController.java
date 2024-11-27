@@ -165,11 +165,10 @@ public class GerarCobrancaController {
                 );
 
                 if (respostaprop == 0) {
-                    cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
+                    cadastroVeiculo = new AddVeiculoController(desktopPane, novaCobranca.getVeiculo().getPlaca(), false);
                 } else if (respostaprop == 1) {
                     cadastroCliente = new AddClienteController(desktopPane);
-                    //mesmo problema de cadastrar o cliente primeiro
-                    cadastroVeiculo = new AddVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "));
+                    cadastroVeiculo = new AddVeiculoController(desktopPane, novaCobranca.getVeiculo().getPlaca(), false);
                 }
 
             } else if (resposta == 1) {

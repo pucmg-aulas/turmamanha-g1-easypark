@@ -45,7 +45,7 @@ public class MenuClienteController {
         
         view.getCadastrarVeiculoBtn().addActionListener(e -> {
             try {
-                addVeiculo = new AddVeiculoController(desktopPane, cpf);
+                addVeiculo = new AddVeiculoController(desktopPane, cpf, true);
             } catch (IOException ex) {
                 Logger.getLogger(MenuClienteController.class.getName()).log(Level.SEVERE, null, ex);
             }

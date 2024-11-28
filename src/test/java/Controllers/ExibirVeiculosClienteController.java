@@ -12,6 +12,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import view.ExibirVeiculosClienteView;
+import Exceptions.VeiculoNaoEncontradoException;
 
 public class ExibirVeiculosClienteController {
     private ExibirVeiculosClienteView view;
@@ -30,7 +31,12 @@ public class ExibirVeiculosClienteController {
         desktopPane.add(view);
         this.view.setVisible(true);
         
-        carregarVeiculos();
+        try {
+            carregarVeiculos();
+        } catch (VeiculoNaoEncontradoException e) {
+            JOptionPane.showMessageDialog(view, e.getMessage());
+            view.dispose();
+        }
         
     }
    
@@ -38,22 +44,20 @@ public class ExibirVeiculosClienteController {
         return clienteDAO.buscarClientePorCpf(cpf);
     }
     
-    private void carregarVeiculos() throws IOException{
+    private void carregarVeiculos() throws IOException, VeiculoNaoEncontradoException {
         Cliente clienteAtual = getCliente(cpfCliente);
         List<Veiculo> listaVeiculos = veiculoDAO.buscarVeiculosPorCliente(clienteAtual);
-         
-        if(listaVeiculos.size() > 0){
-            DefaultListModel<String> listaVeiculosTexto = new DefaultListModel<>(); 
-            for(Veiculo veiculo : listaVeiculos){
-            String texto = veiculo.getPlaca() + "-" + veiculo.getModelo();
-            listaVeiculosTexto.addElement(texto);
-            }
-            view.getListaVeiculos().setModel(listaVeiculosTexto);
-        }else{
-            JOptionPane.showMessageDialog(view, "Não há veiculos cadastrados!");
-            view.dispose();
+
+        if (listaVeiculos.isEmpty()) {
+            throw new VeiculoNaoEncontradoException("Não há veículos cadastrados para o cliente!");
         }
-        
-        
+
+        DefaultListModel<String> listaVeiculosTexto = new DefaultListModel<>();
+        for (Veiculo veiculo : listaVeiculos) {
+            String texto = veiculo.getPlaca() + " - " + veiculo.getModelo();
+            listaVeiculosTexto.addElement(texto);
+        }
+        view.getListaVeiculos().setModel(listaVeiculosTexto);
     }
+    
 }

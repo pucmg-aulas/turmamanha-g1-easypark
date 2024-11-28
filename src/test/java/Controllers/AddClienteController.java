@@ -12,6 +12,7 @@ import view.CadastroClienteView;
 public class AddClienteController {
     private CadastroClienteView view;
     private ClientebdDAO clientes;
+    private AddVeiculoController addVeiculoController;
     
     public AddClienteController(JDesktopPane desktopPane) throws IOException{
         
@@ -27,6 +28,33 @@ public class AddClienteController {
         });
         
     }
+    
+     public AddClienteController(JDesktopPane desktopPane, String placaVeiculo) throws IOException{
+        
+        this.view = new CadastroClienteView();
+        this.clientes = ClientebdDAO.getInstance();
+        
+        desktopPane.add(view);
+        this.view.setVisible(true);
+        
+        
+        
+        
+        this.view.getBtnConfirmar().addActionListener(e ->{
+            addCliente();
+            try {
+                Cliente clienteAtual = getAtributosCliente();
+                String cpf = clienteAtual.getCpf();
+                 limparCampos();
+                 this.view.dispose();
+                addVeiculoController = new AddVeiculoController(desktopPane, placaVeiculo, cpf);
+            } catch (IOException ex) {
+                Logger.getLogger(AddClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+    }
+    
     
     private Cliente getAtributosCliente(){
         String cpf = view.getCpf().getText();

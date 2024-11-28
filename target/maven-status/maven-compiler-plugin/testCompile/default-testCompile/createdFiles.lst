@@ -87,6 +87,7 @@ Models\Vaga.class
 view\SelecionarEstacionamentoView$2.class
 view\ExibirDetalhesClienteView$4.class
 view\PagarCobrancaView$4.class
+Exceptions\ClienteNaoEncontradoException.class
 view\PagarCobrancaView$1.class
 view\ExibirDetalhesClienteView$1.class
 view\ExibirHistoricoUsoView$2.class

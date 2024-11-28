@@ -167,8 +167,7 @@ public class GerarCobrancaController {
                 if (respostaprop == 0) {
                     cadastroVeiculo = new AddVeiculoController(desktopPane, novaCobranca.getVeiculo().getPlaca(), false);
                 } else if (respostaprop == 1) {
-                    cadastroCliente = new AddClienteController(desktopPane);
-                    cadastroVeiculo = new AddVeiculoController(desktopPane, novaCobranca.getVeiculo().getPlaca(), false);
+                    cadastroCliente = new AddClienteController(desktopPane, novaCobranca.getVeiculo().getPlaca());
                 }
 
             } else if (resposta == 1) {
@@ -194,12 +193,12 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
             throw new VagaIndisponivelException();
         }
-        if (testeValido) {
-            if (cobrancas.gerarCobranca(novaCobranca)) {
-                vagas.ocuparVaga(novaCobranca.getIdVaga());
-                JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
-            }
+        
+        if (cobrancas.gerarCobranca(novaCobranca)) {
+            vagas.ocuparVaga(novaCobranca.getIdVaga());
+            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
         }
+        
     }
 
     private boolean testarAnonimo(Cobranca cobranca) {

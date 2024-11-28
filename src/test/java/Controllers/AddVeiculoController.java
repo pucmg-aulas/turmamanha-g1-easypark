@@ -77,6 +77,42 @@ public class AddVeiculoController {
             });
     }
     
+    public AddVeiculoController(JDesktopPane desktopPane, String placaVeiculo, String Cpf) throws IOException{
+            view = new CadastroVeiculoClienteView(desktopPane);
+            clientes = ClientebdDAO.getInstance();
+            veiculos = VeiculoDAO.getInstance();
+            this.desktopPane = desktopPane;
+            desktopPane.add(view);
+            this.view.setVisible(true);
+            
+        
+            clienteCpf = Cpf;
+            view.getPlaca().setText(placaVeiculo);
+            
+               Cliente clienteAtual = clientes.buscarClientePorCpf(clienteCpf);
+               if(clienteAtual == null){
+                    JOptionPane.showMessageDialog(
+                         view,
+                         "Esse cliente não está cadastrado",
+                         "Erro",
+                         JOptionPane.ERROR_MESSAGE
+                    );
+                    view.dispose(); 
+                    return; 
+               }
+               
+         view.getConfirmarBtn().addActionListener(e -> {
+                try {
+                    if(cadastrarVeiculo()){
+                        limparCampos();
+                        view.dispose();
+                    };
+                } catch (IOException ex) {
+                    Logger.getLogger(AddVeiculoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+    }
+    
     
     private Cliente getCliente(){
         return clientes.buscarClientePorCpf(clienteCpf);

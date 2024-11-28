@@ -7,7 +7,6 @@ import Models.Vaga;
 import Models.Veiculo;
 import dao.ClientebdDAO;
 import dao.CobrancabdDAO;
-import dao.VagaDAO;
 import dao.VagabdDAO;
 import dao.VeiculoDAO;
 import java.io.FileNotFoundException;
@@ -200,20 +199,7 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
             throw new VagaIndisponivelException();
         }
-<<<<<<< HEAD
-        
-        if (cobrancas.gerarCobranca(novaCobranca)) {
-            vagas.ocuparVaga(novaCobranca.getIdVaga());
-            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
-=======
 
-        if (testeValido) {
-            if (cobrancas.gerarCobranca(novaCobranca)) {
-                vagas.ocuparVaga(novaCobranca.getIdVaga());
-                JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
-            }
->>>>>>> 70021b1c06b09f19273dd7be193574b2104d9e47
-        }
         
     }
 

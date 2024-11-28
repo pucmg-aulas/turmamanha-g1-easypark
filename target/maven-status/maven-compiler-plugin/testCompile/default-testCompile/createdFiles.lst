@@ -1,6 +1,7 @@
 Controllers\RelatoriosController.class
 dao\EstacionamentobdDAO.class
 view\ValorArrecadadoView$3.class
+Exceptions\VeiculoNaoEncontradoException.class
 view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class

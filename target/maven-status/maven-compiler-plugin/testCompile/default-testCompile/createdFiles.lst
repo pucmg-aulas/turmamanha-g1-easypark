@@ -2,6 +2,8 @@ Controllers\RelatoriosController.class
 dao\EstacionamentobdDAO.class
 view\ValorArrecadadoView$3.class
 Exceptions\VeiculoNaoEncontradoException.class
+UnitaryTests\ClientebdDAOTest.class
+UnitaryTests\EstacionamentobdDAOTest.class
 view\ExibirVeiculosClienteView$1.class
 view\MensagemSobre.class
 Controllers\AddVeiculoController.class
@@ -103,10 +105,12 @@ view\AtualizaVeiculoView$3.class
 view\MenuEstacionamentoView$3.class
 view\ValorArrecadadoView$2.class
 Models\EncontrarMaior.class
+UnitaryTests\VeiculobdDAOTest.class
 view\SelecionarEstacionamentoView.class
 dao\VagaDAO.class
 view\ListarVagasView.class
 Models\VagaPCD.class
+UnitaryTests\VagabdDAOTest.class
 view\GerarCobrancaView$2.class
 Controllers\ExibirDetalhesClienteController.class
 view\AtualizaVeiculoView$2.class

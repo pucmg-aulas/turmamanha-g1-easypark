@@ -85,9 +85,10 @@ public class PagarCobrancaController {
         Object[] colunas = {"ID", "Tipo", "Status", "Placa", "Entrada", "Tempo Total", "Valor Total"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
-        // Itera sobre as cobranças ocupadas e busca as informações da cobrança no banco de dados
-        for (Cobranca cobranca : cobrancas.lerCobrancas()) {
-            if (cobranca.getVeiculo() != null && cobranca.getHoraSaida() == null) { // Considera vagas ocupadas sem hora de saída
+            // Itera sobre as cobranças ocupadas e filtra pelo ID do estacionamento
+        for (Cobranca cobranca : cobrancas.lerCobrancasPorEstacionamento(idEstacionamento)) {
+            if (cobranca.getVeiculo() != null && cobranca.getHoraSaida() == null  && cobranca.getIdEstacionamento() == idEstacionamento) { // Filtra pelo ID do estacionamento
+
                 Vaga vaga = vagas.getVagaPorId(cobranca.getIdVaga());
                 String tipoVaga = vaga != null ? vaga.getTipo() : "Desconhecido";
                 String placa = cobranca.getVeiculo().getPlaca();
@@ -97,6 +98,7 @@ public class PagarCobrancaController {
 
                 tm.addRow(new Object[]{cobranca.getIdVaga(), tipoVaga, "Ocupado", placa, entrada, tempoTotal, valorTotal});
             }
+        
         }
         view.getVagasTable().setModel(tm);
     }
@@ -109,7 +111,7 @@ public class PagarCobrancaController {
             return;
         }
 
-        Integer idVaga = (Integer) dadosVaga[0];
+        Integer idVaga = (Integer) dadosVaga[0];    
         String placaText = (String) dadosVaga[1];
 
         if (idVaga == null || placaText.isEmpty()) {

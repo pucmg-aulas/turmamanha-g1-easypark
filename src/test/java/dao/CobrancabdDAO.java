@@ -182,4 +182,42 @@ public class CobrancabdDAO {
 
         return cobrancas;
     }
+    
+    public List<Cobranca> lerCobrancasPorEstacionamento(int idEstacionamentoFiltro) throws SQLException, FileNotFoundException {
+    List<Cobranca> cobrancas = new ArrayList<>();
+
+    String sql = "SELECT id, idVaga, placaVeiculo, idEstacionamento, horaEntrada, horaSaida, tempoTotal, valorTotal " +
+                 "FROM cobranca WHERE idEstacionamento = ?";
+
+    try (Connection conn = BancoDados.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, idEstacionamentoFiltro);
+        try (ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int idVaga = rs.getInt("idVaga");
+                String placaVeiculo = rs.getString("placaVeiculo");
+                int idEstacionamento = rs.getInt("idEstacionamento");
+                LocalDateTime horaEntrada = rs.getTimestamp("horaEntrada").toLocalDateTime();
+                LocalDateTime horaSaida = rs.getTimestamp("horaSaida") != null ? rs.getTimestamp("horaSaida").toLocalDateTime() : null;
+                double tempoTotal = rs.getDouble("tempoTotal");
+                double valorTotal = rs.getDouble("valorTotal");
+
+                // Busca o veículo pelo DAO
+                Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
+
+                // Cria uma nova instância de cobrança
+                Cobranca cobrancaAtual = new Cobranca(id, idVaga, idEstacionamento, automovel, horaEntrada, horaSaida, tempoTotal, valorTotal);
+
+                // Adiciona à lista de cobranças
+                cobrancas.add(cobrancaAtual);
+            }
+        }
+    }
+
+    return cobrancas;
+}
+
 }

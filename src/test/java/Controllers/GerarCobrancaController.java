@@ -101,6 +101,7 @@ public class GerarCobrancaController {
 
         String idVaga = (String) view.getVagasTable().getValueAt(selectedRow, 0);
         String placaVeiculo = view.getPlaca().getText().trim();
+        
 
         Veiculo automovel = veiculos.buscarVeiculoPorPlaca(placaVeiculo);
         if (automovel == null) {

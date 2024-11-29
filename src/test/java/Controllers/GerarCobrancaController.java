@@ -19,7 +19,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import view.GerarCobrancaView;
-import Exceptions.VeiculoNaoEncontradoException;
 
 public class GerarCobrancaController {
 
@@ -124,12 +123,9 @@ public class GerarCobrancaController {
         return !(idVaga.isEmpty() || placaVeiculo.isEmpty());
     }
 
-    private Veiculo isVeiculoCadastrado(String placa) throws VeiculoNaoEncontradoException {
+    private Veiculo isVeiculoCadastrado(String placa) throws FileNotFoundException  {
         Veiculo veiculoEncontrado = veiculos.buscarVeiculoPorPlaca(placa);
-        if (veiculoEncontrado == null) {
-            throw new VeiculoNaoEncontradoException();
-        }
-        return veiculoEncontrado;
+        return veiculoEncontrado != null ? veiculoEncontrado : null;
     }
 
 
@@ -142,12 +138,11 @@ public class GerarCobrancaController {
         }
 
         Veiculo veiculoAtual = null;
-        try {
             veiculoAtual = isVeiculoCadastrado(novaCobranca.getVeiculo().getPlaca());
-        } catch (VeiculoNaoEncontradoException e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
-            Object[] opcoes = {"Sim", "Não"};
-            int resposta = JOptionPane.showOptionDialog(
+            if(veiculoAtual == null){
+                JOptionPane.showMessageDialog(view, "Esse veículo não está cadastrado!");
+                Object[] opcoes = {"Sim", "Não"};
+                int resposta = JOptionPane.showOptionDialog(
                     view,
                     "Esse veículo não está cadastrado. Deseja cadastrar o veículo?",
                     "Confirmação",
@@ -181,13 +176,12 @@ public class GerarCobrancaController {
                 veiculoAtual = new Veiculo(novaCobranca.getVeiculo().getPlaca(), clienteAnonimo, "Aleatório");
                 veiculos.cadastrarVeiculoPorCliente(veiculoAtual);
             }
-        }
-
-        if (veiculoAtual != null) {
-            String nomeCliente = veiculoAtual.getCliente().getNome();
-            testeValido = testarAnonimo(novaCobranca);
-            JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);
-        }
+        }else{
+                String nomeCliente = veiculoAtual.getCliente().getNome();
+                testeValido = testarAnonimo(novaCobranca);
+                JOptionPane.showMessageDialog(view, "Veículo Encontrado - (Proprietário) " + nomeCliente);
+            }
+            
 
         Vaga vaga = vagas.getVagaPorId(novaCobranca.getIdVaga());
         if (vaga == null) {
@@ -199,9 +193,12 @@ public class GerarCobrancaController {
             JOptionPane.showMessageDialog(view, "Vaga Ocupada!");
             throw new VagaIndisponivelException();
         }
-
         
-    }
+        if (cobrancas.gerarCobranca(novaCobranca)) {
+            vagas.ocuparVaga(novaCobranca.getIdVaga());
+            JOptionPane.showMessageDialog(view, "Cobrança gerada com sucesso!");
+        }
+    }    
 
     private boolean testarAnonimo(Cobranca cobranca) {
         try {
@@ -232,15 +229,12 @@ public class GerarCobrancaController {
                             opcoes[0]
                     );
                     if (respostaprop1 == 0) {
-                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: "), placa);
+                        cadastroVeiculo = new AddVeiculoController(desktopPane, placa, false);
                     } else if (respostaprop1 == 1) {
-                        cadastroCliente = new AddClienteController(desktopPane);
-                        
-                        //nao consegui puxar a tela de cadastro de cliente primeiro, para conseguir puxar o cpf do cliente
-                        atualizaVeiculo = new AtualizaVeiculoController(desktopPane, JOptionPane.showInputDialog("Insira o cpf: ") ,placa);
+                        cadastroCliente = new AddClienteController(desktopPane, placa);
 
                     }
-                    
+
                     return false;
                 } else if (resposta == 1) {
                     return true;

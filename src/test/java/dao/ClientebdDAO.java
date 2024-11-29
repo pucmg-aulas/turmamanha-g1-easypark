@@ -31,7 +31,7 @@ public class ClientebdDAO {
         return instance;
     }
     
-    private List<Cliente> lerClientes() {
+    public List<Cliente> lerClientes() {
         List<Cliente> listaCliente = new ArrayList<>();
         String comandoSQL = "SELECT * FROM cliente";
         

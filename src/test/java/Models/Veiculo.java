@@ -15,6 +15,10 @@ public class Veiculo{
         this.modelo = modelo;
     }
 
+    public Veiculo(String abC1234, String fiat, String uno, String preto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getPlaca() {
         return placa;
     }

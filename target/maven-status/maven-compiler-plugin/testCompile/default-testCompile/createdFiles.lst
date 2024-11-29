@@ -114,7 +114,6 @@ view\MenuClienteView$1.class
 view\RelatorioArrecadacaoVagaView.class
 view\MenuPrincipalViewJframe$1.class
 view\SelecionarClienteView$2.class
-Controllers\AtualizaVeiculoController.class
 view\ExibirHistoricoUsoView$1.class
 Controllers\GerarCobrancaController.class
 Controllers\MenuClienteController.class

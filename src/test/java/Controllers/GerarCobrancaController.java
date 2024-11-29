@@ -25,7 +25,6 @@ public class GerarCobrancaController {
     private GerarCobrancaView view;
     private AddClienteController cadastroCliente;
     private AddVeiculoController cadastroVeiculo;
-    private AtualizaVeiculoController atualizaVeiculo;
     private int idEstacionamento;
     private JDesktopPane desktopPane;
     private VagabdDAO vagas;

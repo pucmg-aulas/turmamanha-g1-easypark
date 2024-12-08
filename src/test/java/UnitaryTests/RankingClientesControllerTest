@@ -1,0 +1,142 @@
+package UnitaryTests;
+
+import Controllers.RankingClientesController;
+import Models.Cliente;
+import Models.Pagamento;
+import Models.Veiculo;
+import dao.ClientebdDAO;
+import dao.PagamentobdDAO;
+import dao.VeiculoDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class RankingClientesControllerTest {
+
+    private JDesktopPane mockDesktopPane;
+    private ClientebdDAO mockClientebdDAO;
+    private PagamentobdDAO mockPagamentobdDAO;
+    private VeiculoDAO mockVeiculoDAO;
+    private RankingClientesController controller;
+
+    @BeforeEach
+    void setUp() throws IOException, SQLException {
+        // Criar mocks das dependências
+        mockDesktopPane = mock(JDesktopPane.class);
+        mockClientebdDAO = mock(ClientebdDAO.class);
+        mockPagamentobdDAO = mock(PagamentobdDAO.class);
+        mockVeiculoDAO = mock(VeiculoDAO.class);
+
+        // Simular instâncias singleton
+        Mockito.when(ClientebdDAO.getInstance()).thenReturn(mockClientebdDAO);
+        Mockito.when(PagamentobdDAO.getInstance()).thenReturn(mockPagamentobdDAO);
+        Mockito.when(VeiculoDAO.getInstance()).thenReturn(mockVeiculoDAO);
+
+        // Inicializar o controlador com mocks
+        controller = new RankingClientesController(mockDesktopPane, 1);
+    }
+
+    @Test
+    void carregarTabela_DeveCarregarDadosCorretamente() throws IOException, SQLException {
+        // Simular dados retornados pelos DAOs
+        List<Pagamento> pagamentos = new ArrayList<>();
+        Pagamento pagamento = new Pagamento();
+        pagamento.setIdEstacionamento(1);
+        pagamento.setDataPagamento(LocalDateTime.now());
+        pagamento.setValorPago(100.0);
+        pagamento.setPlacaVeiculo("ABC1234");
+        pagamento.setTipoVaga(null);
+        pagamento.setTempoTotal(0);
+
+        pagamentos.add(pagamento);
+        when(mockPagamentobdDAO.listarPagamentos()).thenReturn(pagamentos);
+
+        // Criando um cliente para o veículo
+        Cliente cliente = new Cliente("João", "12345678900");
+        Veiculo veiculo = new Veiculo("ABC1234", "ModeloExemplo", cliente);
+        when(mockVeiculoDAO.buscarVeiculoPorPlaca("ABC1234")).thenReturn(veiculo);
+
+        // Chamar método que carrega a tabela
+        controller.carregarTabela();
+
+        // Obter modelo da tabela
+        DefaultTableModel model = (DefaultTableModel) controller.view.getTableClientes().getModel();
+
+        // Verificar se os dados foram carregados corretamente
+        assertEquals(1, model.getRowCount());
+        assertEquals("12345678900", model.getValueAt(0, 0));
+        assertEquals("João", model.getValueAt(0, 1));
+        assertEquals(100.0, model.getValueAt(0, 2));
+    }
+
+    @Test
+    void carregarTabelaFiltrada_DeveFiltrarPagamentosPorMes() throws IOException, SQLException {
+        // Simular seleção de mês
+        JComboBox<String> mockMesesBox = controller.view.getMesesBox();
+        mockMesesBox.addItem("3 - Março");
+        mockMesesBox.setSelectedIndex(0);
+
+        // Simular dados retornados pelos DAOs
+        List<Pagamento> pagamentos = new ArrayList<>();
+        Pagamento pagamento1 = new Pagamento();
+        pagamento1.setIdEstacionamento(1);
+        pagamento1.setDataPagamento(LocalDateTime.of(2024, 3, 10, 12, 0));
+        pagamento1.setValorPago(100.0);
+        pagamento1.setPlacaVeiculo("ABC1234");
+        pagamento1.setTipoVaga(null);
+        pagamento1.setTempoTotal(0);
+
+        Pagamento pagamento2 = new Pagamento();
+        pagamento2.setIdEstacionamento(1);
+        pagamento2.setDataPagamento(LocalDateTime.of(2024, 4, 5, 12, 0));
+        pagamento2.setValorPago(200.0);
+        pagamento2.setPlacaVeiculo("XYZ5678");
+        pagamento2.setTipoVaga(null);
+        pagamento2.setTempoTotal(0);
+
+        pagamentos.add(pagamento1);
+        pagamentos.add(pagamento2);
+        when(mockPagamentobdDAO.listarPagamentos()).thenReturn(pagamentos);
+
+        // Criando um cliente para o veículo
+        Cliente cliente = new Cliente("João", "12345678900");
+        Veiculo veiculo = new Veiculo("ABC1234", "ModeloExemplo", cliente);
+        when(mockVeiculoDAO.buscarVeiculoPorPlaca("ABC1234")).thenReturn(veiculo);
+
+        // Chamar método que filtra a tabela
+        controller.carregarTabelaFiltrada();
+
+        // Obter modelo da tabela
+        DefaultTableModel model = (DefaultTableModel) controller.view.getTableClientes().getModel();
+
+        // Verificar se os dados filtrados foram carregados corretamente
+        assertEquals(1, model.getRowCount());
+        assertEquals("12345678900", model.getValueAt(0, 0));
+        assertEquals("João", model.getValueAt(0, 1));
+        assertEquals(100.0, model.getValueAt(0, 2));
+    }
+
+    @Test
+    void abrirDetalhesCliente_DeveAbrirDetalhesDoCliente() throws IOException {
+        // Simular tabela com cliente selecionado
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"CPF", "Nome", "Valor"}, 0);
+        model.addRow(new Object[]{"12345678900", "João", 100.0});
+        controller.view.getTableClientes().setModel(model);
+        controller.view.getTableClientes().setRowSelectionInterval(0, 0);
+
+        // Simular ação de abrir detalhes
+        controller.abrirDetalhesCliente();
+    }
+}

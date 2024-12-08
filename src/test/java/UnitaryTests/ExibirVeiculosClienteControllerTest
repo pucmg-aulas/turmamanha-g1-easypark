@@ -1,0 +1,105 @@
+package UnitaryTests;
+
+import Controllers.ExibirVeiculosClienteController;
+import Models.Cliente;
+import Models.Veiculo;
+import dao.ClientebdDAO;
+import dao.VeiculoDAO;
+import view.ExibirVeiculosClienteView;
+import Exceptions.VeiculoNaoEncontradoException;
+
+import javax.swing.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class ExibirVeiculosClienteControllerTest {
+
+    private ExibirVeiculosClienteController controller;
+    private ExibirVeiculosClienteView mockView;
+    private ClientebdDAO mockClienteDAO;
+    private VeiculoDAO mockVeiculoDAO;
+    private JDesktopPane mockDesktopPane;
+    private String cpfCliente = "12345678900";
+
+    @BeforeEach
+    void setUp() throws IOException {
+        // Mocks
+        mockView = Mockito.mock(ExibirVeiculosClienteView.class);
+        mockClienteDAO = Mockito.mock(ClientebdDAO.class);
+        mockVeiculoDAO = Mockito.mock(VeiculoDAO.class);
+        mockDesktopPane = Mockito.mock(JDesktopPane.class);
+
+        // Simulando a instância do DAO
+        ClientebdDAO.setInstance(mockClienteDAO);
+        VeiculoDAO.setInstance(mockVeiculoDAO);
+
+        // Configurando a view mockada
+        when(mockView.getListaVeiculos()).thenReturn(new JList<>());
+
+        // Criando o controlador com dependências mockadas
+        controller = new ExibirVeiculosClienteController(mockDesktopPane, cpfCliente) {
+            @Override
+            protected ExibirVeiculosClienteView createView(JDesktopPane desktopPane) {
+                return mockView;
+            }
+
+            @Override
+            protected VeiculoDAO createVeiculoDAO() {
+                return mockVeiculoDAO;
+            }
+
+            @Override
+            protected ClientebdDAO createClienteDAO() {
+                return mockClienteDAO;
+            }
+        };
+    }
+
+    @Test
+    void testCarregarVeiculosComSucesso() throws IOException, VeiculoNaoEncontradoException {
+        // Configuração do mock para retorno do cliente e lista de veículos
+        Cliente cliente = new Cliente("João Silva", cpfCliente);
+        Veiculo veiculo1 = new Veiculo("ABC-1234", "Modelo A", cliente);
+        Veiculo veiculo2 = new Veiculo("XYZ-5678", "Modelo B", cliente);
+        List<Veiculo> veiculos = Arrays.asList(veiculo1, veiculo2);
+
+        when(mockClienteDAO.buscarClientePorCpf(cpfCliente)).thenReturn(cliente);
+        when(mockVeiculoDAO.buscarVeiculosPorCliente(cliente)).thenReturn(veiculos);
+
+        // Executando o método
+        controller = new ExibirVeiculosClienteController(mockDesktopPane, cpfCliente);
+
+        // Verificando se a lista de veículos foi configurada corretamente na view
+        verify(mockView.getListaVeiculos()).setModel(any(DefaultListModel.class));
+    }
+
+    @Test
+    void testCarregarVeiculosSemVeiculos() throws IOException {
+        // Configuração do mock para retorno do cliente e uma lista vazia de veículos
+        Cliente cliente = new Cliente("João Silva", cpfCliente);
+        when(mockClienteDAO.buscarClientePorCpf(cpfCliente)).thenReturn(cliente);
+        when(mockVeiculoDAO.buscarVeiculosPorCliente(cliente)).thenReturn(List.of());
+
+        // Verificando se a exceção é lançada e a mensagem é exibida
+        assertThrows(VeiculoNaoEncontradoException.class, () -> {
+            new ExibirVeiculosClienteController(mockDesktopPane, cpfCliente);
+        });
+
+        // Verificando se a mensagem de erro foi exibida e a view foi fechada
+        verify(mockView).dispose();
+    }
+
+    @AfterEach
+    void tearDown() {
+        mockDesktopPane.removeAll();
+    }
+}

@@ -1,0 +1,102 @@
+package UnitaryTests;
+
+import Controllers.SelectClienteController;
+import Models.Cliente;
+import dao.ClientebdDAO;
+import javax.swing.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import view.SelecionarClienteView;
+
+
+import static org.mockito.Mockito.*;
+
+public class SelectClienteControllerTest {
+
+    private JDesktopPane desktopPane;
+    private SelecionarClienteView viewMock;
+    private ClientebdDAO clientesMock;
+    private SelectClienteController controller;
+    private Cliente clienteMock;
+
+    @BeforeEach
+    public void setUp() {
+        desktopPane = mock(JDesktopPane.class);
+        viewMock = mock(SelecionarClienteView.class);
+        clientesMock = mock(ClientebdDAO.class);
+        clienteMock = mock(Cliente.class);
+
+        // Configura a view mockada para retornar os componentes necessários
+        when(viewMock.getCpf()).thenReturn(new JTextField());
+        when(viewMock.getConfirmarBtn()).thenReturn(new JButton());
+
+        // Mocka o retorno do método buscarClientePorCpf
+        when(clientesMock.buscarClientePorCpf("12345678900")).thenReturn(clienteMock);
+        when(clienteMock.getNome()).thenReturn("Cliente Teste");
+
+        try {
+            // Cria o controller com os mocks
+            controller = new SelectClienteController(desktopPane);
+        } catch (IOException ex) {
+            Logger.getLogger(SelectClienteControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void testSelecionarCliente_ClienteEncontrado() throws IOException {
+        // Simula a entrada de CPF na interface
+        JTextField cpfField = viewMock.getCpf();
+        cpfField.setText("12345678900");
+
+        // Simula o clique no botão de confirmar
+        viewMock.getConfirmarBtn().doClick();
+
+        // Verifica se a mensagem foi exibida após a seleção de um cliente
+        verify(clientesMock, times(1)).buscarClientePorCpf("12345678900");
+        verify(clienteMock, times(1)).getNome();
+    }
+
+    @Test
+    public void testSelecionarCliente_ClienteNaoEncontrado() throws IOException {
+        // Simula a entrada de CPF na interface que não corresponde a um cliente
+        when(clientesMock.buscarClientePorCpf("00000000000")).thenReturn(null);
+        
+        JTextField cpfField = viewMock.getCpf();
+        cpfField.setText("00000000000");
+
+        // Simula o clique no botão de confirmar
+        viewMock.getConfirmarBtn().doClick();
+
+        // Verifica que o método buscarClientePorCpf foi chamado
+        verify(clientesMock, times(1)).buscarClientePorCpf("00000000000");
+        
+        // Verifica se a mensagem de cliente não encontrado foi exibida
+        // Adicione aqui a verificação de chamada a JOptionPane se necessário
+    }
+
+    @Test
+    public void testGetCpf_CampoVazio() {
+        JTextField cpfField = viewMock.getCpf();
+        cpfField.setText("");
+
+        // Chama o método getCpf e verifica se retorna null (campo vazio)
+        String cpf = controller.getCpf();
+        assertNull(cpf);
+    }
+
+    @Test
+    public void testGetCpf_CampoPreenchido() {
+        JTextField cpfField = viewMock.getCpf();
+        cpfField.setText("12345678900");
+
+        // Chama o método getCpf e verifica se retorna o CPF preenchido
+        String cpf = controller.getCpf();
+        assertEquals("12345678900", cpf);
+    }
+}

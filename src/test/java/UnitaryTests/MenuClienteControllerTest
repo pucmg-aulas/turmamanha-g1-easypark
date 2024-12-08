@@ -1,0 +1,82 @@
+package UnitaryTests;
+
+import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import java.io.IOException;
+import java.sql.SQLException;
+import view.MenuClienteView;
+import Controllers.MenuClienteController;
+
+public class MenuClienteControllerTest {
+
+    private MenuClienteView viewMock;
+    private JDesktopPane desktopPaneMock;
+    private MenuClienteController controller;
+    private final String CPF = "12345678900";
+
+    @BeforeEach
+    public void setUp() throws IOException {
+        // Mocks dos objetos dependentes
+        desktopPaneMock = mock(JDesktopPane.class);
+        viewMock = mock(MenuClienteView.class);
+
+        // Mock dos botões
+        JButton exibirDetalhesBtn = mock(JButton.class);
+        JButton exibirVeiculosBtn = mock(JButton.class);
+        JButton cadastrarVeiculoBtn = mock(JButton.class);
+        JButton historicoUsoBtn = mock(JButton.class);
+
+        // Configuração dos mocks
+        when(viewMock.getExibirDetalhesBtn()).thenReturn(exibirDetalhesBtn);
+        when(viewMock.getExibirVeiculosBtn()).thenReturn(exibirVeiculosBtn);
+        when(viewMock.getCadastrarVeiculoBtn()).thenReturn(cadastrarVeiculoBtn);
+        when(viewMock.getHistoricoUsoBtn()).thenReturn(historicoUsoBtn);
+
+        // Criação do controlador
+        controller = new MenuClienteController(desktopPaneMock, CPF) {
+            protected MenuClienteView createView(JDesktopPane desktopPane) {
+                return viewMock; // Retorna o mock da view
+            }
+        };
+    }
+
+    @Test
+    public void testExibirDetalhesAction() throws IOException {
+        // Simula o clique no botão "Exibir Detalhes"
+        viewMock.getExibirDetalhesBtn().doClick();
+
+        // Verifica se o controlador ExibirDetalhesClienteController foi chamado
+        verify(viewMock.getExibirDetalhesBtn(), times(1)).addActionListener(any());
+    }
+
+    @Test
+    public void testExibirVeiculosAction() throws IOException {
+        // Simula o clique no botão "Exibir Veículos"
+        viewMock.getExibirVeiculosBtn().doClick();
+
+        // Verifica se o controlador ExibirVeiculosClienteController foi chamado
+        verify(viewMock.getExibirVeiculosBtn(), times(1)).addActionListener(any());
+    }
+
+    @Test
+    public void testCadastrarVeiculoAction() throws IOException {
+        // Simula o clique no botão "Cadastrar Veículo"
+        viewMock.getCadastrarVeiculoBtn().doClick();
+
+        // Verifica se o controlador AddVeiculoController foi chamado
+        verify(viewMock.getCadastrarVeiculoBtn(), times(1)).addActionListener(any());
+    }
+
+    @Test
+    public void testHistoricoUsoAction() throws IOException, SQLException {
+        // Simula o clique no botão "Histórico de Uso"
+        viewMock.getHistoricoUsoBtn().doClick();
+
+        // Verifica se o controlador ExibirHistoricoUsoController foi chamado
+        verify(viewMock.getHistoricoUsoBtn(), times(1)).addActionListener(any());
+    }
+}

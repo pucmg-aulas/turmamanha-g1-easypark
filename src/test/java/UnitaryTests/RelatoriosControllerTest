@@ -1,0 +1,102 @@
+package UnitaryTests;
+
+import Controllers.RelatoriosController;
+import Controllers.RelatorioArrecadacaoVagaController;
+import Controllers.RelatorioFrequenciaUsoVagaController;
+import javax.swing.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import view.RelatoriosView;
+
+
+import static org.mockito.Mockito.*;
+
+public class RelatoriosControllerTest {
+
+    private JDesktopPane desktopPane;
+    private RelatoriosView viewMock;
+    private RelatoriosController controller;
+    private final int idEstacionamento = 1;
+
+    @BeforeEach
+    public void setUp() {
+        desktopPane = mock(JDesktopPane.class);
+        viewMock = mock(RelatoriosView.class);
+
+        // Configura a view mockada para retornar os componentes quando necessários
+        when(viewMock.getArrecadacaoBtn()).thenReturn(new JButton());
+        when(viewMock.getFrequenciaBtn()).thenReturn(new JButton());
+
+        // Cria o controller com os mocks
+        controller = new RelatoriosController(desktopPane, idEstacionamento);
+    }
+
+    @Test
+    public void testArrecadacaoBtnActionListener() throws SQLException, IOException {
+        // Simula a criação de um controller de arrecadação
+        RelatorioArrecadacaoVagaController mockController = mock(RelatorioArrecadacaoVagaController.class);
+        // Intercepta a instância criada pela ação do botão
+        try (MockedStatic<RelatorioArrecadacaoVagaController> mockStatic = mockStatic(RelatorioArrecadacaoVagaController.class)) {
+            mockStatic.when(() -> {
+                try {
+                    new RelatorioArrecadacaoVagaController(desktopPane, idEstacionamento);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }).thenReturn(mockController);
+            
+            // Simula o clique no botão
+            viewMock.getArrecadacaoBtn().doClick();
+            
+            // Verifica se o construtor do controller foi chamado
+            mockStatic.verify(() -> {
+                try {
+                    new RelatorioArrecadacaoVagaController(desktopPane, idEstacionamento);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }, times(1));
+        }
+    }
+
+    @Test
+    public void testFrequenciaBtnActionListener() throws SQLException, IOException {
+        // Simula a criação de um controller de frequência
+        RelatorioFrequenciaUsoVagaController mockController = mock(RelatorioFrequenciaUsoVagaController.class);
+        // Intercepta a instância criada pela ação do botão
+        try (MockedStatic<RelatorioFrequenciaUsoVagaController> mockStatic = mockStatic(RelatorioFrequenciaUsoVagaController.class)) {
+            mockStatic.when(() -> {
+                try {
+                    new RelatorioFrequenciaUsoVagaController(desktopPane, idEstacionamento);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }).thenReturn(mockController);
+            
+            // Simula o clique no botão
+            viewMock.getFrequenciaBtn().doClick();
+            
+            // Verifica se o construtor do controller foi chamado
+            mockStatic.verify(() -> {
+                try {
+                    new RelatorioFrequenciaUsoVagaController(desktopPane, idEstacionamento);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(RelatoriosControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }, times(1));
+        }
+    }
+}

@@ -83,7 +83,7 @@ import view.RankingClientesView;
     }
       
     
-    private void carregarTabela() throws IOException, SQLException {
+    public void carregarTabela() throws IOException, SQLException {
         Object colunas[] = {"CPF", "Nome", "Valor "};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0){
         @Override
@@ -177,7 +177,7 @@ import view.RankingClientesView;
     }
     
     
-    private void carregarTabelaFiltrada() throws IOException, SQLException{
+    public void carregarTabelaFiltrada() throws IOException, SQLException{
         String mesSelecionado = (String) view.getMesesBox().getSelectedItem();
         String[] dadosMes = mesSelecionado.split("-");
         int numeroMes = Integer.parseInt(dadosMes[0].trim());

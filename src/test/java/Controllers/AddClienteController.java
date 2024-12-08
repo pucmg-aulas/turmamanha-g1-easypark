@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import view.CadastroClienteView;
 
 public class AddClienteController {
-    private CadastroClienteView view;
+    public CadastroClienteView view;
     private ClientebdDAO clientes;
     private AddVeiculoController addVeiculoController;
     

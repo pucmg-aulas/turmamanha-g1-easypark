@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import view.CadastroVeiculoClienteView;
 
 public class AddVeiculoController {
-    private CadastroVeiculoClienteView view;
+    public CadastroVeiculoClienteView view;
     private VeiculoDAO veiculos;
     private ClientebdDAO clientes;
     private JDesktopPane desktopPane;

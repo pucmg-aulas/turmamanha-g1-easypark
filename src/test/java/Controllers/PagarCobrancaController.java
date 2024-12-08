@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class PagarCobrancaController {
 
-    private PagarCobrancaView view;
+    public PagarCobrancaView view;
     private JDesktopPane desktopPane;
     private int idEstacionamento;
     private VagabdDAO vagas;
@@ -81,7 +81,7 @@ public class PagarCobrancaController {
         view.dispose();
     }
 
-    private void carregarVagasOcupadas() throws SQLException, FileNotFoundException {
+    public void carregarVagasOcupadas() throws SQLException, FileNotFoundException {
         Object[] colunas = {"ID", "Tipo", "Status", "Placa", "Entrada", "Tempo Total", "Valor Total"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
 
@@ -103,7 +103,7 @@ public class PagarCobrancaController {
         view.getVagasTable().setModel(tm);
     }
 
-    private void confirmarPagamento() throws SQLException, FileNotFoundException, IOException {
+    public void confirmarPagamento() throws SQLException, FileNotFoundException, IOException {
         Object[] dadosVaga = recuperarDadosVaga();
         
         if (dadosVaga == null) {
@@ -166,7 +166,7 @@ public class PagarCobrancaController {
         return qtdFracao * Cobranca.VALORTEMPO;
     }
     
-    private double mostrarValor() throws IOException, SQLException {
+    public double mostrarValor() throws IOException, SQLException {
         Object[] dadosVaga = recuperarDadosVaga();
         Integer idVaga = (Integer) dadosVaga[0];
         String placaText = (String) dadosVaga[1];

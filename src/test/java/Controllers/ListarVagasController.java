@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class ListarVagasController {
 
-    private ListarVagasView view;
+    public ListarVagasView view;
     private int idEstacionamento;
     private JDesktopPane desktopPane;
     private VagabdDAO vagas;

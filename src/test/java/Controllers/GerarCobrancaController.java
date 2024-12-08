@@ -22,7 +22,7 @@ import view.GerarCobrancaView;
 
 public class GerarCobrancaController {
 
-    private GerarCobrancaView view;
+    public GerarCobrancaView view;
     private AddClienteController cadastroCliente;
     private AddVeiculoController cadastroVeiculo;
     private int idEstacionamento;
@@ -73,7 +73,7 @@ public class GerarCobrancaController {
         });
     }
 
-    private void carregarVagasDisponiveis() throws SQLException {
+    public void carregarVagasDisponiveis() throws SQLException {
         Object colunas[] = {"ID", "Tipo", "Status"};
         DefaultTableModel tm = new DefaultTableModel(colunas, 0);
         tm.setNumRows(0);
@@ -92,7 +92,7 @@ public class GerarCobrancaController {
         this.view.dispose();
     }
 
-    private Cobranca getAtributos() throws FileNotFoundException, IOException, SQLException {
+    public Cobranca getAtributos() throws FileNotFoundException, IOException, SQLException {
         int selectedRow = view.getVagasTable().getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(view, "Selecione uma vaga.");
@@ -119,7 +119,7 @@ public class GerarCobrancaController {
         }
     }
 
-    private boolean validarCampos(String idVaga, String placaVeiculo) {
+    public boolean validarCampos(String idVaga, String placaVeiculo) {
         return !(idVaga.isEmpty() || placaVeiculo.isEmpty());
     }
 
@@ -129,7 +129,7 @@ public class GerarCobrancaController {
     }
 
 
-    private void createCobranca() throws FileNotFoundException, IOException, SQLException, VagaIndisponivelException {
+    public void createCobranca() throws FileNotFoundException, IOException, SQLException, VagaIndisponivelException {
         Cobranca novaCobranca = getAtributos();
         boolean testeValido = true;
         if (novaCobranca == null) {

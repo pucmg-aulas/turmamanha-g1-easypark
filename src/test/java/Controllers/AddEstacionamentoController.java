@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class AddEstacionamentoController  {
 
-    private CadastroEstacionamentoView view;
+    public CadastroEstacionamentoView view;
     private EstacionamentobdDAO estacionamentos;
     private VagabdDAO vagas;
 

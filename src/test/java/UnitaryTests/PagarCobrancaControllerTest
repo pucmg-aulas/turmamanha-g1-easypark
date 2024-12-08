@@ -1,0 +1,146 @@
+package UnitaryTests;
+
+import Controllers.PagarCobrancaController;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import Models.Cobranca;
+import Models.Vaga;
+import Models.VagaRegular;
+import Models.Veiculo;
+import dao.CobrancabdDAO;
+import dao.PagamentobdDAO;
+import dao.VagabdDAO;
+import dao.VeiculoDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class PagarCobrancaControllerTest {
+
+    @Mock
+    private JDesktopPane desktopPane;
+
+    @Mock
+    private PagarCobrancaView view;
+
+    @Mock
+    private VagabdDAO vagas;
+
+    @Mock
+    private CobrancabdDAO cobrancas;
+
+    @Mock
+    private PagamentobdDAO pagamentos;
+
+    @Mock
+    private VeiculoDAO veiculos;
+
+    private PagarCobrancaController controller;
+
+    private final int idEstacionamento = 1;
+    private final LocalDateTime dataSaida = LocalDateTime.now();
+
+
+    @Test
+void testConfirmarPagamento() throws Exception {
+    Object[] selectedVaga = {1, "ABC-1234", "Regular"};
+
+    Veiculo veiculo = new Veiculo("ABC-1234", "ModeloExemplo"); // Adicione um modelo de exemplo ou use um construtor que aceite apenas a placa
+    Cobranca cobranca = new Cobranca(0, 1, idEstacionamento, veiculo, LocalDateTime.now().minusHours(1), null, 0, 0.0);
+
+    when(view.getVagasTable().getSelectedRow()).thenReturn(0);
+    when(view.getVagasTable().getValueAt(0, 0)).thenReturn(selectedVaga[0]);
+    when(view.getVagasTable().getValueAt(0, 3)).thenReturn(selectedVaga[1]);
+    when(cobrancas.getCobranca(1)).thenReturn(cobranca);
+
+    controller.confirmarPagamento();
+
+    verify(pagamentos, times(1)).salvarPagamento(eq(cobranca), any(Timestamp.class));
+    verify(cobrancas, times(1)).removerCobranca(cobranca);
+    verify(vagas, times(1)).liberarVaga(1);
+    verify(view, times(1)).showMessage("Cobrança paga e vaga liberada com sucesso!");
+}
+
+
+
+    @Test
+void testMostrarValor() throws Exception {
+    // Mock input data
+    Object[] selectedVaga = {1, "ABC-1234", "Regular"};
+
+    // Criando uma instância da cobrança com o construtor correto
+    Veiculo veiculo = new Veiculo("ABC-1234", "ModeloExemplo"); // Passando um modelo fictício
+    Cobranca cobranca = new Cobranca(0, 1, idEstacionamento, veiculo, LocalDateTime.now().minusHours(1), null, 0, 0.0);
+
+    when(view.getVagasTable().getSelectedRow()).thenReturn(0);
+    when(view.getVagasTable().getValueAt(0, 0)).thenReturn(selectedVaga[0]);
+    when(view.getVagasTable().getValueAt(0, 3)).thenReturn(selectedVaga[1]);
+    when(cobrancas.getCobranca(1)).thenReturn(cobranca);
+
+    // Call method under test
+    double valor = controller.mostrarValor();
+
+    // Verify interactions and state
+    assertEquals(50.0, valor, 0.01); // Assuming a maximum cap of 50
+    verify(view, times(1)).getValor().setText("R$ 50.00");
+}
+
+@Test
+void testCarregarVagasOcupadas() throws Exception {
+    // Mock input data
+    List<Cobranca> cobrancasList = new ArrayList<>();
+    Veiculo veiculo = new Veiculo("XYZ-9876", "ModeloExemplo"); // Passando um modelo fictício
+    Cobranca cobranca = new Cobranca(0, 1, idEstacionamento, veiculo, LocalDateTime.now().minusHours(2), null, 0, 0.0);
+    cobrancasList.add(cobranca);
+
+    // Criando uma instância de VagaRegular com o construtor correto
+    VagaRegular vaga = new VagaRegular(idEstacionamento, 1); // Passando idEstacionamento e id
+
+    when(cobrancas.lerCobrancasPorEstacionamento(idEstacionamento)).thenReturn(cobrancasList);
+    when(vagas.getVagaPorId(1)).thenReturn(vaga);
+
+    DefaultTableModel tableModel = mock(DefaultTableModel.class);
+    when(view.getVagasTable().getModel()).thenReturn(tableModel);
+
+    // Call method under test
+    controller.carregarVagasOcupadas();
+
+    // Verify interactions
+    verify(tableModel, times(1)).addRow(new Object[]{
+        1, "Regular", "Ocupado", "XYZ-9876", cobranca.getHoraEntrada(), 0, 0.0
+    });
+}
+
+
+
+    @Test
+    void testRecuperarDadosVaga() {
+        // Mock input data
+        when(view.getVagasTable().getSelectedRow()).thenReturn(0);
+        when(view.getVagasTable().getValueAt(0, 0)).thenReturn(1);
+        when(view.getVagasTable().getValueAt(0, 1)).thenReturn("Regular");
+        when(view.getVagasTable().getValueAt(0, 2)).thenReturn("Ocupado");
+        when(view.getVagasTable().getValueAt(0, 3)).thenReturn("XYZ-9876");
+
+        // Call method under test
+        Object[] dadosVaga = controller.recuperarDadosVaga();
+
+        // Verify data
+        assertNotNull(dadosVaga);
+        assertEquals(1, dadosVaga[0]);
+        assertEquals("XYZ-9876", dadosVaga[1]);
+    }
+}

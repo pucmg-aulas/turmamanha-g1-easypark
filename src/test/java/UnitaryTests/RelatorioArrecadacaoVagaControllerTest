@@ -1,0 +1,78 @@
+package UnitaryTests;
+
+import Controllers.RelatorioArrecadacaoVagaController;
+import Models.Vaga;
+import dao.PagamentobdDAO;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import view.RelatorioArrecadacaoVagaView;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+
+public class RelatorioArrecadacaoVagaControllerTest {
+
+    private JDesktopPane desktopPane;
+    private RelatorioArrecadacaoVagaView viewMock;
+    private PagamentobdDAO pagamentosMockDAO;
+    private RelatorioArrecadacaoVagaController controller;
+    private final int idEstacionamento = 1;
+
+    @BeforeEach
+    public void setUp() throws SQLException, IOException {
+        desktopPane = mock(JDesktopPane.class);
+        viewMock = mock(RelatorioArrecadacaoVagaView.class);
+        pagamentosMockDAO = mock(PagamentobdDAO.class);
+
+        // Configura o mock da view para retornar componentes simulados
+        when(viewMock.getArrecadacaoTable()).thenReturn(new JTable());
+        when(viewMock.getVoltarBtn()).thenReturn(new JButton());
+
+        // Cria o controller usando os mocks
+        controller = new RelatorioArrecadacaoVagaController(desktopPane, idEstacionamento);
+    }
+
+    @Test
+    public void testCarregarTabela() throws SQLException {
+        // Configura os dados simulados para arrecadação
+        Map<String, Double> arrecadacaoMock = new HashMap<>();
+        arrecadacaoMock.put("Tipo A", 1000.50);
+        arrecadacaoMock.put("Tipo B", 500.75);
+
+        // Configura o mock do DAO para retornar os dados simulados
+        when(pagamentosMockDAO.getArrecadacaoPorTipoVaga(idEstacionamento)).thenReturn(arrecadacaoMock);
+
+        // Executa o método
+        controller.carregarTabela();
+
+        // Verifica se a tabela foi preenchida com os dados simulados
+        DefaultTableModel tableModel = (DefaultTableModel) viewMock.getArrecadacaoTable().getModel();
+        assertEquals(2, tableModel.getRowCount());
+        assertEquals("Tipo A", tableModel.getValueAt(0, 0));
+        assertEquals("1000.50", tableModel.getValueAt(0, 1));
+        assertEquals("Tipo B", tableModel.getValueAt(1, 0));
+        assertEquals("500.75", tableModel.getValueAt(1, 1));
+    }
+
+    @Test
+    public void testCarregarTabelaComErro() throws SQLException {
+        // Configura o mock para lançar uma exceção
+        when(pagamentosMockDAO.getArrecadacaoPorTipoVaga(idEstacionamento)).thenThrow(new SQLException("Erro ao acessar o banco de dados"));
+
+        // Executa o método e verifica se ele lida com a exceção
+        try {
+            controller.carregarTabela();
+            fail("Deveria ter lançado uma SQLException");
+        } catch (SQLException e) {
+            assertEquals("Erro ao acessar o banco de dados", e.getMessage());
+        }
+    }
+}

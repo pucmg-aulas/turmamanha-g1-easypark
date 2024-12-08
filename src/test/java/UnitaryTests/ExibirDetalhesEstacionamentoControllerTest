@@ -1,0 +1,72 @@
+package UnitaryTests;
+
+import Controllers.ExibirDetalhesEstacionamentoController;
+import Models.Estacionamento;
+import dao.EstacionamentobdDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import view.ExibirDetalhesEstacionamentoView;
+
+import javax.swing.JDesktopPane;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+
+class ExibirDetalhesEstacionamentoControllerTest {
+    private ExibirDetalhesEstacionamentoController controller;
+    private ExibirDetalhesEstacionamentoView mockView;
+    private EstacionamentobdDAO mockDAO;
+    private JDesktopPane mockDesktopPane;
+    private int testIdEstacionamento = 1;
+
+    @BeforeEach
+    void setUp() throws IOException, SQLException {
+        mockView = Mockito.mock(ExibirDetalhesEstacionamentoView.class);
+        mockDAO = Mockito.mock(EstacionamentobdDAO.class);
+        mockDesktopPane = Mockito.mock(JDesktopPane.class);
+
+        // Substituindo métodos da view para simular os campos
+        when(mockView.getBairro()).thenReturn(new javax.swing.JTextField());
+        when(mockView.getRua()).thenReturn(new javax.swing.JTextField());
+        when(mockView.getVagas()).thenReturn(new javax.swing.JTextField());
+        when(mockView.getNumero()).thenReturn(new javax.swing.JTextField());
+        when(mockView.getNome()).thenReturn(new javax.swing.JTextField());
+
+        // Configurando DAO para retornar um estacionamento simulado
+        Estacionamento mockEstacionamento = new Estacionamento("Estacionamento Teste", "Rua Teste", "Bairro Teste", 123, 50);
+        when(mockDAO.getEstacionamentoPorId(testIdEstacionamento)).thenReturn(mockEstacionamento);
+
+        // Criando o controlador com dependências mockadas
+        controller = new ExibirDetalhesEstacionamentoController(mockDesktopPane, testIdEstacionamento) {
+            @Override
+            protected ExibirDetalhesEstacionamentoView createView(JDesktopPane desktopPane) {
+                return mockView;
+            }
+
+            @Override
+            protected EstacionamentobdDAO createDAO() {
+                return mockDAO;
+            }
+        };
+    }
+
+    @Test
+    void testListarDetalhesEstacionamento() throws SQLException {
+        // Executando o método
+        controller.listarDetalhesEstacionamento();
+
+        // Verificando se os campos foram preenchidos corretamente
+        assertEquals("Bairro Teste", mockView.getBairro().getText());
+        assertEquals("Rua Teste", mockView.getRua().getText());
+        assertEquals("50", mockView.getVagas().getText());
+        assertEquals("123", mockView.getNumero().getText());
+        assertEquals("Estacionamento Teste", mockView.getNome().getText());
+
+        // Verificando se o método do DAO foi chamado corretamente
+        verify(mockDAO, times(1)).getEstacionamentoPorId(testIdEstacionamento);
+    }
+}

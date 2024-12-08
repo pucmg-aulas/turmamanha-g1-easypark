@@ -1,0 +1,147 @@
+package UnitaryTests;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.*;
+import org.mockito.Mockito;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import Models.Estacionamento;
+import Models.ITipo;
+import Models.Pagamento;
+import Models.Veiculo;
+
+import dao.EstacionamentobdDAO;
+import dao.PagamentobdDAO;
+import dao.VeiculoDAO;
+
+import Controllers.ExibirHistoricoUsoController;
+import view.ExibirHistoricoUsoView;
+
+
+class ExibirHistoricoUsoControllerTest {
+
+    private ExibirHistoricoUsoController controller;
+    private PagamentobdDAO mockPagamentos;
+    private VeiculoDAO mockVeiculos;
+    private EstacionamentobdDAO mockEstacionamentos;
+    private ExibirHistoricoUsoView mockView;
+    private JDesktopPane mockDesktopPane;
+    private String clienteCpf = "12345678900";
+
+    @BeforeEach
+    void setUp() throws IOException, SQLException {
+        mockPagamentos = mock(PagamentobdDAO.class);
+        mockVeiculos = mock(VeiculoDAO.class);
+        mockEstacionamentos = mock(EstacionamentobdDAO.class);
+        mockView = mock(ExibirHistoricoUsoView.class);
+        mockDesktopPane = mock(JDesktopPane.class);
+
+        when(mockView.getTableHistorico()).thenReturn(new JTable());
+        when(mockView.getDataInicio()).thenReturn("");
+        when(mockView.getDataFim()).thenReturn("");
+
+        controller = new ExibirHistoricoUsoController(mockDesktopPane, clienteCpf) {
+            protected PagamentobdDAO createPagamentosDAO() {
+                return mockPagamentos;
+            }
+
+            protected VeiculoDAO createVeiculosDAO() {
+                return mockVeiculos;
+            }
+
+            protected EstacionamentobdDAO createEstacionamentosDAO() {
+                return mockEstacionamentos;
+            }
+
+            protected ExibirHistoricoUsoView createView(JDesktopPane desktopPane) {
+                return mockView;
+            }
+        };
+    }
+
+    @Test
+    void testCarregarHistoricoCliente() throws SQLException, IOException {
+        // Dados simulados
+        Pagamento pagamento = new Pagamento();
+        pagamento.setPlacaVeiculo("ABC-1234");
+        pagamento.setIdEstacionamento(1);
+        pagamento.setDataEntrada(LocalDateTime.now().minusDays(2));
+        pagamento.setDataPagamento(LocalDateTime.now());
+        pagamento.setValorPago(20.0);
+
+        Veiculo veiculo = new Veiculo("ABC-1234", clienteCpf);
+        Estacionamento estacionamento = new Estacionamento("Estacionamento Teste", "Rua Teste", "Bairro Teste", 123, 50);
+        ITipo tipoVaga = mock(ITipo.class);
+        when(tipoVaga.getTipo()).thenReturn("Carro");
+
+        pagamento.setTipoVaga(tipoVaga);
+
+        when(mockPagamentos.getPagamentosPorCpf(clienteCpf)).thenReturn(List.of(pagamento));
+        when(mockVeiculos.buscarVeiculoPorPlaca("ABC-1234")).thenReturn(veiculo);
+        when(mockEstacionamentos.getEstacionamentoPorId(1)).thenReturn(estacionamento);
+
+        // Executando o método
+        controller.carregarHistoricoCliente();
+
+        // Verificando se os dados foram adicionados à tabela
+        JTable table = mockView.getTableHistorico();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+        assertEquals(1, model.getRowCount());
+        assertEquals(clienteCpf, model.getValueAt(0, 0));
+        assertEquals("Estacionamento Teste", model.getValueAt(0, 1));
+        assertEquals("Carro", model.getValueAt(0, 2));
+        assertEquals("ABC-1234", model.getValueAt(0, 3));
+    }
+
+    @Test
+    void testFiltrarHistoricoPorDataComDadosValidos() throws SQLException, IOException {
+        // Configurando os mocks
+        Pagamento pagamento = new Pagamento();
+        pagamento.setPlacaVeiculo("DEF-5678");
+        pagamento.setIdEstacionamento(2);
+        pagamento.setDataEntrada(LocalDateTime.now().minusDays(4));
+        pagamento.setDataPagamento(LocalDateTime.now().minusDays(3));
+        pagamento.setValorPago(15.0);
+
+        when(mockPagamentos.getPagamentosPorCpf(clienteCpf)).thenReturn(List.of(pagamento));
+
+        // Simulando entradas da view
+        when(mockView.getDataInicio()).thenReturn("01/12/2023");
+        when(mockView.getDataFim()).thenReturn("05/12/2023");
+
+        // Executando o método
+        controller.filtrarHistoricoPorData("01/12/2023", "05/12/2023");
+
+        // Verificando os resultados
+        JTable table = mockView.getTableHistorico();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+        assertEquals(1, model.getRowCount());
+        verify(mockPagamentos, times(1)).getPagamentosPorCpf(clienteCpf);
+    }
+
+    @Test
+    void testCarregarHistoricoClienteSemDados() throws SQLException, IOException {
+        // Configurando o DAO para retornar uma lista vazia
+        when(mockPagamentos.getPagamentosPorCpf(clienteCpf)).thenReturn(Collections.emptyList());
+
+        // Executando o método
+        controller.carregarHistoricoCliente();
+
+        // Verificando se uma mensagem foi exibida
+        verify(mockView, times(1)).showMessage("Nenhum histórico encontrado para o CPF: " + clienteCpf);
+    }
+}

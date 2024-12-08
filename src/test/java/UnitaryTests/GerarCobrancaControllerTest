@@ -1,0 +1,158 @@
+package UnitaryTests;
+
+import Controllers.GerarCobrancaController;
+import Exceptions.VagaIndisponivelException;
+import Models.Cliente;
+import Models.Cobranca;
+import Models.ITipo;
+import Models.Vaga;
+import Models.Veiculo;
+import dao.ClientebdDAO;
+import dao.CobrancabdDAO;
+import dao.VagabdDAO;
+import dao.VeiculoDAO;
+import view.GerarCobrancaView;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class GerarCobrancaControllerTest {
+
+    private GerarCobrancaController controller;
+    private VagabdDAO mockVagaDAO;
+    private CobrancabdDAO mockCobrancaDAO;
+    private VeiculoDAO mockVeiculoDAO;
+    private ClientebdDAO mockClienteDAO;
+    private JDesktopPane mockDesktopPane;
+    private GerarCobrancaView mockView;
+    private Veiculo veiculo;
+
+    @BeforeEach
+void setUp(Veiculo veiculo) throws IOException, SQLException {
+    mockVagaDAO = mock(VagabdDAO.class);
+    mockCobrancaDAO = mock(CobrancabdDAO.class);
+    mockVeiculoDAO = mock(VeiculoDAO.class);
+    mockClienteDAO = mock(ClientebdDAO.class);
+    mockDesktopPane = mock(JDesktopPane.class);
+    mockView = mock(GerarCobrancaView.class);
+
+    // Criando um mock de ITipo para uso na classe Vaga
+    ITipo mockTipoVaga = mock(ITipo.class);
+    when(mockTipoVaga.getTipo()).thenReturn("Carro");
+
+    // Instância do cliente para ser utilizada nos mocks
+    Cliente cliente = new Cliente("João", "12345678900");
+
+    // Mockando o comportamento dos DAOs
+    when(mockVagaDAO.getVagasDisponiveis()).thenReturn(Arrays.asList(new Vaga(mockTipoVaga)));
+    when(mockVeiculoDAO.buscarVeiculoPorPlaca("ABC-1234")).thenReturn(veiculo);
+    when(mockClienteDAO.buscarClientePorCpf("12345678900")).thenReturn(cliente);
+
+    // Mockando o comportamento da view
+    JTable mockTable = new JTable();
+    when(mockView.getVagasTable()).thenReturn(mockTable);
+    when(mockView.getPlaca()).thenReturn(new JTextField("ABC-1234"));
+
+    controller = new GerarCobrancaController(mockDesktopPane, 1);
+    controller.vagas = mockVagaDAO;
+    controller.cobrancas = mockCobrancaDAO;
+    controller.veiculos = mockVeiculoDAO;
+    controller.clientes = mockClienteDAO;
+    controller.view = mockView;
+}
+{
+    mockVagaDAO = mock(VagabdDAO.class);
+    mockCobrancaDAO = mock(CobrancabdDAO.class);
+    mockVeiculoDAO = mock(VeiculoDAO.class);
+    mockClienteDAO = mock(ClientebdDAO.class);
+    mockDesktopPane = mock(JDesktopPane.class);
+    mockView = mock(GerarCobrancaView.class);
+
+    // Criando um mock de ITipo para usar no construtor da classe Vaga
+    ITipo mockTipoVaga = mock(ITipo.class);
+    when(mockTipoVaga.getTipo()).thenReturn("Carro");
+
+    // Mockando o comportamento dos DAOs
+    when(mockVagaDAO.getVagasDisponiveis()).thenReturn(Arrays.asList(new Vaga(mockTipoVaga)));
+    when(mockVeiculoDAO.buscarVeiculoPorPlaca("ABC-1234")).thenReturn(veiculo);
+    when(mockClienteDAO.buscarClientePorCpf("12345678900")).thenReturn(new Cliente("João", "12345678900"));
+
+    // Mockando o comportamento da view
+    JTable mockTable = new JTable();
+    when(mockView.getVagasTable()).thenReturn(mockTable);
+    when(mockView.getPlaca()).thenReturn(new JTextField("ABC-1234"));
+
+        try {
+            controller = new GerarCobrancaController(mockDesktopPane, 1);
+        } catch (IOException ex) {
+            Logger.getLogger(GerarCobrancaControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GerarCobrancaControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    controller.vagas = mockVagaDAO;
+    controller.cobrancas = mockCobrancaDAO;
+    controller.veiculos = mockVeiculoDAO;
+    controller.clientes = mockClienteDAO;
+    controller.view = mockView;
+}
+
+
+    @Test
+    void carregarVagasDisponiveis_DeveCarregarVagasCorretamente() throws SQLException {
+        controller.carregarVagasDisponiveis();
+
+        verify(mockView, times(1)).getVagasTable();
+        verify(mockVagaDAO, times(1)).getVagasDisponiveis();
+    }
+
+    @Test
+    void createCobranca_ComDadosValidos_DeveGerarCobranca() throws Exception {
+        when(mockCobrancaDAO.gerarCobranca(any(Cobranca.class))).thenReturn(true);
+
+        controller.createCobranca();
+
+        verify(mockCobrancaDAO, times(1)).gerarCobranca(any(Cobranca.class));
+        verify(mockVagaDAO, times(1)).ocuparVaga(1);
+    }
+
+    @Test
+    void createCobranca_ComVagaOcupada_DeveLancarExcecao() throws Exception {
+    when(mockVagaDAO.getVagaPorId(1)).thenReturn(new Vaga(1, false, 1));
+
+        VagaIndisponivelException exception = assertThrows(VagaIndisponivelException.class, () -> {
+            controller.createCobranca();
+        });
+
+        assertEquals("Vaga Ocupada!", exception.getMessage());
+    }
+
+    @Test
+    void getAtributos_SemPlacaVeiculo_DeveRetornarNulo() throws Exception {
+        JTextField emptyPlacaField = new JTextField("");
+        when(mockView.getPlaca()).thenReturn(emptyPlacaField);
+
+        Cobranca cobranca = controller.getAtributos();
+
+        assertNull(cobranca);
+    }
+
+    @Test
+    void getAtributos_ComDadosValidos_DeveRetornarCobranca() throws Exception {
+        Cobranca cobranca = controller.getAtributos();
+
+        assertNotNull(cobranca);
+        assertEquals("ABC-1234", cobranca.getVeiculo().getPlaca());
+        assertEquals(1, cobranca.getIdVaga());
+    }
+}

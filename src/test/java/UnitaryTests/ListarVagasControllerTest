@@ -1,0 +1,111 @@
+package UnitaryTests;
+
+import Controllers.ListarVagasController;
+import Models.Vaga;
+import dao.VagabdDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import view.ListarVagasView;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class ListarVagasControllerTest {
+
+    private ListarVagasController controller;
+    private VagabdDAO mockVagasDAO;
+    private ListarVagasView mockView;
+    private JDesktopPane mockDesktopPane;
+
+    @BeforeEach
+    void setUp() throws IOException, SQLException {
+        mockVagasDAO = mock(VagabdDAO.class);
+        mockView = mock(ListarVagasView.class);
+        mockDesktopPane = mock(JDesktopPane.class);
+
+        // Mockando a tabela na View
+        JTable mockTable = new JTable();
+        when(mockView.getTableVagas()).thenReturn(mockTable);
+
+        // Configurando o comportamento do DAO
+       when(mockVagasDAO.getVagas()).thenReturn(
+    Arrays.asList(
+        new Vaga(1, true, 1),  // Carro, desocupado
+        new Vaga(1, false, 2)  // Moto, ocupada
+    )
+        );
+
+        when(mockVagasDAO.getVagasDisponiveis()).thenReturn(
+                Collections.singletonList(new Vaga(1, true, 1))
+        );
+
+        when(mockVagasDAO.getVagasOcupadas()).thenReturn(
+                Collections.singletonList(new Vaga(2, false, 1))
+        );
+
+        // Criando o controller com as dependências mockadas
+        controller = new ListarVagasController(mockDesktopPane, 1);
+        controller.vagas = mockVagasDAO;
+        controller.view = mockView;
+    }
+
+    @Test
+    void carregarTabelaTodas_DeveCarregarTodasAsVagas() {
+        controller.carregarTabelaTodas();
+
+        // Verificando que o DAO foi chamado
+        verify(mockVagasDAO, times(1)).getVagas();
+
+        // Verificando que os dados foram carregados na tabela
+        JTable table = mockView.getTableVagas();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+        assertEquals(2, model.getRowCount());
+        assertEquals("1", model.getValueAt(0, 0));
+        assertEquals("Carro", model.getValueAt(0, 1));
+        assertEquals("Desocupado", model.getValueAt(0, 2));
+    }
+
+    @Test
+    void carregarVagasDisponiveis_DeveCarregarApenasVagasDisponiveis() throws SQLException {
+        controller.carregarVagasDisponiveis();
+
+        // Verificando que o DAO foi chamado
+        verify(mockVagasDAO, times(1)).getVagasDisponiveis();
+
+        // Verificando que os dados foram carregados na tabela
+        JTable table = mockView.getTableVagas();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+        assertEquals(1, model.getRowCount());
+        assertEquals("1", model.getValueAt(0, 0));
+        assertEquals("Carro", model.getValueAt(0, 1));
+        assertEquals("Desocupado", model.getValueAt(0, 2));
+    }
+
+    @Test
+    void carregarVagasOcupadas_DeveCarregarApenasVagasOcupadas() throws SQLException {
+        controller.carregarVagasOcupadas();
+
+        // Verificando que o DAO foi chamado
+        verify(mockVagasDAO, times(1)).getVagasOcupadas();
+
+        // Verificando que os dados foram carregados na tabela
+        JTable table = mockView.getTableVagas();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+        assertEquals(1, model.getRowCount());
+        assertEquals("2", model.getValueAt(0, 0));
+        assertEquals("Moto", model.getValueAt(0, 1));
+        assertEquals("Ocupado", model.getValueAt(0, 2));
+    }
+}

@@ -7,10 +7,12 @@ import dao.VagabdDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+
 
 class AddEstacionamentoControllerTest {
 
@@ -75,4 +77,3 @@ class AddEstacionamentoControllerTest {
         assertEquals(0, spinner.getValue());
     }
 }
-

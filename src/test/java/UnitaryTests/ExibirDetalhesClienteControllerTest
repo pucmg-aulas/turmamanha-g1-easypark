@@ -1,0 +1,96 @@
+package UnitaryTests;
+
+import Controllers.ExibirDetalhesClienteController;
+import Controllers.ExibirHistoricoUsoController;
+import Models.Cliente;
+import dao.ClientebdDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import view.ExibirDetalhesClienteView;
+
+import javax.swing.*;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class ExibirDetalhesClienteControllerTest {
+
+    private ClientebdDAO mockClientebdDAO;
+    private ExibirDetalhesClienteView mockView;
+    private JDesktopPane mockDesktopPane;
+    private ExibirDetalhesClienteController controller;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        // Mockando as dependências
+        mockClientebdDAO = mock(ClientebdDAO.class);
+        mockView = mock(ExibirDetalhesClienteView.class);
+        mockDesktopPane = mock(JDesktopPane.class);
+
+        // Configurando comportamento esperado para o mock do DAO
+        when(ClientebdDAO.getInstance()).thenReturn(mockClientebdDAO);
+
+        // Simulando o comportamento dos componentes da view
+        when(mockView.getNome()).thenReturn(new JTextField());
+        when(mockView.getCpf()).thenReturn(new JTextField());
+
+        // Criando a instância do controlador para teste
+        String cpfTeste = "12345678900";
+        controller = new ExibirDetalhesClienteController(mockDesktopPane, cpfTeste);
+
+        // Substituindo a view real pela mockada
+        controller.view = mockView;
+    }
+
+    @Test
+    void testCarregarCliente() {
+        // Configuração do cliente de teste
+        String cpfTeste = "12345678900";
+        Cliente clienteMock = new Cliente("João Silva", cpfTeste);
+
+        // Simulando o comportamento do DAO
+        when(mockClientebdDAO.buscarClientePorCpf(cpfTeste)).thenReturn(clienteMock);
+
+        // Chamando o método que deve ser testado
+        controller.carregarCliente();
+
+        // Verificando se os dados foram carregados corretamente na view
+        assertEquals("João Silva", controller.view.getNome().getText());
+        assertEquals(cpfTeste, controller.view.getCpf().getText());
+    }
+
+    @Test
+    void testAbrirHistoricoCliente_Success() throws IOException {
+        // Simulando o comportamento do botão
+        JButton mockButton = new JButton();
+        when(mockView.getVerHistoricoBtn()).thenReturn(mockButton);
+
+        // Garantindo que o histórico ainda não está aberto
+        assertNull(controller.historicoCliente);
+
+        // Simulando o clique no botão
+        mockButton.doClick();
+
+        // Verificando se o controlador do histórico foi inicializado
+        assertNotNull(controller.historicoCliente);
+    }
+
+    @Test
+    void testAbrirHistoricoCliente_AlreadyOpen() throws IOException {
+        // Simulando o comportamento do botão
+        JButton mockButton = new JButton();
+        when(mockView.getVerHistoricoBtn()).thenReturn(mockButton);
+
+        // Simulando que o histórico já está aberto
+        controller.historicoCliente = mock(ExibirHistoricoUsoController.class);
+        when(controller.historicoCliente.isVisible()).thenReturn(true);
+
+        // Simulando o clique no botão
+        mockButton.doClick();
+
+        // Verificando se uma mensagem foi exibida
+        verify(mockView, times(1)).setVisible(true);
+    }
+}

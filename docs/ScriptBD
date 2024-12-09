@@ -1,0 +1,64 @@
+CREATE TABLE IF NOT EXISTS cliente(
+cpf VARCHAR(20) PRIMARY KEY,
+nome VARCHAR(50)
+);
+CREATE TABLE IF NOT EXISTS veiculo(
+placa VARCHAR(10) PRIMARY KEY,
+modelo VARCHAR(50),
+cpf_cliente VARCHAR(20),
+FOREIGN KEY (cpf_cliente) REFERENCES cliente(cpf)
+);
+
+CREATE TABLE IF NOT EXISTS estacionamento(
+id SERIAL PRIMARY KEY,
+nome VARCHAR(50),
+rua VARCHAR(50),
+numero INT,
+bairro VARCHAR(50),
+qntdVagas INT
+);
+
+CREATE TABLE IF NOT EXISTS vaga(
+id SERIAL PRIMARY KEY,
+tipo VARCHAR(50) NOT NULL DEFAULT 'Regular',
+idEstacionamento INT,
+status boolean DEFAULT TRUE,
+FOREIGN KEY (idEstacionamento) REFERENCES estacionamento(id),
+UNIQUE (id, idEstacionamento)
+);
+
+CREATE TABLE IF NOT EXISTS cobranca(
+id SERIAL PRIMARY KEY,
+idVaga INT,
+placaVeiculo VARCHAR(10),
+idEstacionamento INT,
+horaEntrada TIMESTAMP,
+horaSaida TIMESTAMP,
+tempoTotal DOUBLE PRECISION,
+valorTotal DOUBLE PRECISION,
+FOREIGN KEY (placaVeiculo) REFERENCES veiculo(placa),
+FOREIGN KEY (idVaga) REFERENCES vaga(id),
+FOREIGN KEY (idEstacionamento) REFERENCES estacionamento(id)
+);
+
+CREATE TABLE IF NOT EXISTS pagamento(
+  id SERIAL PRIMARY KEY,
+  dataPagamento TIMESTAMP,
+  dataEntrada TIMESTAMP,
+  idEstacionamento INT,
+  valorPago DOUBLE PRECISION,
+  placaVeiculo VARCHAR(10),
+  idVaga INT,
+  tempoTotal DOUBLE PRECISION,
+  FOREIGN KEY (idEstacionamento) references estacionamento(id),
+  FOREIGN KEY (placaVeiculo) REFERENCES veiculo (placa),
+  FOREIGN KEY (idVaga) REFERENCES vaga(id)
+);
+
+
+
+
+
+
+
+
